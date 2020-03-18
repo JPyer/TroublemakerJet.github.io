@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>HTTP 模块</title>
+    <url>/2020/03/18/HTTP-%E6%A8%A1%E5%9D%97/</url>
+    <content><![CDATA[<p>python中的http/https请求使用urllib库，使用urllib的request模块的发送get和post请求。  </p>
+<a id="more"></a>
+<h2 id="get请求"><a href="#get请求" class="headerlink" title="get请求"></a>get请求</h2><p>请求网页地址并返回网页html内容，示例如下：</p>
+<pre><code>from urllib import request
+
+
+def getHtml(url):
+    with request.urlopen(url) as r:
+        data = r.read()
+        return data.decode(&quot;utf-8&quot;)
+
+
+print(getHtml(&quot;http://vipstone.cnblogs.com&quot;))</code></pre><p>对返回的数据进行编码处理data.decode(“utf-8”)即可。</p>
+<h2 id="post请求"><a href="#post请求" class="headerlink" title="post请求"></a>post请求</h2><p>post请求并传递参数，对参数进行encode处理，示例如下：</p>
+<pre><code>from urllib import request, parse
+
+
+params = parse.urlencode([(&quot;name&quot;, &quot;老王&quot;), (&quot;pwd&quot;, &quot;123456&quot;)])
+req = request.Request(&quot;http://127.0.0.1:8360/video/login&quot;)
+req.add_header(&quot;User-Agent&quot;, &quot;Mozilla/6.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/8.0 Mobile/10A5376e Safari/8536.25&quot;)
+
+with request.urlopen(req, data=params.encode(&quot;utf-8&quot;)) as r:
+    data = r.read()
+    print(data.decode(&quot;utf-8&quot;))</code></pre><p>如上所示，需要使用urllib的parse对参数进行编码处理，也可以给http头添加内容。</p>
+]]></content>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>本博客用来记录什么？</title>
+    <url>/2020/03/17/%E6%9C%AC%E5%8D%9A%E5%AE%A2%E7%94%A8%E6%9D%A5%E8%AE%B0%E5%BD%95%E4%BB%80%E4%B9%88%EF%BC%9F/</url>
+    <content><![CDATA[<p>关于我<br>95年生，17年毕业，屌丝程序员一枚，常用网名：Alexis。</p>
+<p>联系邮箱：<a href="mailto:Likj128@126.com">Likj128@126.com</a></p>
+<p>github: @Likj128</p>
+<p>关于本站<br>开始的第一个博客搭建雨腾讯云服务器上，加上开销的各种原因，所以在GitHub上搭建自己的笔记博客。<br>开通于2020年3月17日，问题还很多，仍在不断完善中。<br>本站所有文章除非特别说明均属原创，转载需保留署名和原文链接。</p>
+<p>麻雀虽小，五脏俱全，本站目前已实现的功能有：图片粘贴上传、markdown、pdf自动下载、基于lucene的索引搜索、站点地图自动生成、评论留言系统、QQ微博一键登录、邮件提醒、目录导航自动生成、滚动监听、伪静态、移动端适配、图片懒加载、网址收藏(仅本人可见)、网页自动截图、html转markdown、札记功能(仅本人可见)、代码在线运行、自动化构建、多级文章目录、云文件夹管理、泛域名支持、一键转发至博客园、草稿箱功能，等等。</p>
+<p>本站所有博客纯属个人笔记，错误、描述不到位、理解片面等等情况在所难免，如有不正确的地方欢迎评论中指正，我会及时更正。因为博客建立的太晚，很多以前写在各个角落的笔记、博客被我重新整理发表在这里，所以你会看到很多很基础很入门的文章。</p>
+]]></content>
+      <tags>
+        <tag>关于</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>人工智能三学派</title>
+    <url>/2020/03/17/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%89%E5%AD%A6%E6%B4%BE/</url>
+    <content><![CDATA[<p>人工智能：</p>
+<p>让机器具备人的思维和意识。</p>
+<p>人工智能三学派：</p>
+<a id="more"></a>
+
+<p>行为主义：基于控制论，构建感知-动作控制系统（控制论：平衡/行走/避障等自适应控制系统）</p>
+<p>符号主义：基于算术逻辑表达式，求解问题先把问题描述为表达式，在求解表达式。（可用公式描述，实现理性思维）</p>
+<p>连接主义：仿生学，模仿神经元连接关系（放脑神经元连接，实现感性思维，例如神经网络）</p>
+<p>用计算机仿出神经网络的连接关系让计算机具备感性思维。</p>
+<ol>
+<li>准备数据（采集大量“特征/标签”数据）</li>
+<li>搭建网络（搭建神经网络结构）</li>
+<li>优化参数（训练网络获取最佳参数【反向传播：优化连接的权重知道模型的识别准确率达到要求，得到最优的连线权重，保存】）</li>
+<li>应用网络（将网络保存为模型，输入新数据，输出分类或预测结果【前向传播：输出概率值 概率值最大的就是分类和预测的结果】）</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>A.I.</tag>
+      </tags>
+  </entry>
+</search>
