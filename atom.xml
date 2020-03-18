@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://likj128.github.io/"/>
-  <updated>2020-03-18T02:32:25.991Z</updated>
+  <updated>2020-03-18T10:34:21.973Z</updated>
   <id>http://likj128.github.io/</id>
   
   <author>
@@ -15,6 +15,50 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>内置模块---PYTHON</title>
+    <link href="http://likj128.github.io/2020/03/18/%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97-PYTHON/"/>
+    <id>http://likj128.github.io/2020/03/18/%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97-PYTHON/</id>
+    <published>2020-03-18T10:33:46.000Z</published>
+    <updated>2020-03-18T10:34:21.973Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;常用内置模块列表：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;os&lt;/li&gt;
+&lt;li&gt;sys&lt;/li&gt;
+&lt;li&gt;json&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="Python" scheme="http://likj128.github.io/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>垃圾回收gc</title>
+    <link href="http://likj128.github.io/2020/03/18/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6gc/"/>
+    <id>http://likj128.github.io/2020/03/18/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6gc/</id>
+    <published>2020-03-18T10:22:36.000Z</published>
+    <updated>2020-03-18T10:32:40.341Z</updated>
+    
+    <summary type="html">
+    
+      &lt;hr&gt;
+&lt;p&gt;python的垃圾收回机制不想c和c++是开发者自己管理维护内存的，python的垃圾回收是系统自己处理的，所以作为普通的开发者，我们不需要关注垃圾回收部分的内容，如果想要深层次理解python请继续看下文。&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="Python" scheme="http://likj128.github.io/tags/Python/"/>
+    
+  </entry>
   
   <entry>
     <title>HTTP 模块</title>
@@ -36,38 +80,11 @@
   </entry>
   
   <entry>
-    <title>本博客用来记录什么？</title>
-    <link href="http://likj128.github.io/2020/03/17/%E6%9C%AC%E5%8D%9A%E5%AE%A2%E7%94%A8%E6%9D%A5%E8%AE%B0%E5%BD%95%E4%BB%80%E4%B9%88%EF%BC%9F/"/>
-    <id>http://likj128.github.io/2020/03/17/%E6%9C%AC%E5%8D%9A%E5%AE%A2%E7%94%A8%E6%9D%A5%E8%AE%B0%E5%BD%95%E4%BB%80%E4%B9%88%EF%BC%9F/</id>
-    <published>2020-03-17T10:43:51.000Z</published>
-    <updated>2020-03-17T10:50:10.248Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;关于我&lt;br&gt;95年生，17年毕业，屌丝程序员一枚，常用网名：Alexis。&lt;/p&gt;
-&lt;p&gt;联系邮箱：&lt;a href=&quot;mailto:Likj128@126.com&quot;&gt;Likj128@126.com&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;github:
-        
-      
-    
-    </summary>
-    
-    
-    
-      <category term="关于" scheme="http://likj128.github.io/tags/%E5%85%B3%E4%BA%8E/"/>
-    
-  </entry>
-  
-  <entry>
     <title>人工智能三学派</title>
     <link href="http://likj128.github.io/2020/03/17/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%89%E5%AD%A6%E6%B4%BE/"/>
     <id>http://likj128.github.io/2020/03/17/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%89%E5%AD%A6%E6%B4%BE/</id>
     <published>2020-03-17T02:43:34.000Z</published>
-    <updated>2020-03-17T11:01:03.558Z</updated>
+    <updated>2020-03-17T12:28:35.930Z</updated>
     
     <summary type="html">
     

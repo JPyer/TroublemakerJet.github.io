@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   
   
+  <meta name="description" content="python的垃圾收回机制不想c和c++是开发者自己管理维护内存的，python的垃圾回收是系统自己处理的，所以作为普通的开发者，我们不需要关注垃圾回收部分的内容，如果想要深层次理解python请继续看下文。" />
+  
 
   
   
@@ -11,14 +13,19 @@
   
   
   
-  <title>艾利克斯工作室</title>
+  <title>垃圾回收gc | 艾利克斯工作室</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="艾利克斯工作室">
-<meta property="og:url" content="http://likj128.github.io/index.html">
+  <meta name="description" content="python的垃圾收回机制不想c和c++是开发者自己管理维护内存的，python的垃圾回收是系统自己处理的，所以作为普通的开发者，我们不需要关注垃圾回收部分的内容，如果想要深层次理解python请继续看下文。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="垃圾回收gc">
+<meta property="og:url" content="http://likj128.github.io/2020/03/18/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6gc/index.html">
 <meta property="og:site_name" content="艾利克斯工作室">
+<meta property="og:description" content="python的垃圾收回机制不想c和c++是开发者自己管理维护内存的，python的垃圾回收是系统自己处理的，所以作为普通的开发者，我们不需要关注垃圾回收部分的内容，如果想要深层次理解python请继续看下文。">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-03-18T10:22:36.000Z">
+<meta property="article:modified_time" content="2020-03-18T10:32:40.341Z">
 <meta property="article:author" content="Alexis (KangJ)">
+<meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
   
   
@@ -63,72 +70,15 @@
 </header>
 
       <div id="main" class="wrapper">
-        <div id="primary" class="site-content"><div id="content" role="main">
-  
-    <article id="post-内置模块-PYTHON" class="post-内置模块-PYTHON post type-post status-publish format-standard hentry">
+        <div id="primary" class="site-content"><div id="content" role="main"><article id="post-垃圾回收gc" class="post-垃圾回收gc post type-post status-publish format-standard hentry">
     <!---->
 
       <header class="entry-header">
         
         
   
-    <h1 class="entry-title">
-      <a class="article-title" href="/2020/03/18/%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97-PYTHON/">内置模块---PYTHON</a>
-    </h1>
-  
-
-        
-        <div class="comments-link">
-            
-            <a href="javascript:void(0);" data-url="http://likj128.github.io/2020/03/18/%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97-PYTHON/" data-id="ck7x6v0ab0000x0uv52zdd866" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
-        </div><!-- .comments-link -->
-      </header><!-- .entry-header -->
-
-    <div class="entry-content">
-      
-        <p>常用内置模块列表：</p>
-<ul>
-<li>os</li>
-<li>sys</li>
-<li>json</li>
-</ul>
-        
-          <p class="article-more-link">
-            <a href="/2020/03/18/%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97-PYTHON/#more" class="more-link">More <span class="meta-nav">→</span></a>
-          </p>
-        
-      
-    </div><!-- .entry-content -->
-
-    <footer class="entry-meta">
-    <a href="/2020/03/18/%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97-PYTHON/">
-    <time datetime="2020-03-18T10:33:46.000Z" class="entry-date">
-        2020-03-18
-    </time>
-</a>
-    
-    
-  <span class="article-delim">&#8226;</span>
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
-
-    </footer>
-</article>
-
-
-
-
-
-
-  
-    <article id="post-垃圾回收gc" class="post-垃圾回收gc post type-post status-publish format-standard hentry">
-    <!---->
-
-      <header class="entry-header">
-        
-        
-  
-    <h1 class="entry-title">
-      <a class="article-title" href="/2020/03/18/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6gc/">垃圾回收gc</a>
+    <h1 class="entry-title article-title">
+      垃圾回收gc
     </h1>
   
 
@@ -143,11 +93,22 @@
       
         <hr>
 <p>python的垃圾收回机制不想c和c++是开发者自己管理维护内存的，python的垃圾回收是系统自己处理的，所以作为普通的开发者，我们不需要关注垃圾回收部分的内容，如果想要深层次理解python请继续看下文。</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/03/18/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6gc/#more" class="more-link">More <span class="meta-nav">→</span></a>
-          </p>
-        
+<a id="more"></a>
+
+<p><strong>python垃圾回收机制</strong><br>Python的GC模块主要运用了引用计数来跟踪和回收垃圾。在引用计数的基础上，还可以通过“标记－清除”解决容器对象可能产生的循环引用的问题。通过分代回收以空间换取时间进一步提高垃圾回收的效率。</p>
+<h2 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h2><p><strong>原理：</strong>当一个对象的引用被创建或者复制时，对象的引用计数加1；当一个对象的引用被销毁时，对象的引用计数减1，当对象的引用计数减少为0时，就意味着对象已经再没有被使用了，可以将其内存释放掉。</p>
+<p><strong>优点：</strong>引用计数有一个很大的优点，即实时性，任何内存，一旦没有指向它的引用，就会被立即回收，而其他的垃圾收集技术必须在某种特殊条件下才能进行无效内存的回收。</p>
+<p><strong>缺点：</strong>但是它也有弱点，引用计数机制所带来的维护引用计数的额外操作与Python运行中所进行的内存分配和释放，引用赋值的次数是成正比的，这显然比其它那些垃圾收集技术所带来的额外操作只是与待回收的内存数量有关的效率要低。同时，引用技术还存在另外一个很大的问题－循环引用，因为对象之间相互引用，每个对象的引用都不会为0，所以这些对象所占用的内存始终都不会被释放掉。</p>
+<h2 id="标记－清除"><a href="#标记－清除" class="headerlink" title="标记－清除"></a>标记－清除</h2><p>标记－清除只关注那些可能会产生循环引用的对象，显然，像是PyIntObject、PyStringObject这些不可变对象是不可能产生循环引用的，因为它们内部不可能持有其它对象的引用。Python中的循环引用总是发生在container对象之间，也就是能够在内部持有其它对象的对象，比如list、dict、class等等。这也使得该方法带来的开销只依赖于container对象的的数量。</p>
+<p><strong>原理：</strong></p>
+<ol>
+<li>寻找跟对象（root object）的集合作为垃圾检测动作的起点，跟对象也就是一些全局引用和函数栈中的引用，这些引用所指向的对象是不可被删除的；</li>
+<li>从root object集合出发，沿着root object集合中的每一个引用，如果能够到达某个对象，则说明这个对象是可达的，那么就不会被删除，这个过程就是垃圾检测阶段；</li>
+<li>当检测阶段结束以后，所有的对象就分成可达和不可达两部分，所有的可达对象都进行保留，其它的不可达对象所占用的内存将会被回收，这就是垃圾回收阶段。（底层采用的是链表将这些集合的对象连接在一起）；</li>
+</ol>
+<p><strong>缺点：</strong>标记和清除的过程效率不高。</p>
+<h2 id="分代回收"><a href="#分代回收" class="headerlink" title="分代回收"></a>分代回收</h2><p><strong>原理：</strong>将系统中的所有内存块根据其存活时间划分为不同的集合，每一个集合就成为一个“代”，Python默认定义了三代对象集合，垃圾收集的频率随着“代”的存活时间的增大而减小。也就是说，活得越长的对象，就越不可能是垃圾，就应该减少对它的垃圾收集频率。那么如何来衡量这个存活时间：通常是利用几次垃圾收集动作来衡量，如果一个对象经过的垃圾收集次数越多，可以得出：该对象存活时间就越长。</p>
+
       
     </div><!-- .entry-content -->
 
@@ -166,114 +127,22 @@
 </article>
 
 
-
-
-
-
-  
-    <article id="post-HTTP-模块" class="post-HTTP-模块 post type-post status-publish format-standard hentry">
-    <!---->
-
-      <header class="entry-header">
-        
-        
-  
-    <h1 class="entry-title">
-      <a class="article-title" href="/2020/03/18/HTTP-%E6%A8%A1%E5%9D%97/">HTTP 模块</a>
-    </h1>
-  
-
-        
-        <div class="comments-link">
-            
-            <a href="javascript:void(0);" data-url="http://likj128.github.io/2020/03/18/HTTP-%E6%A8%A1%E5%9D%97/" data-id="ck7x6r1810001d4uv28nthh99" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
-        </div><!-- .comments-link -->
-      </header><!-- .entry-header -->
-
-    <div class="entry-content">
-      
-        <p>python中的http/https请求使用urllib库，使用urllib的request模块的发送get和post请求。  </p>
-        
-          <p class="article-more-link">
-            <a href="/2020/03/18/HTTP-%E6%A8%A1%E5%9D%97/#more" class="more-link">More <span class="meta-nav">→</span></a>
-          </p>
-        
-      
-    </div><!-- .entry-content -->
-
-    <footer class="entry-meta">
-    <a href="/2020/03/18/HTTP-%E6%A8%A1%E5%9D%97/">
-    <time datetime="2020-03-18T02:30:03.000Z" class="entry-date">
-        2020-03-18
-    </time>
-</a>
+    
+<nav class="nav-single">
+    <h3 class="assistive-text">文章导航</h3>
+    
+        <span class="nav-previous"><a href="/2020/03/18/%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97-PYTHON/" rel="prev"><span class="meta-nav">←</span> 内置模块---PYTHON</a></span>
     
     
-  <span class="article-delim">&#8226;</span>
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
-
-    </footer>
-</article>
-
-
-
-
-
-
-  
-    <article id="post-人工智能三学派" class="post-人工智能三学派 post type-post status-publish format-standard hentry">
-    <!---->
-
-      <header class="entry-header">
-        
-        
-  
-    <h1 class="entry-title">
-      <a class="article-title" href="/2020/03/17/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%89%E5%AD%A6%E6%B4%BE/">人工智能三学派</a>
-    </h1>
-  
-
-        
-        <div class="comments-link">
-            
-            <a href="javascript:void(0);" data-url="http://likj128.github.io/2020/03/17/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%89%E5%AD%A6%E6%B4%BE/" data-id="ck7x6r1870006d4uv1ibg3nf0" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
-        </div><!-- .comments-link -->
-      </header><!-- .entry-header -->
-
-    <div class="entry-content">
-      
-        <p>人工智能：</p>
-<p>让机器具备人的思维和意识。</p>
-<p>人工智能三学派：</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/03/17/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%89%E5%AD%A6%E6%B4%BE/#more" class="more-link">More <span class="meta-nav">→</span></a>
-          </p>
-        
-      
-    </div><!-- .entry-content -->
-
-    <footer class="entry-meta">
-    <a href="/2020/03/17/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%89%E5%AD%A6%E6%B4%BE/">
-    <time datetime="2020-03-17T02:43:34.000Z" class="entry-date">
-        2020-03-17
-    </time>
-</a>
+        <span class="nav-next"><a href="/2020/03/18/HTTP-%E6%A8%A1%E5%9D%97/" rel="next">HTTP 模块 <span class="meta-nav">→</span></a></span>
     
-    
-  <span class="article-delim">&#8226;</span>
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/A-I/" rel="tag">A.I.</a></li></ul>
-
-    </footer>
-</article>
+</nav><!-- .nav-single -->
 
 
 
 
 
 
-  
-  
 
 </div></div>
         <div id="secondary" class="widget-area" role="complementary">
