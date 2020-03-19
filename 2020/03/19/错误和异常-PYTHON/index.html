@@ -3,7 +3,7 @@
 <a id="more"></a>
 
 <p>Python有两种错误很容易辨认：语法错误和异常。</p>
-<p>语法错误<br>Python 的语法错误或者称之为解析错，是初学者经常碰到的，如下实例</p>
+<h1 id="语法错误"><a href="#语法错误" class="headerlink" title="语法错误"></a>语法错误</h1><p>Python 的语法错误或者称之为解析错，是初学者经常碰到的，如下实例</p>
 <blockquote>
 <blockquote>
 <blockquote>
@@ -11,7 +11,7 @@
 </blockquote>
 </blockquote>
 </blockquote>
-<p>异常<br>即便Python程序的语法是正确的，在运行它的时候，也有可能发生错误。运行期检测到的错误被称为异常。<br>大多数的异常都不会被程序处理，都以错误信息的形式展现在这里:</p>
+<h1 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h1><p>即便Python程序的语法是正确的，在运行它的时候，也有可能发生错误。运行期检测到的错误被称为异常。<br>大多数的异常都不会被程序处理，都以错误信息的形式展现在这里:</p>
 <blockquote>
 <blockquote>
 <blockquote>
@@ -19,7 +19,7 @@
 </blockquote>
 </blockquote>
 </blockquote>
-<p>异常处理<br>以下例子中，让用户输入一个合法的整数，但是允许用户中断这个程序（使用 Control-C 或者操作系统提供的方法）。用户中断的信息会引发一个 KeyboardInterrupt 异常。</p>
+<h1 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h1><p>以下例子中，让用户输入一个合法的整数，但是允许用户中断这个程序（使用 Control-C 或者操作系统提供的方法）。用户中断的信息会引发一个 KeyboardInterrupt 异常。</p>
 <blockquote>
 <blockquote>
 <blockquote>
@@ -47,7 +47,8 @@
 </blockquote>
 </blockquote>
 </blockquote>
-<p>Handling run-time error: int division or modulo by zero<br>抛出异常<br>Python 使用 raise 语句抛出一个指定的异常。例如:</p>
+<p>Handling run-time error: int division or modulo by zero</p>
+<h1 id="抛出异常"><a href="#抛出异常" class="headerlink" title="抛出异常"></a>抛出异常</h1><p>Python 使用 raise 语句抛出一个指定的异常。例如:</p>
 <blockquote>
 <blockquote>
 <blockquote>
@@ -63,7 +64,8 @@
 </blockquote>
 </blockquote>
 </blockquote>
-<p>An exception flew by!<br>Traceback (most recent call last):<br>  File “<stdin>“, line 2, in ?<br>NameError: HiThere<br>用户自定义异常<br>你可以通过创建一个新的异常类来拥有自己的异常。异常类继承自 Exception 类，可以直接继承，或者间接继承，例如:</stdin></p>
+<p>An exception flew by!<br>Traceback (most recent call last):<br>  File “<stdin>“, line 2, in ?<br>NameError: HiThere</stdin></p>
+<h1 id="用户自定义异常"><a href="#用户自定义异常" class="headerlink" title="用户自定义异常"></a>用户自定义异常</h1><p>你可以通过创建一个新的异常类来拥有自己的异常。异常类继承自 Exception 类，可以直接继承，或者间接继承，例如:</p>
 <blockquote>
 <blockquote>
 <blockquote>
@@ -107,7 +109,7 @@ def __init__(self, previous, next, message):
     self.previous = previous
     self.next = next
     self.message = message</code></pre><p>大多数的异常的名字都以”Error”结尾，就跟标准的异常命名一样。</p>
-<p>定义清理行为<br>try 语句还有另外一个可选的子句，它定义了无论在任何情况下都会执行的清理行为。 例如:</p>
+<h1 id="定义清理行为"><a href="#定义清理行为" class="headerlink" title="定义清理行为"></a>定义清理行为</h1><p>try 语句还有另外一个可选的子句，它定义了无论在任何情况下都会执行的清理行为。 例如:</p>
 <blockquote>
 <blockquote>
 <blockquote>
@@ -127,14 +129,15 @@ def __init__(self, previous, next, message):
 <blockquote>
 <blockquote>
 <blockquote>
-<p>divide(2, 1)<br>result is 2.0<br>executing finally clause<br>divide(2, 0)<br>division by zero!<br>executing finally clause<br>divide(“2”, “1”)<br>executing finally clause<br>Traceback (most recent call last):<br>  File “<stdin>“, line 1, in ?<br>  File “<stdin>“, line 3, in divide<br>TypeError: unsupported operand type(s) for /: ‘str’ and ‘str’<br>预定义的清理行为<br>一些对象定义了标准的清理行为，无论系统是否成功的使用了它，一旦不需要它了，那么这个标准的清理行为就会执行。<br>下面这个例子展示了尝试打开一个文件，然后把内容打印到屏幕上:</stdin></stdin></p>
+<p>divide(2, 1)<br>result is 2.0<br>executing finally clause<br>divide(2, 0)<br>division by zero!<br>executing finally clause<br>divide(“2”, “1”)<br>executing finally clause<br>Traceback (most recent call last):<br>  File “<stdin>“, line 1, in ?<br>  File “<stdin>“, line 3, in divide<br>TypeError: unsupported operand type(s) for /: ‘str’ and ‘str’</stdin></stdin></p>
 </blockquote>
 </blockquote>
 </blockquote>
+<h1 id="预定义的清理行为"><a href="#预定义的清理行为" class="headerlink" title="预定义的清理行为"></a>预定义的清理行为</h1><p>一些对象定义了标准的清理行为，无论系统是否成功的使用了它，一旦不需要它了，那么这个标准的清理行为就会执行。<br>下面这个例子展示了尝试打开一个文件，然后把内容打印到屏幕上:</p>
 <p>for line in open(“myfile.txt”):<br>    print(line, end=””)<br>以上这段代码的问题是，当执行完毕后，文件会保持打开状态，并没有被关闭。</p>
 <p>关键词 with 语句就可以保证诸如文件之类的对象在使用完之后一定会正确的执行他的清理方法:</p>
 <p>with open(“myfile.txt”) as f:<br>    for line in f:<br>        print(line, end=””)<br>以上这段代码执行完毕后，就算在处理过程中出问题了，文件 f 总是会关闭。</p>
-</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:Likj128@126.com">Alexis (KangJ)</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/03/19/%E9%94%99%E8%AF%AF%E5%92%8C%E5%BC%82%E5%B8%B8-PYTHON/">http://likj128.github.io/2020/03/19/错误和异常-PYTHON/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="http://likj128.github.io">Alexis (KangJ)的博客</a>！</span></div></blockquote></div></article><div class="p-info box"></div><aside id="toc"><div class="toc-title">目录</div><nav></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="next" href="/2020/03/19/%E5%AE%89%E8%A3%85%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%8C%85-LINUX/">安装常用工具包-LINUX &gt;</a></div><div id="valine-comment"><style type="text/css">.v * { color: #CECECE; }
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:Likj128@126.com">Alexis (KangJ)</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/03/19/%E9%94%99%E8%AF%AF%E5%92%8C%E5%BC%82%E5%B8%B8-PYTHON/">http://likj128.github.io/2020/03/19/错误和异常-PYTHON/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="http://likj128.github.io">Alexis (KangJ)的博客</a>！</span></div></blockquote></div></article><div class="p-info box"></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#语法错误"><span class="toc-number">1.</span> <span class="toc-text">语法错误</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#异常"><span class="toc-number">2.</span> <span class="toc-text">异常</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#异常处理"><span class="toc-number">3.</span> <span class="toc-text">异常处理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#抛出异常"><span class="toc-number">4.</span> <span class="toc-text">抛出异常</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#用户自定义异常"><span class="toc-number">5.</span> <span class="toc-text">用户自定义异常</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#定义清理行为"><span class="toc-number">6.</span> <span class="toc-text">定义清理行为</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#预定义的清理行为"><span class="toc-number">7.</span> <span class="toc-text">预定义的清理行为</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="next" href="/2020/03/19/%E5%AE%89%E8%A3%85%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%8C%85-LINUX/">安装常用工具包-LINUX &gt;</a></div><div id="valine-comment"><style type="text/css">.v * { color: #CECECE; }
 .v a { color: #0F9FB4; }
 .v a:hover { color: #216C73; }
 .v li { list-style: inherit; }

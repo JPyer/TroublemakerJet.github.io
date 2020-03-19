@@ -7,7 +7,7 @@
 <a id="more"></a>
 
 <p>Python有两种错误很容易辨认：语法错误和异常。</p>
-<p>语法错误<br>Python 的语法错误或者称之为解析错，是初学者经常碰到的，如下实例</p>
+<h1 id="语法错误"><a href="#语法错误" class="headerlink" title="语法错误"></a>语法错误</h1><p>Python 的语法错误或者称之为解析错，是初学者经常碰到的，如下实例</p>
 <blockquote>
 <blockquote>
 <blockquote>
@@ -15,7 +15,7 @@
 </blockquote>
 </blockquote>
 </blockquote>
-<p>异常<br>即便Python程序的语法是正确的，在运行它的时候，也有可能发生错误。运行期检测到的错误被称为异常。<br>大多数的异常都不会被程序处理，都以错误信息的形式展现在这里:</p>
+<h1 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h1><p>即便Python程序的语法是正确的，在运行它的时候，也有可能发生错误。运行期检测到的错误被称为异常。<br>大多数的异常都不会被程序处理，都以错误信息的形式展现在这里:</p>
 <blockquote>
 <blockquote>
 <blockquote>
@@ -23,7 +23,7 @@
 </blockquote>
 </blockquote>
 </blockquote>
-<p>异常处理<br>以下例子中，让用户输入一个合法的整数，但是允许用户中断这个程序（使用 Control-C 或者操作系统提供的方法）。用户中断的信息会引发一个 KeyboardInterrupt 异常。</p>
+<h1 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h1><p>以下例子中，让用户输入一个合法的整数，但是允许用户中断这个程序（使用 Control-C 或者操作系统提供的方法）。用户中断的信息会引发一个 KeyboardInterrupt 异常。</p>
 <blockquote>
 <blockquote>
 <blockquote>
@@ -51,7 +51,8 @@
 </blockquote>
 </blockquote>
 </blockquote>
-<p>Handling run-time error: int division or modulo by zero<br>抛出异常<br>Python 使用 raise 语句抛出一个指定的异常。例如:</p>
+<p>Handling run-time error: int division or modulo by zero</p>
+<h1 id="抛出异常"><a href="#抛出异常" class="headerlink" title="抛出异常"></a>抛出异常</h1><p>Python 使用 raise 语句抛出一个指定的异常。例如:</p>
 <blockquote>
 <blockquote>
 <blockquote>
@@ -67,7 +68,8 @@
 </blockquote>
 </blockquote>
 </blockquote>
-<p>An exception flew by!<br>Traceback (most recent call last):<br>  File “<stdin>“, line 2, in ?<br>NameError: HiThere<br>用户自定义异常<br>你可以通过创建一个新的异常类来拥有自己的异常。异常类继承自 Exception 类，可以直接继承，或者间接继承，例如:</stdin></p>
+<p>An exception flew by!<br>Traceback (most recent call last):<br>  File “<stdin>“, line 2, in ?<br>NameError: HiThere</stdin></p>
+<h1 id="用户自定义异常"><a href="#用户自定义异常" class="headerlink" title="用户自定义异常"></a>用户自定义异常</h1><p>你可以通过创建一个新的异常类来拥有自己的异常。异常类继承自 Exception 类，可以直接继承，或者间接继承，例如:</p>
 <blockquote>
 <blockquote>
 <blockquote>
@@ -111,7 +113,7 @@ def __init__(self, previous, next, message):
     self.previous = previous
     self.next = next
     self.message = message</code></pre><p>大多数的异常的名字都以”Error”结尾，就跟标准的异常命名一样。</p>
-<p>定义清理行为<br>try 语句还有另外一个可选的子句，它定义了无论在任何情况下都会执行的清理行为。 例如:</p>
+<h1 id="定义清理行为"><a href="#定义清理行为" class="headerlink" title="定义清理行为"></a>定义清理行为</h1><p>try 语句还有另外一个可选的子句，它定义了无论在任何情况下都会执行的清理行为。 例如:</p>
 <blockquote>
 <blockquote>
 <blockquote>
@@ -131,10 +133,11 @@ def __init__(self, previous, next, message):
 <blockquote>
 <blockquote>
 <blockquote>
-<p>divide(2, 1)<br>result is 2.0<br>executing finally clause<br>divide(2, 0)<br>division by zero!<br>executing finally clause<br>divide(“2”, “1”)<br>executing finally clause<br>Traceback (most recent call last):<br>  File “<stdin>“, line 1, in ?<br>  File “<stdin>“, line 3, in divide<br>TypeError: unsupported operand type(s) for /: ‘str’ and ‘str’<br>预定义的清理行为<br>一些对象定义了标准的清理行为，无论系统是否成功的使用了它，一旦不需要它了，那么这个标准的清理行为就会执行。<br>下面这个例子展示了尝试打开一个文件，然后把内容打印到屏幕上:</stdin></stdin></p>
+<p>divide(2, 1)<br>result is 2.0<br>executing finally clause<br>divide(2, 0)<br>division by zero!<br>executing finally clause<br>divide(“2”, “1”)<br>executing finally clause<br>Traceback (most recent call last):<br>  File “<stdin>“, line 1, in ?<br>  File “<stdin>“, line 3, in divide<br>TypeError: unsupported operand type(s) for /: ‘str’ and ‘str’</stdin></stdin></p>
 </blockquote>
 </blockquote>
 </blockquote>
+<h1 id="预定义的清理行为"><a href="#预定义的清理行为" class="headerlink" title="预定义的清理行为"></a>预定义的清理行为</h1><p>一些对象定义了标准的清理行为，无论系统是否成功的使用了它，一旦不需要它了，那么这个标准的清理行为就会执行。<br>下面这个例子展示了尝试打开一个文件，然后把内容打印到屏幕上:</p>
 <p>for line in open(“myfile.txt”):<br>    print(line, end=””)<br>以上这段代码的问题是，当执行完毕后，文件会保持打开状态，并没有被关闭。</p>
 <p>关键词 with 语句就可以保证诸如文件之类的对象在使用完之后一定会正确的执行他的清理方法:</p>
 <p>with open(“myfile.txt”) as f:<br>    for line in f:<br>        print(line, end=””)<br>以上这段代码执行完毕后，就算在处理过程中出问题了，文件 f 总是会关闭。</p>
@@ -145,26 +148,22 @@ def __init__(self, previous, next, message):
     <url>/2020/03/19/%E5%AE%89%E8%A3%85%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%8C%85-LINUX/</url>
     <content><![CDATA[<p>全部操作都在root用户下执行</p>
 <a id="more"></a>
-<p>1.安装编译相关工具<br>yum -y groupinstall “Development tools”<br>yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel<br>yum install libffi-devel -y<br>2.下载安装包解压<br>wget <a href="https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz" target="_blank" rel="noopener">https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz</a><br>tar -xvJf  Python-3.7.0.tar.xz<br>3.编译安装<br>mkdir /usr/local/python3 #创建编译安装目录<br>cd Python-3.7.0<br>./configure –prefix=/usr/local/python3<br>make &amp;&amp; make install<br>4.创建软连接<br>ln -s /usr/local/python3/bin/python3 /usr/local/bin/python3<br>ln -s /usr/local/python3/bin/pip3 /usr/local/bin/pip3<br>5.验证是否成功<br>python3 -V<br>pip3 -V</p>
-<p>2 添加Nginx的源<br>rpm -Uvh <a href="http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm" target="_blank" rel="noopener">http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm</a><br>3 安装Nginx<br>yum install -y nginx<br>安装成功后，配置文件目录为/etc/nginx</p>
-<p>4 启动Nginx<br>systemctl start nginx.service #启动Nginx<br>systemctl enable nginx.service #设置开机自启<br>5 浏览器中访问<br> 输入ip</p>
-<ol>
-<li>yum安装redis<br>yum install -y epel-release<br>yum install -y redis</li>
-<li>启动redis<br>service redis start #启动redis<br>service redis status #查看redis状态</li>
-</ol>
+<h1 id="安装编译相关工具"><a href="#安装编译相关工具" class="headerlink" title="安装编译相关工具"></a>安装编译相关工具</h1><p>yum -y groupinstall “Development tools”<br>yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel<br>yum install libffi-devel -y<br>2.下载安装包解压<br>wget <a href="https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz" target="_blank" rel="noopener">https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz</a><br>tar -xvJf  Python-3.7.0.tar.xz<br>3.编译安装<br>mkdir /usr/local/python3 #创建编译安装目录<br>cd Python-3.7.0<br>./configure –prefix=/usr/local/python3<br>make &amp;&amp; make install<br>4.创建软连接<br>ln -s /usr/local/python3/bin/python3 /usr/local/bin/python3<br>ln -s /usr/local/python3/bin/pip3 /usr/local/bin/pip3<br>5.验证是否成功<br>python3 -V<br>pip3 -V</p>
+<h1 id="添加Nginx的源"><a href="#添加Nginx的源" class="headerlink" title="添加Nginx的源"></a>添加Nginx的源</h1><p>rpm -Uvh <a href="http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm" target="_blank" rel="noopener">http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm</a></p>
+<h1 id="安装Nginx"><a href="#安装Nginx" class="headerlink" title="安装Nginx"></a>安装Nginx</h1><p>yum install -y nginx<br>安装成功后，配置文件目录为/etc/nginx</p>
+<h1 id="启动Nginx"><a href="#启动Nginx" class="headerlink" title="启动Nginx"></a>启动Nginx</h1><p>systemctl start nginx.service #启动Nginx<br>systemctl enable nginx.service #设置开机自启</p>
+<h1 id="yum安装redis"><a href="#yum安装redis" class="headerlink" title="yum安装redis"></a>yum安装redis</h1><p>yum install -y epel-release<br>yum install -y redis</p>
+<h1 id="启动redis"><a href="#启动redis" class="headerlink" title="启动redis"></a>启动redis</h1><p>service redis start #启动redis<br>service redis status #查看redis状态</p>
 <hr>
-<p>ps -ef | grep redis #查看redis进程<br>service redis stop #停止redis<br>3. 设置开机自启<br>chkconfig redis on<br>4. 修改redis配置<br>vim /etc/redis.conf<br>修改如下内容:</p>
+<p>ps -ef | grep redis #查看redis进程<br>service redis stop #停止redis</p>
+<h1 id="设置开机自启"><a href="#设置开机自启" class="headerlink" title="设置开机自启"></a>设置开机自启</h1><p>chkconfig redis on</p>
+<h1 id="修改redis配置"><a href="#修改redis配置" class="headerlink" title="修改redis配置"></a>修改redis配置</h1><p>vim /etc/redis.conf<br>修改如下内容:</p>
 <p>port 6379 #启动端口<br>requirepass 111111 #访问密码<br>重启redis</p>
-<p>service redis restart<br>5. 登录redis<br>注: 127.0.0.1:6379&gt;为redis数据库前缀</p>
+<p>service redis restart<br>登录redis<br>注: 127.0.0.1:6379&gt;为redis数据库前缀</p>
 <p>redis-cli #登录redis<br>127.0.0.1:6379&gt; auth 111111 #认证登录<br>127.0.0.1:6379&gt; keys * #查看当前的key</p>
-<ol>
-<li>下载安装mysql yum 源<br>wget -i -c <a href="http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm" target="_blank" rel="noopener">http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm</a><br>yum install -y mysql57-community-release-el7-10.noarch.rpm</li>
-<li>安装mysql并启动<br>yum install -y mysql-community-server #安装mysql<br>systemctl start  mysqld.service #启动<br>systemctl status mysqld.service #查看运行状态</li>
-<li>登录mysql<br>grep “password” /var/log/mysqld.log #查看mysql生成的密码<br>mysql -uroot -p #以root用户登录mysql</li>
-<li>修改root密码<br>注: mysql&gt; 为提示符；新密码需符合：包含字母大小写、特殊符和数字，且位数大于4</li>
-</ol>
-<p>mysql&gt; ALTER USER ‘root’@’localhost’ IDENTIFIED BY ‘new password’;<br>5. 授权root用户远程访问<br>mysql&gt; use mysql;<br>mysql&gt; grant all privileges  on <em>.</em> to root@’%’ identified by “password”;<br>mysql&gt; flush privileges;</p>
-<p>1.安装编译工具<br>同上<br>2.下载安装包<br>cd /opt<br>wget <a href="http://www.sqlite.org/2015/sqlite-autoconf-3081101.tar.gz" target="_blank" rel="noopener">http://www.sqlite.org/2015/sqlite-autoconf-3081101.tar.gz</a> #下载安装包<br>tar zxvf sqlite-autoconf-3081101.tar.gz  #进行解压<br>3.编译安装<br>cd sqlite-autoconf-3081101/<br>./configure<br>make &amp;&amp; make install<br>yum install sqlite-devel<br>4.链接sqlite3<br>cd #回到用户目录<br>sqlite3 #链接sqlite3</p>
+<h1 id="下载安装mysql-yum-源"><a href="#下载安装mysql-yum-源" class="headerlink" title="下载安装mysql yum 源"></a>下载安装mysql yum 源</h1><p>wget -i -c <a href="http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm" target="_blank" rel="noopener">http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm</a><br>yum install -y mysql57-community-release-el7-10.noarch.rpm<br>安装mysql并启动<br>yum install -y mysql-community-server #安装mysql<br>systemctl start  mysqld.service #启动<br>systemctl status mysqld.service #查看运行状态<br>登录mysql<br>grep “password” /var/log/mysqld.log #查看mysql生成的密码<br>mysql -uroot -p #以root用户登录mysql<br>修改root密码<br>注: mysql&gt; 为提示符；新密码需符合：包含字母大小写、特殊符和数字，且位数大于4</p>
+<p>mysql&gt; ALTER USER ‘root’@’localhost’ IDENTIFIED BY ‘new password’;<br> 授权root用户远程访问<br>mysql&gt; use mysql;<br>mysql&gt; grant all privileges  on <em>.</em> to root@’%’ identified by “password”;<br>mysql&gt; flush privileges;</p>
+<h1 id="下载sqlite安装包"><a href="#下载sqlite安装包" class="headerlink" title="下载sqlite安装包"></a>下载sqlite安装包</h1><p>cd /opt<br>wget <a href="http://www.sqlite.org/2015/sqlite-autoconf-3081101.tar.gz" target="_blank" rel="noopener">http://www.sqlite.org/2015/sqlite-autoconf-3081101.tar.gz</a> #下载安装包<br>tar zxvf sqlite-autoconf-3081101.tar.gz  #进行解压<br>3.编译安装<br>cd sqlite-autoconf-3081101/<br>./configure<br>make &amp;&amp; make install<br>yum install sqlite-devel<br>4.链接sqlite3<br>cd #回到用户目录<br>sqlite3 #链接sqlite3</p>
 <p>5.退出sqlite3<br>sqlite3链接成功后，执行如下：</p>
 <p>sqlite&gt; .quit #退出sqlite3</p>
 ]]></content>
@@ -236,14 +235,12 @@ MAILTO=root           邮件发给谁
     print(&quot;真&quot;)
 else:
     print(&quot;假&quot;)
-# 输出：真</code></pre><p><strong>非真判断</strong></p>
-<p>非真判断使用not关键字，示例如下：</p>
+# 输出：真</code></pre><h1 id="非真判断"><a href="#非真判断" class="headerlink" title="非真判断"></a>非真判断</h1><p>非真判断使用not关键字，示例如下：</p>
 <pre><code>if not True:
     print(&quot;True&quot;)
 else:
     print(&quot;False&quot;)
-# 输出：False</code></pre><p><strong>多情况判断</strong></p>
-<p>多情况判断使用if/elif/else，示例如下：</p>
+# 输出：False</code></pre><h1 id="多情况判断"><a href="#多情况判断" class="headerlink" title="多情况判断"></a>多情况判断</h1><p>多情况判断使用if/elif/else，示例如下：</p>
 <pre><code>age = 18
 if age &lt; 16:
     print(&quot;青少年&quot;)
@@ -254,16 +251,14 @@ elif age &lt; 60:
 else:
     print(&quot;老年&quot;)
 # 输出：成人</code></pre><p>python用空格缩进代表代码块，所以要主要代码缩进.</p>
-<p><strong>满足多条件</strong></p>
-<p>使用and关键字，示例如下：</p>
+<h1 id="满足多条件"><a href="#满足多条件" class="headerlink" title="满足多条件"></a>满足多条件</h1><p>使用and关键字，示例如下：</p>
 <pre><code>age = 18
 name = &quot;laowang&quot;
 if age == 18 and name == &quot;laowang&quot;:
     print(&quot;良好少年&quot;)
 else:
     print(&quot;不良少年&quot;)
-# 输出：良好少年</code></pre><p><strong>至少满足一种条件</strong></p>
-<p>使用or关键字，示例如下：</p>
+# 输出：良好少年</code></pre><h1 id="至少满足一种条件"><a href="#至少满足一种条件" class="headerlink" title="至少满足一种条件"></a>至少满足一种条件</h1><p>使用or关键字，示例如下：</p>
 <pre><code>age = 18
 name = &quot;laowang&quot;
 if age == 18 or name == &quot;xiaoli&quot;:
@@ -277,27 +272,24 @@ for item in list:
     print(item)
 # 输出：focus
 # 输出：mouse
-# 输出：click</code></pre><p><strong>break跳出循环</strong>，实例如下：</p>
-<pre><code>list = [&quot;focus&quot;, &quot;mouse&quot;, &quot;click&quot;]
+# 输出：click</code></pre><h1 id="break跳出循环"><a href="#break跳出循环" class="headerlink" title="break跳出循环"></a>break跳出循环</h1><pre><code>list = [&quot;focus&quot;, &quot;mouse&quot;, &quot;click&quot;]
 for item in list:
     if item == &quot;mouse&quot;:
         break
     print(item)
-# 输出：focus</code></pre><p><strong>continue跳过该次循环</strong>，实例如下：</p>
-<pre><code>list = [&quot;focus&quot;, &quot;mouse&quot;, &quot;click&quot;]
+# 输出：focus</code></pre><h1 id="continue跳过该次循环"><a href="#continue跳过该次循环" class="headerlink" title="continue跳过该次循环"></a>continue跳过该次循环</h1><pre><code>list = [&quot;focus&quot;, &quot;mouse&quot;, &quot;click&quot;]
 for item in list:
     if item == &quot;mouse&quot;:
         continue
     print(item)
 # 输出：focus
-# 输出：click</code></pre><p><strong>使用enumerate获取下标</strong></p>
-<pre><code>list = [&quot;focus&quot;, &quot;mouse&quot;, &quot;click&quot;]
+# 输出：click</code></pre><h1 id="使用enumerate获取下标"><a href="#使用enumerate获取下标" class="headerlink" title="使用enumerate获取下标"></a>使用enumerate获取下标</h1><pre><code>list = [&quot;focus&quot;, &quot;mouse&quot;, &quot;click&quot;]
 for index, item in enumerate(list):
     print(&quot;index:{} item:{}&quot;.format(index, item))
 # 输出如下：
 # index:0 item:focus
 # index:1 item:mouse
-# index:2 item:click</code></pre><p><strong>while循环</strong><br>基础示例如下：</p>
+# index:2 item:click</code></pre><h1 id="while循环"><a href="#while循环" class="headerlink" title="while循环"></a>while循环</h1><p>基础示例如下：</p>
 <pre><code>num = 1
 while num &lt; 3:
     print(num)
