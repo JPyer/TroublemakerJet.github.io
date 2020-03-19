@@ -1,89 +1,419 @@
 <?xml version="1.0" encoding="utf-8"?>
-<search> 
-  
-  
-    
-    <entry>
-      <title>内置模块---PYTHON</title>
-      <link href="/2020/03/18/%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97-PYTHON/"/>
-      <url>/2020/03/18/%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97-PYTHON/</url>
-      
-        <content type="html"><![CDATA[<p>常用内置模块列表：</p><ul><li>os</li><li>sys</li><li>json</li></ul><a id="more"></a><h1 id="os模块"><a href="#os模块" class="headerlink" title="os模块"></a>os模块</h1><p>os.getcwd() #获取当前程序目录</p><p>os.listdir(‘dirname’) #列出指定目录下的所有文件和子目录，包括隐藏文件，并以列表方式打印</p><p>os.remove() #删除一个文件</p><p>os.rename(“oldname”,”newname”) #重命名文件/目录</p><p>os.path.isfile(path) #如果path是一个存在的文件，返回True，否则返回False</p><p>os.path.exists(path) #如果path存在，返回True；如果path不存在，返回False</p><p>os.path.getatime(path) #返回path所指向的文件或者目录的最后存取时间</p><p>os.path.getmtime(path) #返回path所指向的文件或者目录的最后修改时间</p><h1 id="sys模块"><a href="#sys模块" class="headerlink" title="sys模块"></a>sys模块</h1><p>sys.exit(n) #退出程序，正常退出时exit(0)</p><p>sys.version  #获取Python解释程序的版本信息</p><p>sys.maxint #最大的Int值</p><p>sys.platform #返回操作系统平台名称</p><h1 id="json模块"><a href="#json模块" class="headerlink" title="json模块"></a>json模块</h1><p>json模块用于字符串 和 python数据类型间进行转换</p><p>json模块提供了四个功能：dumps、dump、loads、load</p><p>dumps、dump #把对象转换成str</p><p>loads、load #把str转换成json</p>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> Python </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>垃圾回收gc</title>
-      <link href="/2020/03/18/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6gc/"/>
-      <url>/2020/03/18/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6gc/</url>
-      
-        <content type="html"><![CDATA[<hr><p>python的垃圾收回机制不想c和c++是开发者自己管理维护内存的，python的垃圾回收是系统自己处理的，所以作为普通的开发者，我们不需要关注垃圾回收部分的内容，如果想要深层次理解python请继续看下文。</p><a id="more"></a><p><strong>python垃圾回收机制</strong><br>Python的GC模块主要运用了引用计数来跟踪和回收垃圾。在引用计数的基础上，还可以通过“标记－清除”解决容器对象可能产生的循环引用的问题。通过分代回收以空间换取时间进一步提高垃圾回收的效率。</p><h2 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h2><p><strong>原理：</strong>当一个对象的引用被创建或者复制时，对象的引用计数加1；当一个对象的引用被销毁时，对象的引用计数减1，当对象的引用计数减少为0时，就意味着对象已经再没有被使用了，可以将其内存释放掉。</p><p><strong>优点：</strong>引用计数有一个很大的优点，即实时性，任何内存，一旦没有指向它的引用，就会被立即回收，而其他的垃圾收集技术必须在某种特殊条件下才能进行无效内存的回收。</p><p><strong>缺点：</strong>但是它也有弱点，引用计数机制所带来的维护引用计数的额外操作与Python运行中所进行的内存分配和释放，引用赋值的次数是成正比的，这显然比其它那些垃圾收集技术所带来的额外操作只是与待回收的内存数量有关的效率要低。同时，引用技术还存在另外一个很大的问题－循环引用，因为对象之间相互引用，每个对象的引用都不会为0，所以这些对象所占用的内存始终都不会被释放掉。</p><h2 id="标记－清除"><a href="#标记－清除" class="headerlink" title="标记－清除"></a>标记－清除</h2><p>标记－清除只关注那些可能会产生循环引用的对象，显然，像是PyIntObject、PyStringObject这些不可变对象是不可能产生循环引用的，因为它们内部不可能持有其它对象的引用。Python中的循环引用总是发生在container对象之间，也就是能够在内部持有其它对象的对象，比如list、dict、class等等。这也使得该方法带来的开销只依赖于container对象的的数量。</p><p><strong>原理：</strong></p><ol><li>寻找跟对象（root object）的集合作为垃圾检测动作的起点，跟对象也就是一些全局引用和函数栈中的引用，这些引用所指向的对象是不可被删除的；</li><li>从root object集合出发，沿着root object集合中的每一个引用，如果能够到达某个对象，则说明这个对象是可达的，那么就不会被删除，这个过程就是垃圾检测阶段；</li><li>当检测阶段结束以后，所有的对象就分成可达和不可达两部分，所有的可达对象都进行保留，其它的不可达对象所占用的内存将会被回收，这就是垃圾回收阶段。（底层采用的是链表将这些集合的对象连接在一起）；</li></ol><p><strong>缺点：</strong>标记和清除的过程效率不高。</p><h2 id="分代回收"><a href="#分代回收" class="headerlink" title="分代回收"></a>分代回收</h2><p><strong>原理：</strong>将系统中的所有内存块根据其存活时间划分为不同的集合，每一个集合就成为一个“代”，Python默认定义了三代对象集合，垃圾收集的频率随着“代”的存活时间的增大而减小。也就是说，活得越长的对象，就越不可能是垃圾，就应该减少对它的垃圾收集频率。那么如何来衡量这个存活时间：通常是利用几次垃圾收集动作来衡量，如果一个对象经过的垃圾收集次数越多，可以得出：该对象存活时间就越长。</p>]]></content>
-      
-      
+<search>
+  <entry>
+    <title>安装常用工具包-LINUX</title>
+    <url>/2020/03/19/%E5%AE%89%E8%A3%85%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%8C%85-LINUX/</url>
+    <content><![CDATA[<p>全部操作都在root用户下执行</p>
+<p>1.安装编译相关工具<br>yum -y groupinstall “Development tools”<br>yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel<br>yum install libffi-devel -y<br>2.下载安装包解压<br>wget <a href="https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz" target="_blank" rel="noopener">https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz</a><br>tar -xvJf  Python-3.7.0.tar.xz<br>3.编译安装<br>mkdir /usr/local/python3 #创建编译安装目录<br>cd Python-3.7.0<br>./configure –prefix=/usr/local/python3<br>make &amp;&amp; make install<br>4.创建软连接<br>ln -s /usr/local/python3/bin/python3 /usr/local/bin/python3<br>ln -s /usr/local/python3/bin/pip3 /usr/local/bin/pip3<br>5.验证是否成功<br>python3 -V<br>pip3 -V</p>
+<p>2 添加Nginx的源<br>rpm -Uvh <a href="http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm" target="_blank" rel="noopener">http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm</a><br>3 安装Nginx<br>yum install -y nginx<br>安装成功后，配置文件目录为/etc/nginx</p>
+<p>4 启动Nginx<br>systemctl start nginx.service #启动Nginx<br>systemctl enable nginx.service #设置开机自启<br>5 浏览器中访问<br> 输入ip</p>
+<ol>
+<li>yum安装redis<br>yum install -y epel-release<br>yum install -y redis</li>
+<li>启动redis<br>service redis start #启动redis<br>service redis status #查看redis状态</li>
+</ol>
+<hr>
+<p>ps -ef | grep redis #查看redis进程<br>service redis stop #停止redis<br>3. 设置开机自启<br>chkconfig redis on<br>4. 修改redis配置<br>vim /etc/redis.conf<br>修改如下内容:</p>
+<p>port 6379 #启动端口<br>requirepass 111111 #访问密码<br>重启redis</p>
+<p>service redis restart<br>5. 登录redis<br>注: 127.0.0.1:6379&gt;为redis数据库前缀</p>
+<p>redis-cli #登录redis<br>127.0.0.1:6379&gt; auth 111111 #认证登录<br>127.0.0.1:6379&gt; keys * #查看当前的key</p>
+<ol>
+<li>下载安装mysql yum 源<br>wget -i -c <a href="http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm" target="_blank" rel="noopener">http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm</a><br>yum install -y mysql57-community-release-el7-10.noarch.rpm</li>
+<li>安装mysql并启动<br>yum install -y mysql-community-server #安装mysql<br>systemctl start  mysqld.service #启动<br>systemctl status mysqld.service #查看运行状态</li>
+<li>登录mysql<br>grep “password” /var/log/mysqld.log #查看mysql生成的密码<br>mysql -uroot -p #以root用户登录mysql</li>
+<li>修改root密码<br>注: mysql&gt; 为提示符；新密码需符合：包含字母大小写、特殊符和数字，且位数大于4</li>
+</ol>
+<p>mysql&gt; ALTER USER ‘root’@’localhost’ IDENTIFIED BY ‘new password’;<br>5. 授权root用户远程访问<br>mysql&gt; use mysql;<br>mysql&gt; grant all privileges  on <em>.</em> to root@’%’ identified by “password”;<br>mysql&gt; flush privileges;</p>
+<p>1.安装编译工具<br>同上<br>2.下载安装包<br>cd /opt<br>wget <a href="http://www.sqlite.org/2015/sqlite-autoconf-3081101.tar.gz" target="_blank" rel="noopener">http://www.sqlite.org/2015/sqlite-autoconf-3081101.tar.gz</a> #下载安装包<br>tar zxvf sqlite-autoconf-3081101.tar.gz  #进行解压<br>3.编译安装<br>cd sqlite-autoconf-3081101/<br>./configure<br>make &amp;&amp; make install<br>yum install sqlite-devel<br>4.链接sqlite3<br>cd #回到用户目录<br>sqlite3 #链接sqlite3</p>
+<p>5.退出sqlite3<br>sqlite3链接成功后，执行如下：</p>
+<p>sqlite&gt; .quit #退出sqlite3</p>
+]]></content>
       <categories>
-          
-          <category> 技术 </category>
-          
+        <category>基础-Linux</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> Python </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>HTTP 模块</title>
-      <link href="/2020/03/18/HTTP-%E6%A8%A1%E5%9D%97/"/>
-      <url>/2020/03/18/HTTP-%E6%A8%A1%E5%9D%97/</url>
-      
-        <content type="html"><![CDATA[<p>python中的http/https请求使用urllib库，使用urllib的request模块的发送get和post请求。  </p><a id="more"></a><h2 id="get请求"><a href="#get请求" class="headerlink" title="get请求"></a>get请求</h2><p>请求网页地址并返回网页html内容，示例如下：</p><pre><code>from urllib import requestdef getHtml(url):    with request.urlopen(url) as r:        data = r.read()        return data.decode(&quot;utf-8&quot;)print(getHtml(&quot;http://vipstone.cnblogs.com&quot;))</code></pre><p>对返回的数据进行编码处理data.decode(“utf-8”)即可。</p><h2 id="post请求"><a href="#post请求" class="headerlink" title="post请求"></a>post请求</h2><p>post请求并传递参数，对参数进行encode处理，示例如下：</p><pre><code>from urllib import request, parseparams = parse.urlencode([(&quot;name&quot;, &quot;老王&quot;), (&quot;pwd&quot;, &quot;123456&quot;)])req = request.Request(&quot;http://127.0.0.1:8360/video/login&quot;)req.add_header(&quot;User-Agent&quot;, &quot;Mozilla/6.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/8.0 Mobile/10A5376e Safari/8536.25&quot;)with request.urlopen(req, data=params.encode(&quot;utf-8&quot;)) as r:    data = r.read()    print(data.decode(&quot;utf-8&quot;))</code></pre><p>如上所示，需要使用urllib的parse对参数进行编码处理，也可以给http头添加内容。</p>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> Python </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>人工智能三学派</title>
-      <link href="/2020/03/17/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%89%E5%AD%A6%E6%B4%BE/"/>
-      <url>/2020/03/17/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%89%E5%AD%A6%E6%B4%BE/</url>
-      
-        <content type="html"><![CDATA[<p>人工智能：</p><p>让机器具备人的思维和意识。</p><p>人工智能三学派：</p><a id="more"></a><p>行为主义：基于控制论，构建感知-动作控制系统（控制论：平衡/行走/避障等自适应控制系统）</p><p>符号主义：基于算术逻辑表达式，求解问题先把问题描述为表达式，在求解表达式。（可用公式描述，实现理性思维）</p><p>连接主义：仿生学，模仿神经元连接关系（放脑神经元连接，实现感性思维，例如神经网络）</p><p>用计算机仿出神经网络的连接关系让计算机具备感性思维。</p><ol><li>准备数据（采集大量“特征/标签”数据）</li><li>搭建网络（搭建神经网络结构）</li><li>优化参数（训练网络获取最佳参数【反向传播：优化连接的权重知道模型的识别准确率达到要求，得到最优的连线权重，保存】）</li><li>应用网络（将网络保存为模型，输入新数据，输出分类或预测结果【前向传播：输出概率值 概率值最大的就是分类和预测的结果】）</li></ol>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> A.I. </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-  
-  
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>定时任务-LINUX</title>
+    <url>/2020/03/19/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1-LINUX/</url>
+    <content><![CDATA[<h4 id="定时任务分为两种模式"><a href="#定时任务分为两种模式" class="headerlink" title="定时任务分为两种模式"></a>定时任务分为两种模式</h4><p> 1.系统级别的定时任务：临时文件清理、系统信息采集、日志文件切割<br> 2.用户级别的定时任务：定时向互联网同步时间、定时备份系统配置文件、定时备份数据库的数据 </p>
+<a id="more"></a>
+<h4 id="定时任务-标准规范"><a href="#定时任务-标准规范" class="headerlink" title="定时任务 标准规范"></a>定时任务 标准规范</h4><pre><code class="shell">[root@oldboy ~]# vim /etc/crontab
+SHELL=/bin/bash        执行命令的解释器
+PATH=/sbin:/bin:/usr/sbin:/usr/bin       环境变量
+MAILTO=root           邮件发给谁
+
+# For details see man 4 crontabs
+
+# Example of job definition:
+# .---------------- minute (0 - 59)     分钟
+# |  .------------- hour (0 - 23)     小时
+# |  |  .---------- day of month (1 - 31)     日期
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...        月份
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat  星期
+# |  |  |  |  |
+# *  *  *  *  * user-name  command to be executed
+
+ *  表示任意的(分、时、日、月、周)时间都执行
+ -  表示一个时间范围段, 如5-7点
+ ,  表示分隔时段, 如6,0,4表示周六、日、四
+ /1 表示每隔n单位时间, 如*/10 每10分钟</code></pre>
+<h4 id="常用的一些定时任务段"><a href="#常用的一些定时任务段" class="headerlink" title="常用的一些定时任务段"></a>常用的一些定时任务段</h4><pre><code class="shell">00 02 * * * ls      #每天的凌晨2点整执行
+00 02 1 * * ls      #每月的1日的凌晨2点整执行
+00 02 14 2 * ls     #每年的2月14日凌晨2点执行
+00 02 * * 7 ls      #每周天的凌晨2点整执行
+00 02 * 6 5 ls      #每年的6月周五凌晨2点执行
+00 02 14 * 7 ls     #每月14日或每周日的凌晨2点都执行
+00 02 14 2 7 ls     #每年的2月14日或每年2月的周天的凌晨2点执行   
+*/10  02 * * * ls   #每天凌晨2点，每隔10分钟执行一次
+* * * * *  ls       #每分钟都执行
+00 00 14 2 *  ls    #每年2月14日的凌晨执行命令 
+*/5 * * * *  ls     #每隔5分钟执行一次
+00 02 * 1,5,8 * ls  #每年的1月5月8月凌晨2点执行
+00 02 1-8 * *  ls    #每月1号到8号凌晨2点执行
+0 21 * * * ls       #每天晚上21:00执行
+45 4 1,10,22 * * ls #每月1、10、22日的4:45执行
+45 4 1-10 * * l     #每月1到10日的4:45执行
+3,15 8-11 */2 * * ls #每隔两天的上午8点到11点的第3和第15分钟执行
+0 23-7/1 * * * ls   #晚上11点到早上7点之间，每隔一小时执行
+15 21 * * 1-5 ls    #周一到周五每天晚上21:15执行</code></pre>
+]]></content>
+      <categories>
+        <category>基础进阶-Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>条件循环和判断-PYTHON</title>
+    <url>/2020/03/19/%E6%9D%A1%E4%BB%B6%E5%BE%AA%E7%8E%AF%E5%92%8C%E5%88%A4%E6%96%AD-PYTHON/</url>
+    <content><![CDATA[<p>条件判断的重要值是True和False，注意首字母大写，示例如下：</p>
+<a id="more"></a>
+<pre><code>if True:
+    print(&quot;真&quot;)
+else:
+    print(&quot;假&quot;)
+# 输出：真</code></pre><p><strong>非真判断</strong></p>
+<p>非真判断使用not关键字，示例如下：</p>
+<pre><code>if not True:
+    print(&quot;True&quot;)
+else:
+    print(&quot;False&quot;)
+# 输出：False</code></pre><p><strong>多情况判断</strong></p>
+<p>多情况判断使用if/elif/else，示例如下：</p>
+<pre><code>age = 18
+if age &lt; 16:
+    print(&quot;青少年&quot;)
+elif age &lt; 18:
+    print(&quot;青年&quot;)
+elif age &lt; 60:
+    print(&quot;成人&quot;)
+else:
+    print(&quot;老年&quot;)
+# 输出：成人</code></pre><p>python用空格缩进代表代码块，所以要主要代码缩进.</p>
+<p><strong>满足多条件</strong></p>
+<p>使用and关键字，示例如下：</p>
+<pre><code>age = 18
+name = &quot;laowang&quot;
+if age == 18 and name == &quot;laowang&quot;:
+    print(&quot;良好少年&quot;)
+else:
+    print(&quot;不良少年&quot;)
+# 输出：良好少年</code></pre><p><strong>至少满足一种条件</strong></p>
+<p>使用or关键字，示例如下：</p>
+<pre><code>age = 18
+name = &quot;laowang&quot;
+if age == 18 or name == &quot;xiaoli&quot;:
+    print(&quot;良好少年&quot;)
+else:
+    print(&quot;不良少年&quot;)
+# 输出：良好少年</code></pre><p><strong>False值</strong><br>python中0、空字符串、空列表、空元祖值、空字典都为false.</p>
+<h2 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h2><p><strong>for循环</strong><br>基础示例如下：</p>
+<pre><code>list = [&quot;focus&quot;, &quot;mouse&quot;, &quot;click&quot;]
+for item in list:
+    print(item)
+# 输出：focus
+# 输出：mouse
+# 输出：click</code></pre><p><strong>break跳出循环</strong>，实例如下：</p>
+<pre><code>list = [&quot;focus&quot;, &quot;mouse&quot;, &quot;click&quot;]
+for item in list:
+    if item == &quot;mouse&quot;:
+        break
+    print(item)
+# 输出：focus</code></pre><p><strong>continue跳过该次循环</strong>，实例如下：</p>
+<pre><code>list = [&quot;focus&quot;, &quot;mouse&quot;, &quot;click&quot;]
+for item in list:
+    if item == &quot;mouse&quot;:
+        continue
+    print(item)
+# 输出：focus
+# 输出：click</code></pre><p><strong>使用enumerate获取下标</strong></p>
+<pre><code>list = [&quot;focus&quot;, &quot;mouse&quot;, &quot;click&quot;]
+for index, item in enumerate(list):
+    print(&quot;index:{} item:{}&quot;.format(index, item))
+# 输出如下：
+# index:0 item:focus
+# index:1 item:mouse
+# index:2 item:click</code></pre><p><strong>while循环</strong><br>基础示例如下：</p>
+<pre><code>num = 1
+while num &lt; 3:
+    print(num)
+    num = num+1
+# 输出：1
+# 输出：2</code></pre><p>在while中break和continue同样有效，和上文for循环作用相同，请参考上文。</p>
+]]></content>
+      <categories>
+        <category>基础常识</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>时间模块-PYTHON</title>
+    <url>/2020/03/19/%E6%97%B6%E9%97%B4%E6%A8%A1%E5%9D%97-PYTHON/</url>
+    <content><![CDATA[<p>python中使用时间需要导入time模块，使用time.time()方法获取当前时间戳，示例如下：</p>
+<a id="more"></a>
+<pre><code># 导入time模块
+import time
+
+print(time.time())
+# 输出：1523584077.842348
+</code></pre><h2 id="格式化时间"><a href="#格式化时间" class="headerlink" title="格式化时间"></a>格式化时间</h2><p>格式化时间，使用time中的strftime()，示例如下：</p>
+<pre><code># 导入time模块
+import time
+
+print(time.time())
+# 输出：1523584077.842348
+
+print(time.localtime(time.time()))
+# 输出：time.struct_time(tm_year=2018, tm_mon=4, tm_mday=13, tm_hour=9, tm_min=50, tm_sec=12, tm_wday=4, tm_yday=103, tm_isdst=0)
+
+# 时间格式化
+print(time.strftime(&quot;%Y-%m-%d %H:%M:%S&quot;, time.localtime(time.time())))
+# 输出：2018-04-13 09:52:10</code></pre><p><strong>程序计时器</strong></p>
+<p>使用场景：有时候我们需要计算程序的运行时长，使用以下代码：</p>
+<pre><code>import datetime
+import time
+
+#开始计时
+startTime = datetime.datetime.now()
+
+time.sleep(1)
+
+#结束计时
+endTime = datetime.datetime.now()
+print(endTime - startTime)
+#输出：0:00:01.000791</code></pre><h2 id="格式化符号说明"><a href="#格式化符号说明" class="headerlink" title="格式化符号说明"></a>格式化符号说明</h2><p>%y 两位数的年份表示（00-99）</p>
+<p>%Y 四位数的年份表示（000-9999）</p>
+<p>%m 月份（01-12）</p>
+<p>%d 月内中的一天（0-31）</p>
+<p>%H 24小时制小时数（0-23）</p>
+<p>%I 12小时制小时数（01-12）</p>
+<p>%M 分钟数（00=59）</p>
+<p>%S 秒（00-59）</p>
+<p>%a 本地简化星期名称</p>
+<p>%A 本地完整星期名称</p>
+<p>%b 本地简化的月份名称</p>
+<p>%B 本地完整的月份名称</p>
+<p>%c 本地相应的日期表示和时间表示</p>
+<p>%j 年内的一天（001-366）</p>
+<p>%p 本地A.M.或P.M.的等价符</p>
+<p>%U 一年中的星期数（00-53）星期天为星期的开始</p>
+<p>%w 星期（0-6），星期天为星期的开始</p>
+<p>%W 一年中的星期数（00-53）星期一为星期的开始</p>
+<p>%x 本地相应的日期表示</p>
+<p>%X 本地相应的时间表示</p>
+<p>%Z 当前时区的名称</p>
+<p>%% %号本身</p>
+]]></content>
+      <categories>
+        <category>基础常识</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>文件操作-PYTHON</title>
+    <url>/2020/03/19/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C-PYTHON/</url>
+    <content><![CDATA[<h2 id="读取文件"><a href="#读取文件" class="headerlink" title="读取文件"></a>读取文件</h2><p>读取文件使用python内置方法open()打开文件，使用.read()读取全部内容，示例如下：</p>
+<a id="more"></a>
+<pre><code>path = &quot;c:\py.txt&quot;
+fi = open(path, &quot;r&quot;)
+print(fi.read())
+fi.close()</code></pre><p><strong>with语法</strong></p>
+<p>with是python2.5引入的自动释放资源的语法模式，确保使用过程中不管是否发生了异常，都会释放资源.<br>使用with读取文件，是不需要自己手动close的，示例如下：</p>
+<pre><code>with open(path) as fi:
+    print(fi.read())</code></pre><p><strong>逐行读取文件</strong><br>.read()是读取文件的全部内容，使用.readlines()，示例如下：</p>
+<pre><code>with open(path, &quot;r&quot;) as fi:
+    lines = fi.readlines()
+print(len(lines))</code></pre><p><strong>open方法的模式</strong></p>
+<p>上面的示例可以看出来，open(目录,操作模式)的时候必须指定操作模式，open的操作模式：</p>
+<blockquote>
+<p>读取模式：’r’(默认模式) | 写入模式：’w’ | 附加模式：’a’.</p>
+</blockquote>
+<p>python模式是读取，所以”r”可以省略，示例如下：</p>
+<pre><code>path = &quot;c:\py.txt&quot;
+fi = open(path)
+print(fi.read())
+fi.close()</code></pre><h2 id="文件写入"><a href="#文件写入" class="headerlink" title="文件写入"></a>文件写入</h2><p>文件写入分为两种方式，一种是覆盖(w)，另一种是追加(a)。</p>
+<p>文件覆盖的写入，代码如下：</p>
+<pre><code>with open(path, &quot;w&quot;) as fi:
+    fi.write(&quot;第一行\n第二行\n第三行&quot;)</code></pre><p>文件的追加，代码如下：</p>
+<pre><code>with open(path, &quot;a&quot;) as fi:
+    fi.write(&quot;\n第1行\n第2行\n第3行&quot;)</code></pre><blockquote>
+<p>注意：文件写入，如果文件不存在会重建，不会报错。</p>
+</blockquote>
+<h2 id="更多文件操作"><a href="#更多文件操作" class="headerlink" title="更多文件操作"></a>更多文件操作</h2><p>os.getcwd()：获取当前运行目录</p>
+<p>os.listdir(path)：获取指定目录下的列表</p>
+<p>os.path.exists(path)：检查是否存在文件或文件夹</p>
+<p>os.mkdir(path)：创建文件夹，已经存在文件会报错</p>
+<p>os.remove(path)：删除文件夹，只能删除文件夹</p>
+<p>os.rename(old, new)：文件重命名</p>
+<p>示例如下：</p>
+<pre><code>import os
+
+# 获取当前程序运行目录
+print(os.getcwd())
+
+# 获取指定目录下的列表
+print(os.listdir(&quot;E:\\server&quot;))
+
+# 检查是否存在文件或文件夹
+print(os.path.exists(&quot;E:\\test\\a.txt&quot;))
+
+# 创建文件夹，已经存在文件会报错
+os.mkdir(&quot;E:\\test1&quot;)
+
+# 删除文件夹，只能删除文件夹
+os.remove(&quot;E:\\test1&quot;)
+
+# 文件重命名
+os.rename(&quot;E:\\test\\a.txt&quot;, &quot;E:\\test\\b.txt&quot;)
+</code></pre>]]></content>
+      <categories>
+        <category>基础常识</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>内置模块---PYTHON</title>
+    <url>/2020/03/18/%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97-PYTHON/</url>
+    <content><![CDATA[<p>常用内置模块列表：</p>
+<ul>
+<li>os</li>
+<li>sys</li>
+<li>json</li>
+</ul>
+<a id="more"></a>
+
+<h1 id="os模块"><a href="#os模块" class="headerlink" title="os模块"></a>os模块</h1><p>os.getcwd() #获取当前程序目录</p>
+<p>os.listdir(‘dirname’) #列出指定目录下的所有文件和子目录，包括隐藏文件，并以列表方式打印</p>
+<p>os.remove() #删除一个文件</p>
+<p>os.rename(“oldname”,”newname”) #重命名文件/目录</p>
+<p>os.path.isfile(path) #如果path是一个存在的文件，返回True，否则返回False</p>
+<p>os.path.exists(path) #如果path存在，返回True；如果path不存在，返回False</p>
+<p>os.path.getatime(path) #返回path所指向的文件或者目录的最后存取时间</p>
+<p>os.path.getmtime(path) #返回path所指向的文件或者目录的最后修改时间</p>
+<h1 id="sys模块"><a href="#sys模块" class="headerlink" title="sys模块"></a>sys模块</h1><p>sys.exit(n) #退出程序，正常退出时exit(0)</p>
+<p>sys.version  #获取Python解释程序的版本信息</p>
+<p>sys.maxint #最大的Int值</p>
+<p>sys.platform #返回操作系统平台名称</p>
+<h1 id="json模块"><a href="#json模块" class="headerlink" title="json模块"></a>json模块</h1><p>json模块用于字符串 和 python数据类型间进行转换</p>
+<p>json模块提供了四个功能：dumps、dump、loads、load</p>
+<p>dumps、dump #把对象转换成str</p>
+<p>loads、load #把str转换成json</p>
+]]></content>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>垃圾回收gc</title>
+    <url>/2020/03/18/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6gc/</url>
+    <content><![CDATA[<hr>
+<p>python的垃圾收回机制不想c和c++是开发者自己管理维护内存的，python的垃圾回收是系统自己处理的，所以作为普通的开发者，我们不需要关注垃圾回收部分的内容，如果想要深层次理解python请继续看下文。</p>
+<a id="more"></a>
+
+<p><strong>python垃圾回收机制</strong><br>Python的GC模块主要运用了引用计数来跟踪和回收垃圾。在引用计数的基础上，还可以通过“标记－清除”解决容器对象可能产生的循环引用的问题。通过分代回收以空间换取时间进一步提高垃圾回收的效率。</p>
+<h2 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h2><p><strong>原理：</strong>当一个对象的引用被创建或者复制时，对象的引用计数加1；当一个对象的引用被销毁时，对象的引用计数减1，当对象的引用计数减少为0时，就意味着对象已经再没有被使用了，可以将其内存释放掉。</p>
+<p><strong>优点：</strong>引用计数有一个很大的优点，即实时性，任何内存，一旦没有指向它的引用，就会被立即回收，而其他的垃圾收集技术必须在某种特殊条件下才能进行无效内存的回收。</p>
+<p><strong>缺点：</strong>但是它也有弱点，引用计数机制所带来的维护引用计数的额外操作与Python运行中所进行的内存分配和释放，引用赋值的次数是成正比的，这显然比其它那些垃圾收集技术所带来的额外操作只是与待回收的内存数量有关的效率要低。同时，引用技术还存在另外一个很大的问题－循环引用，因为对象之间相互引用，每个对象的引用都不会为0，所以这些对象所占用的内存始终都不会被释放掉。</p>
+<h2 id="标记－清除"><a href="#标记－清除" class="headerlink" title="标记－清除"></a>标记－清除</h2><p>标记－清除只关注那些可能会产生循环引用的对象，显然，像是PyIntObject、PyStringObject这些不可变对象是不可能产生循环引用的，因为它们内部不可能持有其它对象的引用。Python中的循环引用总是发生在container对象之间，也就是能够在内部持有其它对象的对象，比如list、dict、class等等。这也使得该方法带来的开销只依赖于container对象的的数量。</p>
+<p><strong>原理：</strong></p>
+<ol>
+<li>寻找跟对象（root object）的集合作为垃圾检测动作的起点，跟对象也就是一些全局引用和函数栈中的引用，这些引用所指向的对象是不可被删除的；</li>
+<li>从root object集合出发，沿着root object集合中的每一个引用，如果能够到达某个对象，则说明这个对象是可达的，那么就不会被删除，这个过程就是垃圾检测阶段；</li>
+<li>当检测阶段结束以后，所有的对象就分成可达和不可达两部分，所有的可达对象都进行保留，其它的不可达对象所占用的内存将会被回收，这就是垃圾回收阶段。（底层采用的是链表将这些集合的对象连接在一起）；</li>
+</ol>
+<p><strong>缺点：</strong>标记和清除的过程效率不高。</p>
+<h2 id="分代回收"><a href="#分代回收" class="headerlink" title="分代回收"></a>分代回收</h2><p><strong>原理：</strong>将系统中的所有内存块根据其存活时间划分为不同的集合，每一个集合就成为一个“代”，Python默认定义了三代对象集合，垃圾收集的频率随着“代”的存活时间的增大而减小。也就是说，活得越长的对象，就越不可能是垃圾，就应该减少对它的垃圾收集频率。那么如何来衡量这个存活时间：通常是利用几次垃圾收集动作来衡量，如果一个对象经过的垃圾收集次数越多，可以得出：该对象存活时间就越长。</p>
+]]></content>
+      <categories>
+        <category>基础常识</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HTTP 模块</title>
+    <url>/2020/03/18/HTTP-%E6%A8%A1%E5%9D%97/</url>
+    <content><![CDATA[<p>python中的http/https请求使用urllib库，使用urllib的request模块的发送get和post请求。  </p>
+<a id="more"></a>
+<h2 id="get请求"><a href="#get请求" class="headerlink" title="get请求"></a>get请求</h2><p>请求网页地址并返回网页html内容，示例如下：</p>
+<pre><code>from urllib import request
+
+
+def getHtml(url):
+    with request.urlopen(url) as r:
+        data = r.read()
+        return data.decode(&quot;utf-8&quot;)
+
+
+print(getHtml(&quot;http://vipstone.cnblogs.com&quot;))</code></pre><p>对返回的数据进行编码处理data.decode(“utf-8”)即可。</p>
+<h2 id="post请求"><a href="#post请求" class="headerlink" title="post请求"></a>post请求</h2><p>post请求并传递参数，对参数进行encode处理，示例如下：</p>
+<pre><code>from urllib import request, parse
+
+
+params = parse.urlencode([(&quot;name&quot;, &quot;老王&quot;), (&quot;pwd&quot;, &quot;123456&quot;)])
+req = request.Request(&quot;http://127.0.0.1:8360/video/login&quot;)
+req.add_header(&quot;User-Agent&quot;, &quot;Mozilla/6.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/8.0 Mobile/10A5376e Safari/8536.25&quot;)
+
+with request.urlopen(req, data=params.encode(&quot;utf-8&quot;)) as r:
+    data = r.read()
+    print(data.decode(&quot;utf-8&quot;))</code></pre><p>如上所示，需要使用urllib的parse对参数进行编码处理，也可以给http头添加内容。</p>
+]]></content>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>人工智能三学派</title>
+    <url>/2020/03/17/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%89%E5%AD%A6%E6%B4%BE/</url>
+    <content><![CDATA[<p>人工智能：</p>
+<p>让机器具备人的思维和意识。</p>
+<p>人工智能三学派：</p>
+<a id="more"></a>
+
+<p>行为主义：基于控制论，构建感知-动作控制系统（控制论：平衡/行走/避障等自适应控制系统）</p>
+<p>符号主义：基于算术逻辑表达式，求解问题先把问题描述为表达式，在求解表达式。（可用公式描述，实现理性思维）</p>
+<p>连接主义：仿生学，模仿神经元连接关系（放脑神经元连接，实现感性思维，例如神经网络）</p>
+<p>用计算机仿出神经网络的连接关系让计算机具备感性思维。</p>
+<ol>
+<li>准备数据（采集大量“特征/标签”数据）</li>
+<li>搭建网络（搭建神经网络结构）</li>
+<li>优化参数（训练网络获取最佳参数【反向传播：优化连接的权重知道模型的识别准确率达到要求，得到最优的连线权重，保存】）</li>
+<li>应用网络（将网络保存为模型，输入新数据，输出分类或预测结果【前向传播：输出概率值 概率值最大的就是分类和预测的结果】）</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>A.I.</tag>
+      </tags>
+  </entry>
 </search>

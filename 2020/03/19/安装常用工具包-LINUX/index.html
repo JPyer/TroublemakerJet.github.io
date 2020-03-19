@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><meta name="baidu-site-verification"><title>安装常用工具包-LINUX | 艾利克斯工作室</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="艾利克斯工作室" type="application/atom+xml">
+</head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><body><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">LITREILY</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/profile.jpg" width="128" height="128"></a><h1 class="ttl"><a href="/">艾利克斯工作室</a></h1></div><p class="m-desc">路在脚下<br>The road is under your feet.</p><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">归档</a></li><li><span class="dot">●</span><a href="/categories/">分类</a></li><li><span class="dot">●</span><a href="/tags/">标签</a></li><li><span class="dot">●</span><a href="/about/">关于</a></li><li><span class="dot">●</span><a href="/atom.xml">RSS</a></li><li><span class="dot">●</span><a href="/Case/">案例</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">安装常用工具包-LINUX</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2020/03/19/%E5%AE%89%E8%A3%85%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%8C%85-LINUX/">2020-03-19</a></span><span class="p-category"><i class="fa fa-folder"></i><a href="/categories/%E5%9F%BA%E7%A1%80-Linux/">基础-Linux</a></span><span class="p-view" id="busuanzi_container_page_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></div><div class="p-content"><p>全部操作都在root用户下执行</p>
+<p>1.安装编译相关工具<br>yum -y groupinstall “Development tools”<br>yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel<br>yum install libffi-devel -y<br>2.下载安装包解压<br>wget <a href="https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz" target="_blank" rel="noopener">https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz</a><br>tar -xvJf  Python-3.7.0.tar.xz<br>3.编译安装<br>mkdir /usr/local/python3 #创建编译安装目录<br>cd Python-3.7.0<br>./configure –prefix=/usr/local/python3<br>make &amp;&amp; make install<br>4.创建软连接<br>ln -s /usr/local/python3/bin/python3 /usr/local/bin/python3<br>ln -s /usr/local/python3/bin/pip3 /usr/local/bin/pip3<br>5.验证是否成功<br>python3 -V<br>pip3 -V</p>
+<p>2 添加Nginx的源<br>rpm -Uvh <a href="http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm" target="_blank" rel="noopener">http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm</a><br>3 安装Nginx<br>yum install -y nginx<br>安装成功后，配置文件目录为/etc/nginx</p>
+<p>4 启动Nginx<br>systemctl start nginx.service #启动Nginx<br>systemctl enable nginx.service #设置开机自启<br>5 浏览器中访问<br> 输入ip</p>
+<ol>
+<li>yum安装redis<br>yum install -y epel-release<br>yum install -y redis</li>
+<li>启动redis<br>service redis start #启动redis<br>service redis status #查看redis状态</li>
+</ol>
+<hr>
+<p>ps -ef | grep redis #查看redis进程<br>service redis stop #停止redis<br>3. 设置开机自启<br>chkconfig redis on<br>4. 修改redis配置<br>vim /etc/redis.conf<br>修改如下内容:</p>
+<p>port 6379 #启动端口<br>requirepass 111111 #访问密码<br>重启redis</p>
+<p>service redis restart<br>5. 登录redis<br>注: 127.0.0.1:6379&gt;为redis数据库前缀</p>
+<p>redis-cli #登录redis<br>127.0.0.1:6379&gt; auth 111111 #认证登录<br>127.0.0.1:6379&gt; keys * #查看当前的key</p>
+<ol>
+<li>下载安装mysql yum 源<br>wget -i -c <a href="http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm" target="_blank" rel="noopener">http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm</a><br>yum install -y mysql57-community-release-el7-10.noarch.rpm</li>
+<li>安装mysql并启动<br>yum install -y mysql-community-server #安装mysql<br>systemctl start  mysqld.service #启动<br>systemctl status mysqld.service #查看运行状态</li>
+<li>登录mysql<br>grep “password” /var/log/mysqld.log #查看mysql生成的密码<br>mysql -uroot -p #以root用户登录mysql</li>
+<li>修改root密码<br>注: mysql&gt; 为提示符；新密码需符合：包含字母大小写、特殊符和数字，且位数大于4</li>
+</ol>
+<p>mysql&gt; ALTER USER ‘root’@’localhost’ IDENTIFIED BY ‘new password’;<br>5. 授权root用户远程访问<br>mysql&gt; use mysql;<br>mysql&gt; grant all privileges  on <em>.</em> to root@’%’ identified by “password”;<br>mysql&gt; flush privileges;</p>
+<p>1.安装编译工具<br>同上<br>2.下载安装包<br>cd /opt<br>wget <a href="http://www.sqlite.org/2015/sqlite-autoconf-3081101.tar.gz" target="_blank" rel="noopener">http://www.sqlite.org/2015/sqlite-autoconf-3081101.tar.gz</a> #下载安装包<br>tar zxvf sqlite-autoconf-3081101.tar.gz  #进行解压<br>3.编译安装<br>cd sqlite-autoconf-3081101/<br>./configure<br>make &amp;&amp; make install<br>yum install sqlite-devel<br>4.链接sqlite3<br>cd #回到用户目录<br>sqlite3 #链接sqlite3</p>
+<p>5.退出sqlite3<br>sqlite3链接成功后，执行如下：</p>
+<p>sqlite&gt; .quit #退出sqlite3</p>
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:Likj128@126.com">Alexis (KangJ)</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/03/19/%E5%AE%89%E8%A3%85%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%8C%85-LINUX/">http://likj128.github.io/2020/03/19/安装常用工具包-LINUX/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="http://likj128.github.io">Alexis (KangJ)的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/Linux/">Linux</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="next" href="/2020/03/19/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1-LINUX/">定时任务-LINUX &gt;</a></div><div id="valine-comment"><style type="text/css">.v * { color: #CECECE; }
+.v a { color: #0F9FB4; }
+.v a:hover { color: #216C73; }
+.v li { list-style: inherit; }
+.v .vwrap { border: 1px solid #223441; border-radius: 0; }
+.v .vwrap:hover { box-shadow: 0 0 6px 1px #223441; }
+.v .vbtn { border-radius: 0; color: #cecece; background: none; }
+.v .vlist .vcard .vh { border-bottom-color: #293D4E; }
+.v .vwrap .vheader .vinput { border-bottom-color: #223441; }
+.v .vwrap .vheader .vinput:focus { border-bottom-color: #339EB4; }
+.v code, .v pre,.v .vlist .vcard .vhead .vsys { background: #203240; }
+.v code, .v pre { color: #F0F0F0; font-size: 95%; }
+.v .vlist .vcard .vcontent.expand:before { background: linear-gradient(180deg,hsla(206,33%,19%,0),hsla(206,33%,19%,.9)); }
+.v .vlist .vcard .vcontent.expand:after { background: hsla(206,33%,19%,.9); }</style><div id="vcomment"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+var verify = 'false' == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'',
+  appKey:'',
+  lang: 'zh-cn',
+  placeholder:'ヾﾉ≧∀≦)o Come on, say something...',
+  avatar:'identicon',
+  guest_info:guest_info,
+  pageSize:'10'
+})</script></div></section><footer><p>Copyright © 2020 - 2020 <a href="/." rel="nofollow">艾利克斯工作室</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span></span> <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span></span> | Personal by<a rel="nofollow" target="_blank" href="https://alexisli.cn"> Alexis.</a>Powered by<a rel="nofollow" target="_blank" href="http://www.beianbeian.com/beianxinxi/f72222db0e8cf7f7b49ceee25f65c49e.html"> 晋ICP备19013202号.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+    search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css"></body></html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><meta name="baidu-site-verification"><title>时间模块-PYTHON | 艾利克斯工作室</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="艾利克斯工作室" type="application/atom+xml">
+</head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><body><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">LITREILY</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/profile.jpg" width="128" height="128"></a><h1 class="ttl"><a href="/">艾利克斯工作室</a></h1></div><p class="m-desc">路在脚下<br>The road is under your feet.</p><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">归档</a></li><li><span class="dot">●</span><a href="/categories/">分类</a></li><li><span class="dot">●</span><a href="/tags/">标签</a></li><li><span class="dot">●</span><a href="/about/">关于</a></li><li><span class="dot">●</span><a href="/atom.xml">RSS</a></li><li><span class="dot">●</span><a href="/Case/">案例</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">时间模块-PYTHON</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2020/03/19/%E6%97%B6%E9%97%B4%E6%A8%A1%E5%9D%97-PYTHON/">2020-03-19</a></span><span class="p-category"><i class="fa fa-folder"></i><a href="/categories/%E5%9F%BA%E7%A1%80%E5%B8%B8%E8%AF%86/">基础常识</a></span><span class="p-view" id="busuanzi_container_page_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></div><div class="p-content"><p>python中使用时间需要导入time模块，使用time.time()方法获取当前时间戳，示例如下：</p>
+<a id="more"></a>
+<pre><code># 导入time模块
+import time
+
+print(time.time())
+# 输出：1523584077.842348
+</code></pre><h2 id="格式化时间"><a href="#格式化时间" class="headerlink" title="格式化时间"></a>格式化时间</h2><p>格式化时间，使用time中的strftime()，示例如下：</p>
+<pre><code># 导入time模块
+import time
+
+print(time.time())
+# 输出：1523584077.842348
+
+print(time.localtime(time.time()))
+# 输出：time.struct_time(tm_year=2018, tm_mon=4, tm_mday=13, tm_hour=9, tm_min=50, tm_sec=12, tm_wday=4, tm_yday=103, tm_isdst=0)
+
+# 时间格式化
+print(time.strftime(&quot;%Y-%m-%d %H:%M:%S&quot;, time.localtime(time.time())))
+# 输出：2018-04-13 09:52:10</code></pre><p><strong>程序计时器</strong></p>
+<p>使用场景：有时候我们需要计算程序的运行时长，使用以下代码：</p>
+<pre><code>import datetime
+import time
+
+#开始计时
+startTime = datetime.datetime.now()
+
+time.sleep(1)
+
+#结束计时
+endTime = datetime.datetime.now()
+print(endTime - startTime)
+#输出：0:00:01.000791</code></pre><h2 id="格式化符号说明"><a href="#格式化符号说明" class="headerlink" title="格式化符号说明"></a>格式化符号说明</h2><p>%y 两位数的年份表示（00-99）</p>
+<p>%Y 四位数的年份表示（000-9999）</p>
+<p>%m 月份（01-12）</p>
+<p>%d 月内中的一天（0-31）</p>
+<p>%H 24小时制小时数（0-23）</p>
+<p>%I 12小时制小时数（01-12）</p>
+<p>%M 分钟数（00=59）</p>
+<p>%S 秒（00-59）</p>
+<p>%a 本地简化星期名称</p>
+<p>%A 本地完整星期名称</p>
+<p>%b 本地简化的月份名称</p>
+<p>%B 本地完整的月份名称</p>
+<p>%c 本地相应的日期表示和时间表示</p>
+<p>%j 年内的一天（001-366）</p>
+<p>%p 本地A.M.或P.M.的等价符</p>
+<p>%U 一年中的星期数（00-53）星期天为星期的开始</p>
+<p>%w 星期（0-6），星期天为星期的开始</p>
+<p>%W 一年中的星期数（00-53）星期一为星期的开始</p>
+<p>%x 本地相应的日期表示</p>
+<p>%X 本地相应的时间表示</p>
+<p>%Z 当前时区的名称</p>
+<p>%% %号本身</p>
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:Likj128@126.com">Alexis (KangJ)</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/03/19/%E6%97%B6%E9%97%B4%E6%A8%A1%E5%9D%97-PYTHON/">http://likj128.github.io/2020/03/19/时间模块-PYTHON/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="http://likj128.github.io">Alexis (KangJ)的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/Python/">Python</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#格式化时间"><span class="toc-number">1.</span> <span class="toc-text">格式化时间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#格式化符号说明"><span class="toc-number">2.</span> <span class="toc-text">格式化符号说明</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2020/03/19/%E6%9D%A1%E4%BB%B6%E5%BE%AA%E7%8E%AF%E5%92%8C%E5%88%A4%E6%96%AD-PYTHON/">&lt; 条件循环和判断-PYTHON</a><a class="next" href="/2020/03/19/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C-PYTHON/">文件操作-PYTHON &gt;</a></div><div id="valine-comment"><style type="text/css">.v * { color: #CECECE; }
+.v a { color: #0F9FB4; }
+.v a:hover { color: #216C73; }
+.v li { list-style: inherit; }
+.v .vwrap { border: 1px solid #223441; border-radius: 0; }
+.v .vwrap:hover { box-shadow: 0 0 6px 1px #223441; }
+.v .vbtn { border-radius: 0; color: #cecece; background: none; }
+.v .vlist .vcard .vh { border-bottom-color: #293D4E; }
+.v .vwrap .vheader .vinput { border-bottom-color: #223441; }
+.v .vwrap .vheader .vinput:focus { border-bottom-color: #339EB4; }
+.v code, .v pre,.v .vlist .vcard .vhead .vsys { background: #203240; }
+.v code, .v pre { color: #F0F0F0; font-size: 95%; }
+.v .vlist .vcard .vcontent.expand:before { background: linear-gradient(180deg,hsla(206,33%,19%,0),hsla(206,33%,19%,.9)); }
+.v .vlist .vcard .vcontent.expand:after { background: hsla(206,33%,19%,.9); }</style><div id="vcomment"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+var verify = 'false' == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'',
+  appKey:'',
+  lang: 'zh-cn',
+  placeholder:'ヾﾉ≧∀≦)o Come on, say something...',
+  avatar:'identicon',
+  guest_info:guest_info,
+  pageSize:'10'
+})</script></div></section><footer><p>Copyright © 2020 - 2020 <a href="/." rel="nofollow">艾利克斯工作室</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span></span> <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span></span> | Personal by<a rel="nofollow" target="_blank" href="https://alexisli.cn"> Alexis.</a>Powered by<a rel="nofollow" target="_blank" href="http://www.beianbeian.com/beianxinxi/f72222db0e8cf7f7b49ceee25f65c49e.html"> 晋ICP备19013202号.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+    search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css"></body></html>
