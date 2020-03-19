@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://likj128.github.io/"/>
-  <updated>2020-03-19T02:37:19.651Z</updated>
+  <updated>2020-03-19T12:50:53.831Z</updated>
   <id>http://likj128.github.io/</id>
   
   <author>
@@ -15,6 +15,23 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>错误和异常-PYTHON</title>
+    <link href="http://likj128.github.io/2020/03/19/%E9%94%99%E8%AF%AF%E5%92%8C%E5%BC%82%E5%B8%B8-PYTHON/"/>
+    <id>http://likj128.github.io/2020/03/19/%E9%94%99%E8%AF%AF%E5%92%8C%E5%BC%82%E5%B8%B8-PYTHON/</id>
+    <published>2020-03-19T12:49:58.000Z</published>
+    <updated>2020-03-19T12:50:53.831Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Python 错误和异常&lt;br&gt;Python内置了一套异常处理机制，来帮助我们进行错误处理。&lt;br&gt;代码运行前的语法或逻辑错误&lt;br&gt;语法错误在执行前修改，逻辑错误无法修改&lt;br&gt;异常分为两个步骤：&lt;br&gt;异常产生，检查到错误且解释器认为是异常，抛出异常&lt;br&gt;异常处理，截获异常，忽略或终止程序处理异常&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+  </entry>
   
   <entry>
     <title>安装常用工具包-LINUX</title>

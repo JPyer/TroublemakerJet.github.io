@@ -1,0 +1,174 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><meta name="baidu-site-verification"><title>错误和异常-PYTHON | 艾利克斯工作室</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="艾利克斯工作室" type="application/atom+xml">
+</head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><body><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">LITREILY</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/profile.jpg" width="128" height="128"></a><h1 class="ttl"><a href="/">艾利克斯工作室</a></h1></div><p class="m-desc">路在脚下<br>The road is under your feet.</p><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">归档</a></li><li><span class="dot">●</span><a href="/categories/">分类</a></li><li><span class="dot">●</span><a href="/tags/">标签</a></li><li><span class="dot">●</span><a href="/about/">关于</a></li><li><span class="dot">●</span><a href="/atom.xml">RSS</a></li><li><span class="dot">●</span><a href="/Case/">案例</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">错误和异常-PYTHON</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2020/03/19/%E9%94%99%E8%AF%AF%E5%92%8C%E5%BC%82%E5%B8%B8-PYTHON/">2020-03-19</a></span><span class="p-view" id="busuanzi_container_page_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></div><div class="p-content"><p>Python 错误和异常<br>Python内置了一套异常处理机制，来帮助我们进行错误处理。<br>代码运行前的语法或逻辑错误<br>语法错误在执行前修改，逻辑错误无法修改<br>异常分为两个步骤：<br>异常产生，检查到错误且解释器认为是异常，抛出异常<br>异常处理，截获异常，忽略或终止程序处理异常</p>
+<a id="more"></a>
+
+<p>Python有两种错误很容易辨认：语法错误和异常。</p>
+<p>语法错误<br>Python 的语法错误或者称之为解析错，是初学者经常碰到的，如下实例</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>while True print(‘Hello world’)<br>  File “<stdin>“, line 1, in ?<br>    while True print(‘Hello world’)<br>                   ^<br>SyntaxError: invalid syntax<br>这个例子中，函数 print() 被检查到有错误，是它前面缺少了一个冒号（:）。<br>语法分析器指出了出错的一行，并且在最先找到的错误的位置标记了一个小小的箭头。</stdin></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>异常<br>即便Python程序的语法是正确的，在运行它的时候，也有可能发生错误。运行期检测到的错误被称为异常。<br>大多数的异常都不会被程序处理，都以错误信息的形式展现在这里:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>10 * (1/0)<br>Traceback (most recent call last):<br>  File “<stdin>“, line 1, in ?<br>ZeroDivisionError: division by zero<br>4 + spam*3<br>Traceback (most recent call last):<br>  File “<stdin>“, line 1, in ?<br>NameError: name ‘spam’ is not defined<br>‘2’ + 2<br>Traceback (most recent call last):<br>  File “<stdin>“, line 1, in ?<br>TypeError: Can’t convert ‘int’ object to str implicitly<br>异常以不同的类型出现，这些类型都作为信息的一部分打印出来: 例子中的类型有 ZeroDivisionError，NameError 和 TypeError。<br>错误信息的前面部分显示了异常发生的上下文，并以调用栈的形式显示具体信息。</stdin></stdin></stdin></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>异常处理<br>以下例子中，让用户输入一个合法的整数，但是允许用户中断这个程序（使用 Control-C 或者操作系统提供的方法）。用户中断的信息会引发一个 KeyboardInterrupt 异常。</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>while True:<br>        try:<br>            x = int(input(“Please enter a number: “))<br>            break<br>        except ValueError:<br>            print(“Oops!  That was no valid number.  Try again   “)<br>try语句按照如下方式工作；</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>首先，执行try子句（在关键字try和关键字except之间的语句）<br>如果没有异常发生，忽略except子句，try子句执行后结束。<br>如果在执行try子句的过程中发生了异常，那么try子句余下的部分将被忽略。如果异常的类型和 except 之后的名称相符，那么对应的except子句将被执行。最后执行 try 语句之后的代码。<br>如果一个异常没有与任何的except匹配，那么这个异常将会传递给上层的try中。<br>一个 try 语句可能包含多个except子句，分别来处理不同的特定的异常。最多只有一个分支会被执行。<br>处理程序将只针对对应的try子句中的异常进行处理，而不是其他的 try 的处理程序中的异常。<br>一个except子句可以同时处理多个异常，这些异常将被放在一个括号里成为一个元组，例如:</p>
+<p>except (RuntimeError, TypeError, NameError):<br>        pass<br>最后一个except子句可以忽略异常的名称，它将被当作通配符使用。你可以使用这种方法打印一个错误信息，然后再次把异常抛出。</p>
+<p>import sys</p>
+<p>try:<br>    f = open(‘myfile.txt’)<br>    s = f.readline()<br>    i = int(s.strip())<br>except OSError as err:<br>    print(“OS error: {0}”.format(err))<br>except ValueError:<br>    print(“Could not convert data to an integer.”)<br>except:<br>    print(“Unexpected error:”, sys.exc_info()[0])<br>    raise<br>try except 语句还有一个可选的else子句，如果使用这个子句，那么必须放在所有的except子句之后。这个子句将在try子句没有发生任何异常的时候执行。例如:</p>
+<p>for arg in sys.argv[1:]:<br>    try:<br>        f = open(arg, ‘r’)<br>    except IOError:<br>        print(‘cannot open’, arg)<br>    else:<br>        print(arg, ‘has’, len(f.readlines()), ‘lines’)<br>        f.close()<br>使用 else 子句比把所有的语句都放在 try 子句里面要好，这样可以避免一些意想不到的、而except又没有捕获的异常。</p>
+<p>异常处理并不仅仅处理那些直接发生在try子句中的异常，而且还能处理子句中调用的函数（甚至间接调用的函数）里抛出的异常。例如:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>def this_fails():<br>        x = 1/0</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>try:<br>        this_fails()<br>    except ZeroDivisionError as err:<br>        print(‘Handling run-time error:’, err)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Handling run-time error: int division or modulo by zero<br>抛出异常<br>Python 使用 raise 语句抛出一个指定的异常。例如:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>raise NameError(‘HiThere’)<br>Traceback (most recent call last):<br>  File “<stdin>“, line 1, in ?<br>NameError: HiThere<br>raise 唯一的一个参数指定了要被抛出的异常。它必须是一个异常的实例或者是异常的类（也就是 Exception 的子类）。</stdin></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>如果你只想知道这是否抛出了一个异常，并不想去处理它，那么一个简单的 raise 语句就可以再次把它抛出。</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>try:<br>        raise NameError(‘HiThere’)<br>    except NameError:<br>        print(‘An exception flew by!’)<br>        raise</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>An exception flew by!<br>Traceback (most recent call last):<br>  File “<stdin>“, line 2, in ?<br>NameError: HiThere<br>用户自定义异常<br>你可以通过创建一个新的异常类来拥有自己的异常。异常类继承自 Exception 类，可以直接继承，或者间接继承，例如:</stdin></p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>class MyError(Exception):<br>        def <strong>init</strong>(self, value):<br>            self.value = value<br>        def <strong>str</strong>(self):<br>            return repr(self.value)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>try:<br>        raise MyError(2*2)<br>    except MyError as e:<br>        print(‘My exception occurred, value:’, e.value)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>My exception occurred, value: 4</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>raise MyError(‘oops!’)<br>Traceback (most recent call last):<br>  File “<stdin>“, line 1, in ?<br><strong>main</strong>.MyError: ‘oops!’<br>在这个例子中，类 Exception 默认的 <strong>init</strong>() 被覆盖。</stdin></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>当创建一个模块有可能抛出多种不同的异常时，一种通常的做法是为这个包建立一个基础异常类，然后基于这个基础类为不同的错误情况创建不同的子类:</p>
+<p>class Error(Exception):<br>    “””Base class for exceptions in this module.”””<br>    pass</p>
+<p>class InputError(Error):<br>    “””Exception raised for errors in the input.</p>
+<pre><code>Attributes:
+    expression -- input expression in which the error occurred
+    message -- explanation of the error
+&quot;&quot;&quot;
+
+def __init__(self, expression, message):
+    self.expression = expression
+    self.message = message</code></pre><p>class TransitionError(Error):<br>    “””Raised when an operation attempts a state transition that’s not<br>    allowed.</p>
+<pre><code>Attributes:
+    previous -- state at beginning of transition
+    next -- attempted new state
+    message -- explanation of why the specific transition is not allowed
+&quot;&quot;&quot;
+
+def __init__(self, previous, next, message):
+    self.previous = previous
+    self.next = next
+    self.message = message</code></pre><p>大多数的异常的名字都以”Error”结尾，就跟标准的异常命名一样。</p>
+<p>定义清理行为<br>try 语句还有另外一个可选的子句，它定义了无论在任何情况下都会执行的清理行为。 例如:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>try:<br>…     raise KeyboardInterrupt<br>… finally:<br>…     print(‘Goodbye, world!’)<br>…<br>Goodbye, world!<br>Traceback (most recent call last):<br>  File “<stdin>“, line 2, in <module><br>KeyboardInterrupt<br>以上例子不管 try 子句里面有没有发生异常，finally 子句都会执行。</module></stdin></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>如果一个异常在 try 子句里（或者在 except 和 else 子句里）被抛出，而又没有任何的 except 把它截住，那么这个异常会在 finally 子句执行后被抛出。</p>
+<p>下面是一个更加复杂的例子（在同一个 try 语句里包含 except 和 finally 子句）:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>def divide(x, y):<br>        try:<br>            result = x / y<br>        except ZeroDivisionError:<br>            print(“division by zero!”)<br>        else:<br>            print(“result is”, result)<br>        finally:<br>            print(“executing finally clause”)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>divide(2, 1)<br>result is 2.0<br>executing finally clause<br>divide(2, 0)<br>division by zero!<br>executing finally clause<br>divide(“2”, “1”)<br>executing finally clause<br>Traceback (most recent call last):<br>  File “<stdin>“, line 1, in ?<br>  File “<stdin>“, line 3, in divide<br>TypeError: unsupported operand type(s) for /: ‘str’ and ‘str’<br>预定义的清理行为<br>一些对象定义了标准的清理行为，无论系统是否成功的使用了它，一旦不需要它了，那么这个标准的清理行为就会执行。<br>下面这个例子展示了尝试打开一个文件，然后把内容打印到屏幕上:</stdin></stdin></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>for line in open(“myfile.txt”):<br>    print(line, end=””)<br>以上这段代码的问题是，当执行完毕后，文件会保持打开状态，并没有被关闭。</p>
+<p>关键词 with 语句就可以保证诸如文件之类的对象在使用完之后一定会正确的执行他的清理方法:</p>
+<p>with open(“myfile.txt”) as f:<br>    for line in f:<br>        print(line, end=””)<br>以上这段代码执行完毕后，就算在处理过程中出问题了，文件 f 总是会关闭。</p>
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:Likj128@126.com">Alexis (KangJ)</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/03/19/%E9%94%99%E8%AF%AF%E5%92%8C%E5%BC%82%E5%B8%B8-PYTHON/">http://likj128.github.io/2020/03/19/错误和异常-PYTHON/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="http://likj128.github.io">Alexis (KangJ)的博客</a>！</span></div></blockquote></div></article><div class="p-info box"></div><aside id="toc"><div class="toc-title">目录</div><nav></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="next" href="/2020/03/19/%E5%AE%89%E8%A3%85%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%8C%85-LINUX/">安装常用工具包-LINUX &gt;</a></div><div id="valine-comment"><style type="text/css">.v * { color: #CECECE; }
+.v a { color: #0F9FB4; }
+.v a:hover { color: #216C73; }
+.v li { list-style: inherit; }
+.v .vwrap { border: 1px solid #223441; border-radius: 0; }
+.v .vwrap:hover { box-shadow: 0 0 6px 1px #223441; }
+.v .vbtn { border-radius: 0; color: #cecece; background: none; }
+.v .vlist .vcard .vh { border-bottom-color: #293D4E; }
+.v .vwrap .vheader .vinput { border-bottom-color: #223441; }
+.v .vwrap .vheader .vinput:focus { border-bottom-color: #339EB4; }
+.v code, .v pre,.v .vlist .vcard .vhead .vsys { background: #203240; }
+.v code, .v pre { color: #F0F0F0; font-size: 95%; }
+.v .vlist .vcard .vcontent.expand:before { background: linear-gradient(180deg,hsla(206,33%,19%,0),hsla(206,33%,19%,.9)); }
+.v .vlist .vcard .vcontent.expand:after { background: hsla(206,33%,19%,.9); }</style><div id="vcomment"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+var verify = 'false' == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'',
+  appKey:'',
+  lang: 'zh-cn',
+  placeholder:'ヾﾉ≧∀≦)o Come on, say something...',
+  avatar:'identicon',
+  guest_info:guest_info,
+  pageSize:'10'
+})</script></div></section><footer><p>Copyright © 2020 - 2020 <a href="/." rel="nofollow">艾利克斯工作室</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span></span> <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span></span> | Personal by<a rel="nofollow" target="_blank" href="https://alexisli.cn"> Alexis.</a>Powered by<a rel="nofollow" target="_blank" href="http://www.beianbeian.com/beianxinxi/f72222db0e8cf7f7b49ceee25f65c49e.html"> 晋ICP备19013202号.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+    search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css"></body></html>
