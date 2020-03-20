@@ -1,552 +1,314 @@
 <?xml version="1.0" encoding="utf-8"?>
-<search>
-  <entry>
-    <title>错误和异常-PYTHON</title>
-    <url>/2020/03/19/%E9%94%99%E8%AF%AF%E5%92%8C%E5%BC%82%E5%B8%B8-PYTHON/</url>
-    <content><![CDATA[<p>Python 错误和异常<br>Python内置了一套异常处理机制，来帮助我们进行错误处理。<br>代码运行前的语法或逻辑错误<br>语法错误在执行前修改，逻辑错误无法修改<br>异常分为两个步骤：<br>异常产生，检查到错误且解释器认为是异常，抛出异常<br>异常处理，截获异常，忽略或终止程序处理异常</p>
-<a id="more"></a>
-
-<p>Python有两种错误很容易辨认：语法错误和异常。</p>
-<h1 id="语法错误"><a href="#语法错误" class="headerlink" title="语法错误"></a>语法错误</h1><p>Python 的语法错误或者称之为解析错，是初学者经常碰到的，如下实例</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>while True print(‘Hello world’)<br>  File “<stdin>“, line 1, in ?<br>    while True print(‘Hello world’)<br>                   ^<br>SyntaxError: invalid syntax<br>这个例子中，函数 print() 被检查到有错误，是它前面缺少了一个冒号（:）。<br>语法分析器指出了出错的一行，并且在最先找到的错误的位置标记了一个小小的箭头。</stdin></p>
-</blockquote>
-</blockquote>
-</blockquote>
-<h1 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h1><p>即便Python程序的语法是正确的，在运行它的时候，也有可能发生错误。运行期检测到的错误被称为异常。<br>大多数的异常都不会被程序处理，都以错误信息的形式展现在这里:</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>10 * (1/0)<br>Traceback (most recent call last):<br>  File “<stdin>“, line 1, in ?<br>ZeroDivisionError: division by zero<br>4 + spam*3<br>Traceback (most recent call last):<br>  File “<stdin>“, line 1, in ?<br>NameError: name ‘spam’ is not defined<br>‘2’ + 2<br>Traceback (most recent call last):<br>  File “<stdin>“, line 1, in ?<br>TypeError: Can’t convert ‘int’ object to str implicitly<br>异常以不同的类型出现，这些类型都作为信息的一部分打印出来: 例子中的类型有 ZeroDivisionError，NameError 和 TypeError。<br>错误信息的前面部分显示了异常发生的上下文，并以调用栈的形式显示具体信息。</stdin></stdin></stdin></p>
-</blockquote>
-</blockquote>
-</blockquote>
-<h1 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h1><p>以下例子中，让用户输入一个合法的整数，但是允许用户中断这个程序（使用 Control-C 或者操作系统提供的方法）。用户中断的信息会引发一个 KeyboardInterrupt 异常。</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>while True:<br>        try:<br>            x = int(input(“Please enter a number: “))<br>            break<br>        except ValueError:<br>            print(“Oops!  That was no valid number.  Try again   “)<br>try语句按照如下方式工作；</p>
-</blockquote>
-</blockquote>
-</blockquote>
-<p>首先，执行try子句（在关键字try和关键字except之间的语句）<br>如果没有异常发生，忽略except子句，try子句执行后结束。<br>如果在执行try子句的过程中发生了异常，那么try子句余下的部分将被忽略。如果异常的类型和 except 之后的名称相符，那么对应的except子句将被执行。最后执行 try 语句之后的代码。<br>如果一个异常没有与任何的except匹配，那么这个异常将会传递给上层的try中。<br>一个 try 语句可能包含多个except子句，分别来处理不同的特定的异常。最多只有一个分支会被执行。<br>处理程序将只针对对应的try子句中的异常进行处理，而不是其他的 try 的处理程序中的异常。<br>一个except子句可以同时处理多个异常，这些异常将被放在一个括号里成为一个元组，例如:</p>
-<p>except (RuntimeError, TypeError, NameError):<br>        pass<br>最后一个except子句可以忽略异常的名称，它将被当作通配符使用。你可以使用这种方法打印一个错误信息，然后再次把异常抛出。</p>
-<p>import sys</p>
-<p>try:<br>    f = open(‘myfile.txt’)<br>    s = f.readline()<br>    i = int(s.strip())<br>except OSError as err:<br>    print(“OS error: {0}”.format(err))<br>except ValueError:<br>    print(“Could not convert data to an integer.”)<br>except:<br>    print(“Unexpected error:”, sys.exc_info()[0])<br>    raise<br>try except 语句还有一个可选的else子句，如果使用这个子句，那么必须放在所有的except子句之后。这个子句将在try子句没有发生任何异常的时候执行。例如:</p>
-<p>for arg in sys.argv[1:]:<br>    try:<br>        f = open(arg, ‘r’)<br>    except IOError:<br>        print(‘cannot open’, arg)<br>    else:<br>        print(arg, ‘has’, len(f.readlines()), ‘lines’)<br>        f.close()<br>使用 else 子句比把所有的语句都放在 try 子句里面要好，这样可以避免一些意想不到的、而except又没有捕获的异常。</p>
-<p>异常处理并不仅仅处理那些直接发生在try子句中的异常，而且还能处理子句中调用的函数（甚至间接调用的函数）里抛出的异常。例如:</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>def this_fails():<br>        x = 1/0</p>
-</blockquote>
-</blockquote>
-</blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>try:<br>        this_fails()<br>    except ZeroDivisionError as err:<br>        print(‘Handling run-time error:’, err)</p>
-</blockquote>
-</blockquote>
-</blockquote>
-<p>Handling run-time error: int division or modulo by zero</p>
-<h1 id="抛出异常"><a href="#抛出异常" class="headerlink" title="抛出异常"></a>抛出异常</h1><p>Python 使用 raise 语句抛出一个指定的异常。例如:</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>raise NameError(‘HiThere’)<br>Traceback (most recent call last):<br>  File “<stdin>“, line 1, in ?<br>NameError: HiThere<br>raise 唯一的一个参数指定了要被抛出的异常。它必须是一个异常的实例或者是异常的类（也就是 Exception 的子类）。</stdin></p>
-</blockquote>
-</blockquote>
-</blockquote>
-<p>如果你只想知道这是否抛出了一个异常，并不想去处理它，那么一个简单的 raise 语句就可以再次把它抛出。</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>try:<br>        raise NameError(‘HiThere’)<br>    except NameError:<br>        print(‘An exception flew by!’)<br>        raise</p>
-</blockquote>
-</blockquote>
-</blockquote>
-<p>An exception flew by!<br>Traceback (most recent call last):<br>  File “<stdin>“, line 2, in ?<br>NameError: HiThere</stdin></p>
-<h1 id="用户自定义异常"><a href="#用户自定义异常" class="headerlink" title="用户自定义异常"></a>用户自定义异常</h1><p>你可以通过创建一个新的异常类来拥有自己的异常。异常类继承自 Exception 类，可以直接继承，或者间接继承，例如:</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>class MyError(Exception):<br>        def <strong>init</strong>(self, value):<br>            self.value = value<br>        def <strong>str</strong>(self):<br>            return repr(self.value)</p>
-</blockquote>
-</blockquote>
-</blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>try:<br>        raise MyError(2*2)<br>    except MyError as e:<br>        print(‘My exception occurred, value:’, e.value)</p>
-</blockquote>
-</blockquote>
-</blockquote>
-<p>My exception occurred, value: 4</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>raise MyError(‘oops!’)<br>Traceback (most recent call last):<br>  File “<stdin>“, line 1, in ?<br><strong>main</strong>.MyError: ‘oops!’<br>在这个例子中，类 Exception 默认的 <strong>init</strong>() 被覆盖。</stdin></p>
-</blockquote>
-</blockquote>
-</blockquote>
-<p>当创建一个模块有可能抛出多种不同的异常时，一种通常的做法是为这个包建立一个基础异常类，然后基于这个基础类为不同的错误情况创建不同的子类:</p>
-<p>class Error(Exception):<br>    “””Base class for exceptions in this module.”””<br>    pass</p>
-<p>class InputError(Error):<br>    “””Exception raised for errors in the input.</p>
-<pre><code>Attributes:
-    expression -- input expression in which the error occurred
-    message -- explanation of the error
-&quot;&quot;&quot;
-
-def __init__(self, expression, message):
-    self.expression = expression
-    self.message = message</code></pre><p>class TransitionError(Error):<br>    “””Raised when an operation attempts a state transition that’s not<br>    allowed.</p>
-<pre><code>Attributes:
-    previous -- state at beginning of transition
-    next -- attempted new state
-    message -- explanation of why the specific transition is not allowed
-&quot;&quot;&quot;
-
-def __init__(self, previous, next, message):
-    self.previous = previous
-    self.next = next
-    self.message = message</code></pre><p>大多数的异常的名字都以”Error”结尾，就跟标准的异常命名一样。</p>
-<h1 id="定义清理行为"><a href="#定义清理行为" class="headerlink" title="定义清理行为"></a>定义清理行为</h1><p>try 语句还有另外一个可选的子句，它定义了无论在任何情况下都会执行的清理行为。 例如:</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>try:<br>…     raise KeyboardInterrupt<br>… finally:<br>…     print(‘Goodbye, world!’)<br>…<br>Goodbye, world!<br>Traceback (most recent call last):<br>  File “<stdin>“, line 2, in <module><br>KeyboardInterrupt<br>以上例子不管 try 子句里面有没有发生异常，finally 子句都会执行。</module></stdin></p>
-</blockquote>
-</blockquote>
-</blockquote>
-<p>如果一个异常在 try 子句里（或者在 except 和 else 子句里）被抛出，而又没有任何的 except 把它截住，那么这个异常会在 finally 子句执行后被抛出。</p>
-<p>下面是一个更加复杂的例子（在同一个 try 语句里包含 except 和 finally 子句）:</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>def divide(x, y):<br>        try:<br>            result = x / y<br>        except ZeroDivisionError:<br>            print(“division by zero!”)<br>        else:<br>            print(“result is”, result)<br>        finally:<br>            print(“executing finally clause”)</p>
-</blockquote>
-</blockquote>
-</blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>divide(2, 1)<br>result is 2.0<br>executing finally clause<br>divide(2, 0)<br>division by zero!<br>executing finally clause<br>divide(“2”, “1”)<br>executing finally clause<br>Traceback (most recent call last):<br>  File “<stdin>“, line 1, in ?<br>  File “<stdin>“, line 3, in divide<br>TypeError: unsupported operand type(s) for /: ‘str’ and ‘str’</stdin></stdin></p>
-</blockquote>
-</blockquote>
-</blockquote>
-<h1 id="预定义的清理行为"><a href="#预定义的清理行为" class="headerlink" title="预定义的清理行为"></a>预定义的清理行为</h1><p>一些对象定义了标准的清理行为，无论系统是否成功的使用了它，一旦不需要它了，那么这个标准的清理行为就会执行。<br>下面这个例子展示了尝试打开一个文件，然后把内容打印到屏幕上:</p>
-<p>for line in open(“myfile.txt”):<br>    print(line, end=””)<br>以上这段代码的问题是，当执行完毕后，文件会保持打开状态，并没有被关闭。</p>
-<p>关键词 with 语句就可以保证诸如文件之类的对象在使用完之后一定会正确的执行他的清理方法:</p>
-<p>with open(“myfile.txt”) as f:<br>    for line in f:<br>        print(line, end=””)<br>以上这段代码执行完毕后，就算在处理过程中出问题了，文件 f 总是会关闭。</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>安装常用工具包-LINUX</title>
-    <url>/2020/03/19/%E5%AE%89%E8%A3%85%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%8C%85-LINUX/</url>
-    <content><![CDATA[<p>全部操作都在root用户下执行</p>
-<a id="more"></a>
-<h1 id="安装编译相关工具"><a href="#安装编译相关工具" class="headerlink" title="安装编译相关工具"></a>安装编译相关工具</h1><p>yum -y groupinstall “Development tools”<br>yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel<br>yum install libffi-devel -y<br>2.下载安装包解压<br>wget <a href="https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz" target="_blank" rel="noopener">https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz</a><br>tar -xvJf  Python-3.7.0.tar.xz<br>3.编译安装<br>mkdir /usr/local/python3 #创建编译安装目录<br>cd Python-3.7.0<br>./configure –prefix=/usr/local/python3<br>make &amp;&amp; make install<br>4.创建软连接<br>ln -s /usr/local/python3/bin/python3 /usr/local/bin/python3<br>ln -s /usr/local/python3/bin/pip3 /usr/local/bin/pip3<br>5.验证是否成功<br>python3 -V<br>pip3 -V</p>
-<h1 id="添加Nginx的源"><a href="#添加Nginx的源" class="headerlink" title="添加Nginx的源"></a>添加Nginx的源</h1><p>rpm -Uvh <a href="http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm" target="_blank" rel="noopener">http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm</a></p>
-<h1 id="安装Nginx"><a href="#安装Nginx" class="headerlink" title="安装Nginx"></a>安装Nginx</h1><p>yum install -y nginx<br>安装成功后，配置文件目录为/etc/nginx</p>
-<h1 id="启动Nginx"><a href="#启动Nginx" class="headerlink" title="启动Nginx"></a>启动Nginx</h1><p>systemctl start nginx.service #启动Nginx<br>systemctl enable nginx.service #设置开机自启</p>
-<h1 id="yum安装redis"><a href="#yum安装redis" class="headerlink" title="yum安装redis"></a>yum安装redis</h1><p>yum install -y epel-release<br>yum install -y redis</p>
-<h1 id="启动redis"><a href="#启动redis" class="headerlink" title="启动redis"></a>启动redis</h1><p>service redis start #启动redis<br>service redis status #查看redis状态</p>
-<hr>
-<p>ps -ef | grep redis #查看redis进程<br>service redis stop #停止redis</p>
-<h1 id="设置开机自启"><a href="#设置开机自启" class="headerlink" title="设置开机自启"></a>设置开机自启</h1><p>chkconfig redis on</p>
-<h1 id="修改redis配置"><a href="#修改redis配置" class="headerlink" title="修改redis配置"></a>修改redis配置</h1><p>vim /etc/redis.conf<br>修改如下内容:</p>
-<p>port 6379 #启动端口<br>requirepass 111111 #访问密码<br>重启redis</p>
-<p>service redis restart<br>登录redis<br>注: 127.0.0.1:6379&gt;为redis数据库前缀</p>
-<p>redis-cli #登录redis<br>127.0.0.1:6379&gt; auth 111111 #认证登录<br>127.0.0.1:6379&gt; keys * #查看当前的key</p>
-<h1 id="下载安装mysql-yum-源"><a href="#下载安装mysql-yum-源" class="headerlink" title="下载安装mysql yum 源"></a>下载安装mysql yum 源</h1><p>wget -i -c <a href="http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm" target="_blank" rel="noopener">http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm</a><br>yum install -y mysql57-community-release-el7-10.noarch.rpm<br>安装mysql并启动<br>yum install -y mysql-community-server #安装mysql<br>systemctl start  mysqld.service #启动<br>systemctl status mysqld.service #查看运行状态<br>登录mysql<br>grep “password” /var/log/mysqld.log #查看mysql生成的密码<br>mysql -uroot -p #以root用户登录mysql<br>修改root密码<br>注: mysql&gt; 为提示符；新密码需符合：包含字母大小写、特殊符和数字，且位数大于4</p>
-<p>mysql&gt; ALTER USER ‘root’@’localhost’ IDENTIFIED BY ‘new password’;<br> 授权root用户远程访问<br>mysql&gt; use mysql;<br>mysql&gt; grant all privileges  on <em>.</em> to root@’%’ identified by “password”;<br>mysql&gt; flush privileges;</p>
-<h1 id="下载sqlite安装包"><a href="#下载sqlite安装包" class="headerlink" title="下载sqlite安装包"></a>下载sqlite安装包</h1><p>cd /opt<br>wget <a href="http://www.sqlite.org/2015/sqlite-autoconf-3081101.tar.gz" target="_blank" rel="noopener">http://www.sqlite.org/2015/sqlite-autoconf-3081101.tar.gz</a> #下载安装包<br>tar zxvf sqlite-autoconf-3081101.tar.gz  #进行解压<br>3.编译安装<br>cd sqlite-autoconf-3081101/<br>./configure<br>make &amp;&amp; make install<br>yum install sqlite-devel<br>4.链接sqlite3<br>cd #回到用户目录<br>sqlite3 #链接sqlite3</p>
-<p>5.退出sqlite3<br>sqlite3链接成功后，执行如下：</p>
-<p>sqlite&gt; .quit #退出sqlite3</p>
-]]></content>
+<search> 
+  
+  
+    
+    <entry>
+      <title>面向对象-PYTHON</title>
+      <link href="/2020/03/20/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-PYTHON/"/>
+      <url>/2020/03/20/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-PYTHON/</url>
+      
+        <content type="html"><![CDATA[<p>Python 面向对象class<br>类就是一个模板，模板里可以包含多个函数，函数里实现一些功能<br>对象则是根据模板创建的实例，通过实例对象可以执行类中的函数</p><a id="more"></a><p>Python从设计之初就已经是一门面向对象的语言，正因为如此，在Python中创建一个类和对象是很容易的。</p><p>如果你以前没有接触过面向对象的编程语言，那你可能需要先了解一些面向对象语言的一些基本特征，在头脑里头形成一个基本的面向对象的概念，这样有助于你更容易的学习Python的面向对象编程。</p><p>接下来我们先来简单的了解下面向对象的一些基本特征。</p><h1 id="面向对象技术简介"><a href="#面向对象技术简介" class="headerlink" title="面向对象技术简介"></a>面向对象技术简介</h1><p>类(Class): 用来描述具有相同的属性和方法的对象的集合。它定义了该集合中每个对象所共有的属性和方法。对象是类的实例。<br>方法：类中定义的函数。<br>类变量：类变量在整个实例化的对象中是公用的。类变量定义在类中且在函数体之外。类变量通常不作为实例变量使用。<br>数据成员：类变量或者实例变量用于处理类及其实例对象的相关的数据。<br>方法重写：如果从父类继承的方法不能满足子类的需求，可以对其进行改写，这个过程叫方法的覆盖（override），也称为方法的重写。<br>局部变量：定义在方法中的变量，只作用于当前实例的类。<br>实例变量：在类的声明中，属性是用变量来表示的。这种变量就称为实例变量，是在类声明的内部但是在类的其他成员方法之外声明的。<br>继承：即一个派生类（derived class）继承基类（base class）的字段和方法。继承也允许把一个派生类的对象作为一个基类对象对待。例如，有这样一个设计：一个Dog类型的对象派生自Animal类，这是模拟”是一个（is-a）”关系（例图，Dog是一个Animal）。<br>实例化：创建一个类的实例，类的具体对象。<br>对象：通过类定义的数据结构实例。对象包括两个数据成员（类变量和实例变量）和方法。<br>和其它编程语言相比，Python 在尽可能不增加新的语法和语义的情况下加入了类机制。</p><p>Python中的类提供了面向对象编程的所有基本功能：类的继承机制允许多个基类，派生类可以覆盖基类中的任何方法，方法中可以调用基类中的同名方法。</p><p>对象可以包含任意数量和类型的数据。</p><h1 id="类定义"><a href="#类定义" class="headerlink" title="类定义"></a>类定义</h1><p>语法格式如下：</p><pre><code>class ClassName:    &lt;statement-1&gt;    .    .    .    &lt;statement-N&gt;类实例化后，可以使用其属性，实际上，创建一个类之后，可以通过类名访问其属性。类对象类对象支持两种操作：属性引用和实例化。属性引用使用和 Python 中所有的属性引用一样的标准语法：obj.name。类对象创建后，类命名空间中所有的命名都是有效属性名。所以如果类定义是这样:#!/usr/bin/python3class MyClass:    &quot;&quot;&quot;一个简单的类实例&quot;&quot;&quot;    i = 12345    def f(self):        return &#39;hello world&#39;# 实例化类x = MyClass()# 访问类的属性和方法print(&quot;MyClass 类的属性 i 为：&quot;, x.i)print(&quot;MyClass 类的方法 f 输出为：&quot;, x.f())以上创建了一个新的类实例并将该对象赋给局部变量 x，x 为空的对象。执行以上程序输出结果为：MyClass 类的属性 i 为： 12345MyClass 类的方法 f 输出为： hello world</code></pre><p>类有一个名为 <strong>init</strong>() 的特殊方法（构造方法），该方法在类实例化时会自动调用，像下面这样：</p><pre><code>def __init__(self):    self.data = []类定义了 __init__() 方法，类的实例化操作会自动调用 __init__() 方法。如下实例化类 MyClass，对应的 __init__() 方法就会被调用:x = MyClass()当然， __init__() 方法可以有参数，参数通过 __init__() 传递到类的实例化操作上。例如:#!/usr/bin/python3class Complex:    def __init__(self, realpart, imagpart):        self.r = realpart        self.i = imagpartx = Complex(3.0, -4.5)print(x.r, x.i)   # 输出结果：3.0 -4.5</code></pre><h1 id="self代表类的实例，而非类"><a href="#self代表类的实例，而非类" class="headerlink" title="self代表类的实例，而非类"></a>self代表类的实例，而非类</h1><p>类的方法与普通的函数只有一个特别的区别——它们必须有一个额外的第一个参数名称, 按照惯例它的名称是 self。</p><pre><code>class Test:    def prt(self):        print(self)        print(self.__class__)t = Test()t.prt()以上实例执行结果为：&lt;__main__.Test instance at 0x100771878&gt;__main__.Test从执行结果可以很明显的看出，self 代表的是类的实例，代表当前对象的地址，而 self.class 则指向类。self 不是 python 关键字，我们把他换成 ai8py也是可以正常执行的:class Test:    def prt(ai8py):        print(ai8py)        print(ai8py.__class__)t = Test()t.prt()以上实例执行结果为：&lt;__main__.Test instance at 0x100771878&gt;__main__.Test</code></pre><h1 id="类的方法"><a href="#类的方法" class="headerlink" title="类的方法"></a>类的方法</h1><p>在类的内部，使用 def 关键字来定义一个方法，与一般函数定义不同，类方法必须包含参数 self, 且为第一个参数，self 代表的是类的实例。</p><pre><code>#!/usr/bin/python3#类定义class people:    #定义基本属性    name = &#39;&#39;    age = 0    #定义私有属性,私有属性在类外部无法直接进行访问    __weight = 0    #定义构造方法    def __init__(self,n,a,w):        self.name = n        self.age = a        self.__weight = w    def speak(self):        print(&quot;%s 说: 我 %d 岁。&quot; %(self.name,self.age))# 实例化类p = people(&#39;ai8py&#39;,10,30)p.speak()执行以上程序输出结果为：ai8py 说: 我 10 岁。</code></pre><h1 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h1><p>Python 同样支持类的继承，如果一种语言不支持继承，类就没有什么意义。派生类的定义如下所示:</p><pre><code>class DerivedClassName(BaseClassName1):    &lt;statement-1&gt;    .    .    .    &lt;statement-N&gt;需要注意圆括号中基类的顺序，若是基类中有相同的方法名，而在子类使用时未指定，python从左至右搜索 即方法在子类中未找到时，从左到右查找基类中是否包含方法。BaseClassName（示例中的基类名）必须与派生类定义在一个作用域内。除了类，还可以用表达式，基类定义在另一个模块中时这一点非常有用:class DerivedClassName(modname.BaseClassName):#!/usr/bin/python3#类定义class people:    #定义基本属性    name = &#39;&#39;    age = 0    #定义私有属性,私有属性在类外部无法直接进行访问    __weight = 0    #定义构造方法    def __init__(self,n,a,w):        self.name = n        self.age = a        self.__weight = w    def speak(self):        print(&quot;%s 说: 我 %d 岁。&quot; %(self.name,self.age))#单继承示例class student(people):    grade = &#39;&#39;    def __init__(self,n,a,w,g):        #调用父类的构函        people.__init__(self,n,a,w)        self.grade = g    #覆写父类的方法    def speak(self):        print(&quot;%s 说: 我 %d 岁了，我在读 %d 年级&quot;%(self.name,self.age,self.grade))s = student(&#39;ken&#39;,10,60,3)s.speak()执行以上程序输出结果为：ken 说: 我 10 岁了，我在读 3 年级</code></pre><h1 id="多继承"><a href="#多继承" class="headerlink" title="多继承"></a>多继承</h1><p>Python同样有限的支持多继承形式。多继承的类定义形如下例:</p><pre><code>class DerivedClassName(Base1, Base2, Base3):    &lt;statement-1&gt;    .    .    .    &lt;statement-N&gt;需要注意圆括号中父类的顺序，若是父类中有相同的方法名，而在子类使用时未指定，python从左至右搜索 即方法在子类中未找到时，从左到右查找父类中是否包含方法。#!/usr/bin/python3#类定义class people:    #定义基本属性    name = &#39;&#39;    age = 0    #定义私有属性,私有属性在类外部无法直接进行访问    __weight = 0    #定义构造方法    def __init__(self,n,a,w):        self.name = n        self.age = a        self.__weight = w    def speak(self):        print(&quot;%s 说: 我 %d 岁。&quot; %(self.name,self.age))#单继承示例class student(people):    grade = &#39;&#39;    def __init__(self,n,a,w,g):        #调用父类的构函        people.__init__(self,n,a,w)        self.grade = g    #覆写父类的方法    def speak(self):        print(&quot;%s 说: 我 %d 岁了，我在读 %d 年级&quot;%(self.name,self.age,self.grade))#另一个类，多重继承之前的准备class speaker():    topic = &#39;&#39;    name = &#39;&#39;    def __init__(self,n,t):        self.name = n        self.topic = t    def speak(self):        print(&quot;我叫 %s，我是一个演说家，我演讲的主题是 %s&quot;%(self.name,self.topic))#多重继承class sample(speaker,student):    a =&#39;&#39;    def __init__(self,n,a,w,g,t):        student.__init__(self,n,a,w,g)        speaker.__init__(self,n,t)test = sample(&quot;Tim&quot;,25,80,4,&quot;Python&quot;)test.speak()   #方法名同，默认调用的是在括号中排前地父类的方法执行以上程序输出结果为：我叫 Tim，我是一个演说家，我演讲的主题是 Python</code></pre><h1 id="方法重写"><a href="#方法重写" class="headerlink" title="方法重写"></a>方法重写</h1><p>如果你的父类方法的功能不能满足你的需求，你可以在子类重写你父类的方法，实例如下：</p><pre><code>#!/usr/bin/python3class Parent:        # 定义父类   def myMethod(self):      print (&#39;调用父类方法&#39;)class Child(Parent): # 定义子类   def myMethod(self):      print (&#39;调用子类方法&#39;)c = Child()          # 子类实例c.myMethod()         # 子类调用重写方法super(Child,c).myMethod() #用子类对象调用父类已被覆盖的方法super() 函数是用于调用父类(超类)的一个方法。执行以上程序输出结果为：调用子类方法调用父类方法</code></pre><h1 id="类属性与方法"><a href="#类属性与方法" class="headerlink" title="类属性与方法"></a>类属性与方法</h1><p>类的私有属性<br><strong>private_attrs：两个下划线开头，声明该属性为私有，不能在类的外部被使用或直接访问。在类内部的方法中使用时 self.</strong>private_attrs。</p><p>类的方法<br>在类的内部，使用 def 关键字来定义一个方法，与一般函数定义不同，类方法必须包含参数 self，且为第一个参数，self 代表的是类的实例。</p><p>self 的名字并不是规定死的，也可以使用 this，但是最好还是按照约定是用 self。</p><p>类的私有方法<br><strong>private_method：两个下划线开头，声明该方法为私有方法，只能在类的内部调用 ，不能在类的外部调用。self.</strong>private_methods。</p><p>类的私有属性实例如下：</p><pre><code>#!/usr/bin/python3class JustCounter:    __secretCount = 0  # 私有变量    publicCount = 0    # 公开变量    def count(self):        self.__secretCount += 1        self.publicCount += 1        print (self.__secretCount)counter = JustCounter()counter.count()counter.count()print (counter.publicCount)print (counter.__secretCount)  # 报错，实例不能访问私有变量执行以上程序输出结果为：122Traceback (most recent call last):  File &quot;test.py&quot;, line 16, in &lt;module&gt;    print (counter.__secretCount)  # 报错，实例不能访问私有变量AttributeError: &#39;JustCounter&#39; object has no attribute &#39;__secretCount&#39;类的私有方法实例如下：#!/usr/bin/python3class Site:    def __init__(self, name, url):        self.name = name       # public        self.__url = url   # private    def who(self):        print(&#39;name  : &#39;, self.name)        print(&#39;url : &#39;, self.__url)    def __foo(self):          # 私有方法        print(&#39;这是私有方法&#39;)    def foo(self):            # 公共方法        print(&#39;这是公共方法&#39;)        self.__foo()x = Site(&#39;蟒蛇教程&#39;, &#39;www.ai8py.com&#39;)x.who()        # 正常输出x.foo()        # 正常输出x.__foo()      # 报错以上实例执行结果：Traceback (most recent call last):  File &quot;D:\code\eclipse-workspace\ai8py\src\test1.py&quot;, line 22, in &lt;module&gt;name  :  蟒蛇教程url :  www.ai8py.com这是公共方法这是私有方法    x.__foo()      # 报错AttributeError: &#39;Site&#39; object has no attribute &#39;__foo&#39;</code></pre><h1 id="类的专有方法："><a href="#类的专有方法：" class="headerlink" title="类的专有方法："></a>类的专有方法：</h1><p><strong>init</strong> : 构造函数，在生成对象时调用<br><strong>del</strong> : 析构函数，释放对象时使用<br><strong>repr</strong> : 打印，转换<br><strong>setitem</strong> : 按照索引赋值<br><strong>getitem</strong>: 按照索引获取值<br><strong>len</strong>: 获得长度<br><strong>cmp</strong>: 比较运算<br><strong>call</strong>: 函数调用<br><strong>add</strong>: 加运算<br><strong>sub</strong>: 减运算<br><strong>mul</strong>: 乘运算<br><strong>truediv</strong>: 除运算<br><strong>mod</strong>: 求余运算<br><strong>pow</strong>: 乘方</p><h1 id="运算符重载"><a href="#运算符重载" class="headerlink" title="运算符重载"></a>运算符重载</h1><p>Python同样支持运算符重载，我们可以对类的专有方法进行重载，实例如下：</p><pre><code>#!/usr/bin/python3class Vector:   def __init__(self, a, b):      self.a = a      self.b = b   def __str__(self):      return &#39;Vector (%d, %d)&#39; % (self.a, self.b)   def __add__(self,other):      return Vector(self.a + other.a, self.b + other.b)v1 = Vector(2,10)v2 = Vector(5,-2)print (v1 + v2)以上代码执行结果如下所示:Vector(7,8)</code></pre>]]></content>
+      
+      
       <categories>
-        <category>基础-Linux</category>
+          
+          <category> 基础进阶 </category>
+          
       </categories>
-      <tags>
-        <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>定时任务-LINUX</title>
-    <url>/2020/03/19/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1-LINUX/</url>
-    <content><![CDATA[<h4 id="定时任务分为两种模式"><a href="#定时任务分为两种模式" class="headerlink" title="定时任务分为两种模式"></a>定时任务分为两种模式</h4><p> 1.系统级别的定时任务：临时文件清理、系统信息采集、日志文件切割<br> 2.用户级别的定时任务：定时向互联网同步时间、定时备份系统配置文件、定时备份数据库的数据 </p>
-<a id="more"></a>
-<h4 id="定时任务-标准规范"><a href="#定时任务-标准规范" class="headerlink" title="定时任务 标准规范"></a>定时任务 标准规范</h4><pre><code class="shell">[root@oldboy ~]# vim /etc/crontab
-SHELL=/bin/bash        执行命令的解释器
-PATH=/sbin:/bin:/usr/sbin:/usr/bin       环境变量
-MAILTO=root           邮件发给谁
-
-# For details see man 4 crontabs
-
-# Example of job definition:
-# .---------------- minute (0 - 59)     分钟
-# |  .------------- hour (0 - 23)     小时
-# |  |  .---------- day of month (1 - 31)     日期
-# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...        月份
-# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat  星期
-# |  |  |  |  |
-# *  *  *  *  * user-name  command to be executed
-
- *  表示任意的(分、时、日、月、周)时间都执行
- -  表示一个时间范围段, 如5-7点
- ,  表示分隔时段, 如6,0,4表示周六、日、四
- /1 表示每隔n单位时间, 如*/10 每10分钟</code></pre>
-<h4 id="常用的一些定时任务段"><a href="#常用的一些定时任务段" class="headerlink" title="常用的一些定时任务段"></a>常用的一些定时任务段</h4><pre><code class="shell">00 02 * * * ls      #每天的凌晨2点整执行
-00 02 1 * * ls      #每月的1日的凌晨2点整执行
-00 02 14 2 * ls     #每年的2月14日凌晨2点执行
-00 02 * * 7 ls      #每周天的凌晨2点整执行
-00 02 * 6 5 ls      #每年的6月周五凌晨2点执行
-00 02 14 * 7 ls     #每月14日或每周日的凌晨2点都执行
-00 02 14 2 7 ls     #每年的2月14日或每年2月的周天的凌晨2点执行   
-*/10  02 * * * ls   #每天凌晨2点，每隔10分钟执行一次
-* * * * *  ls       #每分钟都执行
-00 00 14 2 *  ls    #每年2月14日的凌晨执行命令 
-*/5 * * * *  ls     #每隔5分钟执行一次
-00 02 * 1,5,8 * ls  #每年的1月5月8月凌晨2点执行
-00 02 1-8 * *  ls    #每月1号到8号凌晨2点执行
-0 21 * * * ls       #每天晚上21:00执行
-45 4 1,10,22 * * ls #每月1、10、22日的4:45执行
-45 4 1-10 * * l     #每月1到10日的4:45执行
-3,15 8-11 */2 * * ls #每隔两天的上午8点到11点的第3和第15分钟执行
-0 23-7/1 * * * ls   #晚上11点到早上7点之间，每隔一小时执行
-15 21 * * 1-5 ls    #周一到周五每天晚上21:15执行</code></pre>
-]]></content>
+      
+      
+        <tags>
+            
+            <tag> Python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>迭代器生成器-PYTHON</title>
+      <link href="/2020/03/20/%E8%BF%AD%E4%BB%A3%E5%99%A8%E7%94%9F%E6%88%90%E5%99%A8-PYTHON/"/>
+      <url>/2020/03/20/%E8%BF%AD%E4%BB%A3%E5%99%A8%E7%94%9F%E6%88%90%E5%99%A8-PYTHON/</url>
+      
+        <content type="html"><![CDATA[<p>Python 迭代器与生成器<br>可以被next()函数调用并不断返回下一个值的对象称为迭代器：Iterator。<br>在Python中，这种一边循环一边计算的机制，称为生成器：generator</p><a id="more"></a><h1 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h1><p>迭代是Python最强大的功能之一，是访问集合元素的一种方式。<br>迭代器是一个可以记住遍历的位置的对象。<br>迭代器对象从集合的第一个元素开始访问，直到所有的元素被访问完结束。<br>迭代器只能往前不会后退。<br>迭代器有两个基本的方法：iter() 和 next()。<br>字符串，列表或元组对象都可用于创建迭代器：</p><pre><code>&gt;&gt;&gt;list=[1,2,3,4]&gt;&gt;&gt; it = iter(list)    # 创建迭代器对象&gt;&gt;&gt; print (next(it))   # 输出迭代器的下一个元素1&gt;&gt;&gt; print (next(it))2&gt;&gt;&gt;</code></pre><h1 id="迭代器对象可以使用常规for语句进行遍历："><a href="#迭代器对象可以使用常规for语句进行遍历：" class="headerlink" title="迭代器对象可以使用常规for语句进行遍历："></a>迭代器对象可以使用常规for语句进行遍历：</h1><pre><code>#!/usr/bin/python3list=[1,2,3,4]it = iter(list)    # 创建迭代器对象for x in it:    print (x, end=&quot; &quot;)执行以上程序，输出结果如下：1 2 3 4</code></pre><p>也可以使用 next() 函数：</p><pre><code>#!/usr/bin/python3import sys         # 引入 sys 模块list=[1,2,3,4]it = iter(list)    # 创建迭代器对象while True:    try:        print (next(it))    except StopIteration:        sys.exit()执行以上程序，输出结果如下：1234</code></pre><h1 id="创建一个迭代器"><a href="#创建一个迭代器" class="headerlink" title="创建一个迭代器"></a>创建一个迭代器</h1><p>把一个类作为一个迭代器使用需要在类中实现两个方法 <strong>iter</strong>() 与 <strong>next</strong>() 。<br>如果你已经了解的面向对象编程，就知道类都有一个构造函数，Python 的构造函数为 <strong>init</strong>(), 它会在对象初始化的时候执行。<br>更多内容查阅：Python 面向对象<br><strong>iter</strong>() 方法返回一个特殊的迭代器对象， 这个迭代器对象实现了 <strong>next</strong>() 方法并通过 StopIteration 异常标识迭代的完成。<br><strong>next</strong>() 方法（Python 2 里是 next()）会返回下一个迭代器对象。<br>创建一个返回数字的迭代器，初始值为 1，逐步递增 1：</p><pre><code>class MyNumbers:  def __iter__(self):    self.a = 1    return self  def __next__(self):    x = self.a    self.a += 1    return xmyclass = MyNumbers()myiter = iter(myclass)print(next(myiter))print(next(myiter))print(next(myiter))print(next(myiter))print(next(myiter))执行输出结果为：12345</code></pre><h1 id="StopIteration"><a href="#StopIteration" class="headerlink" title="StopIteration"></a>StopIteration</h1><p>StopIteration 异常用于标识迭代的完成，防止出现无限循环的情况，在 <strong>next</strong>() 方法中我们可以设置在完成指定循环次数后触发 StopIteration 异常来结束迭代。<br>在 20 次迭代后停止执行：</p><pre><code>class MyNumbers:  def __iter__(self):    self.a = 1    return self  def __next__(self):    if self.a &lt;= 20:      x = self.a      self.a += 1      return x    else:      raise StopIterationmyclass = MyNumbers()myiter = iter(myclass)for x in myiter:  print(x)执行输出结果为：1234567891011121314151617181920</code></pre><h1 id="生成器"><a href="#生成器" class="headerlink" title="生成器"></a>生成器</h1><p>在 Python 中，使用了 yield 的函数被称为生成器（generator）。<br>跟普通函数不同的是，生成器是一个返回迭代器的函数，只能用于迭代操作，更简单点理解生成器就是一个迭代器。<br>在调用生成器运行的过程中，每次遇到 yield 时函数会暂停并保存当前所有的运行信息，返回 yield 的值, 并在下一次执行 next() 方法时从当前位置继续运行。<br>调用一个生成器函数，返回的是一个迭代器对象。<br>以下实例使用 yield 实现斐波那契数列：</p><pre><code>#!/usr/bin/python3import sysdef fibonacci(n): # 生成器函数 - 斐波那契    a, b, counter = 0, 1, 0    while True:        if (counter &gt; n):             return        yield a        a, b = b, a + b        counter += 1f = fibonacci(10) # f 是一个迭代器，由生成器返回生成while True:    try:        print (next(f), end=&quot; &quot;)    except StopIteration:        sys.exit()执行以上程序，输出结果如下：0 1 1 2 3 5 8 13 21 34 55</code></pre>]]></content>
+      
+      
       <categories>
-        <category>基础进阶-Linux</category>
+          
+          <category> 基础进阶 </category>
+          
       </categories>
-      <tags>
-        <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>条件循环和判断-PYTHON</title>
-    <url>/2020/03/19/%E6%9D%A1%E4%BB%B6%E5%BE%AA%E7%8E%AF%E5%92%8C%E5%88%A4%E6%96%AD-PYTHON/</url>
-    <content><![CDATA[<p>条件判断的重要值是True和False，注意首字母大写，示例如下：</p>
-<a id="more"></a>
-<pre><code>if True:
-    print(&quot;真&quot;)
-else:
-    print(&quot;假&quot;)
-# 输出：真</code></pre><h1 id="非真判断"><a href="#非真判断" class="headerlink" title="非真判断"></a>非真判断</h1><p>非真判断使用not关键字，示例如下：</p>
-<pre><code>if not True:
-    print(&quot;True&quot;)
-else:
-    print(&quot;False&quot;)
-# 输出：False</code></pre><h1 id="多情况判断"><a href="#多情况判断" class="headerlink" title="多情况判断"></a>多情况判断</h1><p>多情况判断使用if/elif/else，示例如下：</p>
-<pre><code>age = 18
-if age &lt; 16:
-    print(&quot;青少年&quot;)
-elif age &lt; 18:
-    print(&quot;青年&quot;)
-elif age &lt; 60:
-    print(&quot;成人&quot;)
-else:
-    print(&quot;老年&quot;)
-# 输出：成人</code></pre><p>python用空格缩进代表代码块，所以要主要代码缩进.</p>
-<h1 id="满足多条件"><a href="#满足多条件" class="headerlink" title="满足多条件"></a>满足多条件</h1><p>使用and关键字，示例如下：</p>
-<pre><code>age = 18
-name = &quot;laowang&quot;
-if age == 18 and name == &quot;laowang&quot;:
-    print(&quot;良好少年&quot;)
-else:
-    print(&quot;不良少年&quot;)
-# 输出：良好少年</code></pre><h1 id="至少满足一种条件"><a href="#至少满足一种条件" class="headerlink" title="至少满足一种条件"></a>至少满足一种条件</h1><p>使用or关键字，示例如下：</p>
-<pre><code>age = 18
-name = &quot;laowang&quot;
-if age == 18 or name == &quot;xiaoli&quot;:
-    print(&quot;良好少年&quot;)
-else:
-    print(&quot;不良少年&quot;)
-# 输出：良好少年</code></pre><p><strong>False值</strong><br>python中0、空字符串、空列表、空元祖值、空字典都为false.</p>
-<h2 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h2><p><strong>for循环</strong><br>基础示例如下：</p>
-<pre><code>list = [&quot;focus&quot;, &quot;mouse&quot;, &quot;click&quot;]
-for item in list:
-    print(item)
-# 输出：focus
-# 输出：mouse
-# 输出：click</code></pre><h1 id="break跳出循环"><a href="#break跳出循环" class="headerlink" title="break跳出循环"></a>break跳出循环</h1><pre><code>list = [&quot;focus&quot;, &quot;mouse&quot;, &quot;click&quot;]
-for item in list:
-    if item == &quot;mouse&quot;:
-        break
-    print(item)
-# 输出：focus</code></pre><h1 id="continue跳过该次循环"><a href="#continue跳过该次循环" class="headerlink" title="continue跳过该次循环"></a>continue跳过该次循环</h1><pre><code>list = [&quot;focus&quot;, &quot;mouse&quot;, &quot;click&quot;]
-for item in list:
-    if item == &quot;mouse&quot;:
-        continue
-    print(item)
-# 输出：focus
-# 输出：click</code></pre><h1 id="使用enumerate获取下标"><a href="#使用enumerate获取下标" class="headerlink" title="使用enumerate获取下标"></a>使用enumerate获取下标</h1><pre><code>list = [&quot;focus&quot;, &quot;mouse&quot;, &quot;click&quot;]
-for index, item in enumerate(list):
-    print(&quot;index:{} item:{}&quot;.format(index, item))
-# 输出如下：
-# index:0 item:focus
-# index:1 item:mouse
-# index:2 item:click</code></pre><h1 id="while循环"><a href="#while循环" class="headerlink" title="while循环"></a>while循环</h1><p>基础示例如下：</p>
-<pre><code>num = 1
-while num &lt; 3:
-    print(num)
-    num = num+1
-# 输出：1
-# 输出：2</code></pre><p>在while中break和continue同样有效，和上文for循环作用相同，请参考上文。</p>
-]]></content>
+      
+      
+        <tags>
+            
+            <tag> Python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>多线程-PYTHON</title>
+      <link href="/2020/03/20/%E5%A4%9A%E7%BA%BF%E7%A8%8B-PYTHON/"/>
+      <url>/2020/03/20/%E5%A4%9A%E7%BA%BF%E7%A8%8B-PYTHON/</url>
+      
+        <content type="html"><![CDATA[<p>Python 多线程Threading<br>任何进程默认就会启动一个线程，我们把该线程称为主线程，主线程又可以启动新的线程，Python的threading模块有个current_thread()函数，它永远返回当前线程的实例。主线程实例的名字叫MainThread，子线程的名字在创建时指定，我们用LoopThread命名子线程。</p><a id="more"></a><p>多线程类似于同时执行多个不同程序，多线程运行有如下优点：</p><p>使用线程可以把占据长时间的程序中的任务放到后台去处理。<br>用户界面可以更加吸引人，比如用户点击了一个按钮去触发某些事件的处理，可以弹出一个进度条来显示处理的进度<br>程序的运行速度可能加快<br>在一些等待的任务实现上如用户输入、文件读写和网络收发数据等，线程就比较有用了。在这种情况下我们可以释放一些珍贵的资源如内存占用等等。<br>线程在执行过程中与进程还是有区别的。每个独立的线程有一个程序运行的入口、顺序执行序列和程序的出口。但是线程不能够独立执行，必须依存在应用程序中，由应用程序提供多个线程执行控制。</p><p>每个线程都有他自己的一组CPU寄存器，称为线程的上下文，该上下文反映了线程上次运行该线程的CPU寄存器的状态。</p><p>指令指针和堆栈指针寄存器是线程上下文中两个最重要的寄存器，线程总是在进程得到上下文中运行的，这些地址都用于标志拥有线程的进程地址空间中的内存。</p><p>线程可以被抢占（中断）。<br>在其他线程正在运行时，线程可以暂时搁置（也称为睡眠） — 这就是线程的退让。<br>线程可以分为:</p><p>内核线程：由操作系统内核创建和撤销。<br>用户线程：不需要内核支持而在用户程序中实现的线程。<br>Python3 线程中常用的两个模块为：</p><p>_thread<br>threading(推荐使用)<br>thread 模块已被废弃。用户可以使用 threading 模块代替。所以，在 Python3 中不能再使用”thread” 模块。为了兼容性，Python3 将 thread 重命名为 “_thread”。</p><h1 id="开始学习Python线程"><a href="#开始学习Python线程" class="headerlink" title="开始学习Python线程"></a>开始学习Python线程</h1><p>Python中使用线程有两种方式：函数或者用类来包装线程对象。</p><p>函数式：调用 _thread 模块中的start_new_thread()函数来产生新线程。语法如下:</p><p>_thread.start_new_thread ( function, args[, kwargs] )</p><h1 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明:"></a>参数说明:</h1><p>function – 线程函数。<br>args – 传递给线程函数的参数,他必须是个tuple类型。<br>kwargs – 可选参数。<br>实例：</p><pre><code>#!/usr/bin/python3import _threadimport time# 为线程定义一个函数def print_time( threadName, delay):   count = 0   while count &lt; 5:      time.sleep(delay)      count += 1      print (&quot;%s: %s&quot; % ( threadName, time.ctime(time.time()) ))# 创建两个线程 try:   _thread.start_new_thread( print_time, (&quot;Thread-1&quot;, 2, ) )   _thread.start_new_thread( print_time, (&quot;Thread-2&quot;, 4, ) )except:   print (&quot;Error: 无法启动线程&quot;)while 1:   pass执行以上程序输出结果如下：Thread-1: Wed Apr  6 11:36:31 2016Thread-1: Wed Apr  6 11:36:33 2016Thread-2: Wed Apr  6 11:36:33 2016Thread-1: Wed Apr  6 11:36:35 2016Thread-1: Wed Apr  6 11:36:37 2016Thread-2: Wed Apr  6 11:36:37 2016Thread-1: Wed Apr  6 11:36:39 2016Thread-2: Wed Apr  6 11:36:41 2016Thread-2: Wed Apr  6 11:36:45 2016Thread-2: Wed Apr  6 11:36:49 2016执行以上程后可以按下 ctrl-c to 退出。</code></pre><h1 id="线程模块"><a href="#线程模块" class="headerlink" title="线程模块"></a>线程模块</h1><p>Python3 通过两个标准库 _thread 和 threading 提供对线程的支持。</p><p>_thread 提供了低级别的、原始的线程以及一个简单的锁，它相比于 threading 模块的功能还是比较有限的。</p><p>threading 模块除了包含 _thread 模块中的所有方法外，还提供的其他方法：</p><p>threading.currentThread(): 返回当前的线程变量。<br>threading.enumerate(): 返回一个包含正在运行的线程的list。正在运行指线程启动后、结束前，不包括启动前和终止后的线程。<br>threading.activeCount(): 返回正在运行的线程数量，与len(threading.enumerate())有相同的结果。<br>除了使用方法外，线程模块同样提供了Thread类来处理线程，Thread类提供了以下方法:</p><p>run(): 用以表示线程活动的方法。<br>start():启动线程活动。<br>join([time]): 等待至线程中止。这阻塞调用线程直至线程的join() 方法被调用中止-正常退出或者抛出未处理的异常-或者是可选的超时发生。<br>isAlive(): 返回线程是否活动的。<br>getName(): 返回线程名。<br>setName(): 设置线程名。</p><h1 id="使用-threading-模块创建线程"><a href="#使用-threading-模块创建线程" class="headerlink" title="使用 threading 模块创建线程"></a>使用 threading 模块创建线程</h1><p>我们可以通过直接从 threading.Thread 继承创建一个新的子类，并实例化后调用 start() 方法启动新线程，即它调用了线程的 run() 方法：</p><pre><code>#!/usr/bin/python3import threadingimport timeexitFlag = 0class myThread (threading.Thread):    def __init__(self, threadID, name, counter):        threading.Thread.__init__(self)        self.threadID = threadID        self.name = name        self.counter = counter    def run(self):        print (&quot;开始线程：&quot; + self.name)        print_time(self.name, self.counter, 5)        print (&quot;退出线程：&quot; + self.name)def print_time(threadName, delay, counter):    while counter:        if exitFlag:            threadName.exit()        time.sleep(delay)        print (&quot;%s: %s&quot; % (threadName, time.ctime(time.time())))        counter -= 1# 创建新线程thread1 = myThread(1, &quot;Thread-1&quot;, 1)thread2 = myThread(2, &quot;Thread-2&quot;, 2)# 开启新线程thread1.start()thread2.start()thread1.join()thread2.join()print (&quot;退出主线程&quot;)以上程序执行结果如下；开始线程：Thread-1开始线程：Thread-2Thread-1: Wed Apr  6 11:46:46 2016Thread-1: Wed Apr  6 11:46:47 2016Thread-2: Wed Apr  6 11:46:47 2016Thread-1: Wed Apr  6 11:46:48 2016Thread-1: Wed Apr  6 11:46:49 2016Thread-2: Wed Apr  6 11:46:49 2016Thread-1: Wed Apr  6 11:46:50 2016退出线程：Thread-1Thread-2: Wed Apr  6 11:46:51 2016Thread-2: Wed Apr  6 11:46:53 2016Thread-2: Wed Apr  6 11:46:55 2016退出线程：Thread-2退出主线程</code></pre><h1 id="线程同步"><a href="#线程同步" class="headerlink" title="线程同步"></a>线程同步</h1><p>如果多个线程共同对某个数据修改，则可能出现不可预料的结果，为了保证数据的正确性，需要对多个线程进行同步。</p><p>使用 Thread 对象的 Lock 和 Rlock 可以实现简单的线程同步，这两个对象都有 acquire 方法和 release 方法，对于那些需要每次只允许一个线程操作的数据，可以将其操作放到 acquire 和 release 方法之间。如下：</p><p>多线程的优势在于可以同时运行多个任务（至少感觉起来是这样）。但是当线程需要共享数据时，可能存在数据不同步的问题。</p><p>考虑这样一种情况：一个列表里所有元素都是0，线程”set”从后向前把所有元素改成1，而线程”print”负责从前往后读取列表并打印。</p><p>那么，可能线程”set”开始改的时候，线程”print”便来打印列表了，输出就成了一半0一半1，这就是数据的不同步。为了避免这种情况，引入了锁的概念。</p><p>锁有两种状态——锁定和未锁定。每当一个线程比如”set”要访问共享数据时，必须先获得锁定；如果已经有别的线程比如”print”获得锁定了，那么就让线程”set”暂停，也就是同步阻塞；等到线程”print”访问完毕，释放锁以后，再让线程”set”继续。</p><p>经过这样的处理，打印列表时要么全部输出0，要么全部输出1，不会再出现一半0一半1的尴尬场面。</p><p>实例：</p><pre><code>#!/usr/bin/python3import threadingimport timeclass myThread (threading.Thread):    def __init__(self, threadID, name, counter):        threading.Thread.__init__(self)        self.threadID = threadID        self.name = name        self.counter = counter    def run(self):        print (&quot;开启线程： &quot; + self.name)        # 获取锁，用于线程同步        threadLock.acquire()        print_time(self.name, self.counter, 3)        # 释放锁，开启下一个线程        threadLock.release()def print_time(threadName, delay, counter):    while counter:        time.sleep(delay)        print (&quot;%s: %s&quot; % (threadName, time.ctime(time.time())))        counter -= 1threadLock = threading.Lock()threads = []# 创建新线程thread1 = myThread(1, &quot;Thread-1&quot;, 1)thread2 = myThread(2, &quot;Thread-2&quot;, 2)# 开启新线程thread1.start()thread2.start()# 添加线程到线程列表threads.append(thread1)threads.append(thread2)# 等待所有线程完成for t in threads:    t.join()print (&quot;退出主线程&quot;)执行以上程序，输出结果为：开启线程： Thread-1开启线程： Thread-2Thread-1: Wed Apr  6 11:52:57 2016Thread-1: Wed Apr  6 11:52:58 2016Thread-1: Wed Apr  6 11:52:59 2016Thread-2: Wed Apr  6 11:53:01 2016Thread-2: Wed Apr  6 11:53:03 2016Thread-2: Wed Apr  6 11:53:05 2016退出主线程</code></pre><h1 id="线程优先级队列（-Queue）"><a href="#线程优先级队列（-Queue）" class="headerlink" title="线程优先级队列（ Queue）"></a>线程优先级队列（ Queue）</h1><p>Python 的 Queue 模块中提供了同步的、线程安全的队列类，包括FIFO（先入先出)队列Queue，LIFO（后入先出）队列LifoQueue，和优先级队列 PriorityQueue。</p><p>这些队列都实现了锁原语，能够在多线程中直接使用，可以使用队列来实现线程间的同步。</p><p>Queue 模块中的常用方法:</p><pre><code>Queue.qsize() 返回队列的大小Queue.empty() 如果队列为空，返回True,反之FalseQueue.full() 如果队列满了，返回True,反之FalseQueue.full 与 maxsize 大小对应Queue.get([block[, timeout]])获取队列，timeout等待时间Queue.get_nowait() 相当Queue.get(False)Queue.put(item) 写入队列，timeout等待时间Queue.put_nowait(item) 相当Queue.put(item, False)Queue.task_done() 在完成一项工作之后，Queue.task_done()函数向任务已经完成的队列发送一个信号Queue.join() 实际上意味着等到队列为空，再执行别的操作</code></pre><p>实例:</p><pre><code>#!/usr/bin/python3import queueimport threadingimport timeexitFlag = 0class myThread (threading.Thread):    def __init__(self, threadID, name, q):        threading.Thread.__init__(self)        self.threadID = threadID        self.name = name        self.q = q    def run(self):        print (&quot;开启线程：&quot; + self.name)        process_data(self.name, self.q)        print (&quot;退出线程：&quot; + self.name)def process_data(threadName, q):    while not exitFlag:        queueLock.acquire()        if not workQueue.empty():            data = q.get()            queueLock.release()            print (&quot;%s processing %s&quot; % (threadName, data))        else:            queueLock.release()        time.sleep(1)threadList = [&quot;Thread-1&quot;, &quot;Thread-2&quot;, &quot;Thread-3&quot;]nameList = [&quot;One&quot;, &quot;Two&quot;, &quot;Three&quot;, &quot;Four&quot;, &quot;Five&quot;]queueLock = threading.Lock()workQueue = queue.Queue(10)threads = []threadID = 1# 创建新线程for tName in threadList:    thread = myThread(threadID, tName, workQueue)    thread.start()    threads.append(thread)    threadID += 1# 填充队列queueLock.acquire()for word in nameList:    workQueue.put(word)queueLock.release()# 等待队列清空while not workQueue.empty():    pass# 通知线程是时候退出exitFlag = 1# 等待所有线程完成for t in threads:    t.join()print (&quot;退出主线程&quot;)以上程序执行结果：开启线程：Thread-1开启线程：Thread-2开启线程：Thread-3Thread-3 processing OneThread-1 processing TwoThread-2 processing ThreeThread-3 processing FourThread-1 processing Five退出线程：Thread-3退出线程：Thread-2退出线程：Thread-1退出主线程</code></pre>]]></content>
+      
+      
       <categories>
-        <category>基础常识</category>
+          
+          <category> 基础进阶 </category>
+          
       </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>时间模块-PYTHON</title>
-    <url>/2020/03/19/%E6%97%B6%E9%97%B4%E6%A8%A1%E5%9D%97-PYTHON/</url>
-    <content><![CDATA[<p>python中使用时间需要导入time模块，使用time.time()方法获取当前时间戳，示例如下：</p>
-<a id="more"></a>
-<pre><code># 导入time模块
-import time
-
-print(time.time())
-# 输出：1523584077.842348
-</code></pre><h2 id="格式化时间"><a href="#格式化时间" class="headerlink" title="格式化时间"></a>格式化时间</h2><p>格式化时间，使用time中的strftime()，示例如下：</p>
-<pre><code># 导入time模块
-import time
-
-print(time.time())
-# 输出：1523584077.842348
-
-print(time.localtime(time.time()))
-# 输出：time.struct_time(tm_year=2018, tm_mon=4, tm_mday=13, tm_hour=9, tm_min=50, tm_sec=12, tm_wday=4, tm_yday=103, tm_isdst=0)
-
-# 时间格式化
-print(time.strftime(&quot;%Y-%m-%d %H:%M:%S&quot;, time.localtime(time.time())))
-# 输出：2018-04-13 09:52:10</code></pre><p><strong>程序计时器</strong></p>
-<p>使用场景：有时候我们需要计算程序的运行时长，使用以下代码：</p>
-<pre><code>import datetime
-import time
-
-#开始计时
-startTime = datetime.datetime.now()
-
-time.sleep(1)
-
-#结束计时
-endTime = datetime.datetime.now()
-print(endTime - startTime)
-#输出：0:00:01.000791</code></pre><h2 id="格式化符号说明"><a href="#格式化符号说明" class="headerlink" title="格式化符号说明"></a>格式化符号说明</h2><p>%y 两位数的年份表示（00-99）</p>
-<p>%Y 四位数的年份表示（000-9999）</p>
-<p>%m 月份（01-12）</p>
-<p>%d 月内中的一天（0-31）</p>
-<p>%H 24小时制小时数（0-23）</p>
-<p>%I 12小时制小时数（01-12）</p>
-<p>%M 分钟数（00=59）</p>
-<p>%S 秒（00-59）</p>
-<p>%a 本地简化星期名称</p>
-<p>%A 本地完整星期名称</p>
-<p>%b 本地简化的月份名称</p>
-<p>%B 本地完整的月份名称</p>
-<p>%c 本地相应的日期表示和时间表示</p>
-<p>%j 年内的一天（001-366）</p>
-<p>%p 本地A.M.或P.M.的等价符</p>
-<p>%U 一年中的星期数（00-53）星期天为星期的开始</p>
-<p>%w 星期（0-6），星期天为星期的开始</p>
-<p>%W 一年中的星期数（00-53）星期一为星期的开始</p>
-<p>%x 本地相应的日期表示</p>
-<p>%X 本地相应的时间表示</p>
-<p>%Z 当前时区的名称</p>
-<p>%% %号本身</p>
-]]></content>
+      
+      
+        <tags>
+            
+            <tag> Python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>错误和异常-PYTHON</title>
+      <link href="/2020/03/19/%E9%94%99%E8%AF%AF%E5%92%8C%E5%BC%82%E5%B8%B8-PYTHON/"/>
+      <url>/2020/03/19/%E9%94%99%E8%AF%AF%E5%92%8C%E5%BC%82%E5%B8%B8-PYTHON/</url>
+      
+        <content type="html"><![CDATA[<p>Python 错误和异常<br>Python内置了一套异常处理机制，来帮助我们进行错误处理。<br>代码运行前的语法或逻辑错误<br>语法错误在执行前修改，逻辑错误无法修改<br>异常分为两个步骤：<br>异常产生，检查到错误且解释器认为是异常，抛出异常<br>异常处理，截获异常，忽略或终止程序处理异常</p><a id="more"></a><p>Python有两种错误很容易辨认：语法错误和异常。</p><h1 id="语法错误"><a href="#语法错误" class="headerlink" title="语法错误"></a>语法错误</h1><p>Python 的语法错误或者称之为解析错，是初学者经常碰到的，如下实例</p><blockquote><blockquote><blockquote><p>while True print(‘Hello world’)<br>  File “<stdin>“, line 1, in ?<br>    while True print(‘Hello world’)<br>                   ^<br>SyntaxError: invalid syntax<br>这个例子中，函数 print() 被检查到有错误，是它前面缺少了一个冒号（:）。<br>语法分析器指出了出错的一行，并且在最先找到的错误的位置标记了一个小小的箭头。</stdin></p></blockquote></blockquote></blockquote><h1 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h1><p>即便Python程序的语法是正确的，在运行它的时候，也有可能发生错误。运行期检测到的错误被称为异常。<br>大多数的异常都不会被程序处理，都以错误信息的形式展现在这里:</p><blockquote><blockquote><blockquote><p>10 * (1/0)<br>Traceback (most recent call last):<br>  File “<stdin>“, line 1, in ?<br>ZeroDivisionError: division by zero<br>4 + spam*3<br>Traceback (most recent call last):<br>  File “<stdin>“, line 1, in ?<br>NameError: name ‘spam’ is not defined<br>‘2’ + 2<br>Traceback (most recent call last):<br>  File “<stdin>“, line 1, in ?<br>TypeError: Can’t convert ‘int’ object to str implicitly<br>异常以不同的类型出现，这些类型都作为信息的一部分打印出来: 例子中的类型有 ZeroDivisionError，NameError 和 TypeError。<br>错误信息的前面部分显示了异常发生的上下文，并以调用栈的形式显示具体信息。</stdin></stdin></stdin></p></blockquote></blockquote></blockquote><h1 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h1><p>以下例子中，让用户输入一个合法的整数，但是允许用户中断这个程序（使用 Control-C 或者操作系统提供的方法）。用户中断的信息会引发一个 KeyboardInterrupt 异常。</p><blockquote><blockquote><blockquote><p>while True:<br>        try:<br>            x = int(input(“Please enter a number: “))<br>            break<br>        except ValueError:<br>            print(“Oops!  That was no valid number.  Try again   “)<br>try语句按照如下方式工作；</p></blockquote></blockquote></blockquote><p>首先，执行try子句（在关键字try和关键字except之间的语句）<br>如果没有异常发生，忽略except子句，try子句执行后结束。<br>如果在执行try子句的过程中发生了异常，那么try子句余下的部分将被忽略。如果异常的类型和 except 之后的名称相符，那么对应的except子句将被执行。最后执行 try 语句之后的代码。<br>如果一个异常没有与任何的except匹配，那么这个异常将会传递给上层的try中。<br>一个 try 语句可能包含多个except子句，分别来处理不同的特定的异常。最多只有一个分支会被执行。<br>处理程序将只针对对应的try子句中的异常进行处理，而不是其他的 try 的处理程序中的异常。<br>一个except子句可以同时处理多个异常，这些异常将被放在一个括号里成为一个元组，例如:</p><p>except (RuntimeError, TypeError, NameError):<br>        pass<br>最后一个except子句可以忽略异常的名称，它将被当作通配符使用。你可以使用这种方法打印一个错误信息，然后再次把异常抛出。</p><p>import sys</p><p>try:<br>    f = open(‘myfile.txt’)<br>    s = f.readline()<br>    i = int(s.strip())<br>except OSError as err:<br>    print(“OS error: {0}”.format(err))<br>except ValueError:<br>    print(“Could not convert data to an integer.”)<br>except:<br>    print(“Unexpected error:”, sys.exc_info()[0])<br>    raise<br>try except 语句还有一个可选的else子句，如果使用这个子句，那么必须放在所有的except子句之后。这个子句将在try子句没有发生任何异常的时候执行。例如:</p><p>for arg in sys.argv[1:]:<br>    try:<br>        f = open(arg, ‘r’)<br>    except IOError:<br>        print(‘cannot open’, arg)<br>    else:<br>        print(arg, ‘has’, len(f.readlines()), ‘lines’)<br>        f.close()<br>使用 else 子句比把所有的语句都放在 try 子句里面要好，这样可以避免一些意想不到的、而except又没有捕获的异常。</p><p>异常处理并不仅仅处理那些直接发生在try子句中的异常，而且还能处理子句中调用的函数（甚至间接调用的函数）里抛出的异常。例如:</p><blockquote><blockquote><blockquote><p>def this_fails():<br>        x = 1/0</p></blockquote></blockquote></blockquote><blockquote><blockquote><blockquote><p>try:<br>        this_fails()<br>    except ZeroDivisionError as err:<br>        print(‘Handling run-time error:’, err)</p></blockquote></blockquote></blockquote><p>Handling run-time error: int division or modulo by zero</p><h1 id="抛出异常"><a href="#抛出异常" class="headerlink" title="抛出异常"></a>抛出异常</h1><p>Python 使用 raise 语句抛出一个指定的异常。例如:</p><blockquote><blockquote><blockquote><p>raise NameError(‘HiThere’)<br>Traceback (most recent call last):<br>  File “<stdin>“, line 1, in ?<br>NameError: HiThere<br>raise 唯一的一个参数指定了要被抛出的异常。它必须是一个异常的实例或者是异常的类（也就是 Exception 的子类）。</stdin></p></blockquote></blockquote></blockquote><p>如果你只想知道这是否抛出了一个异常，并不想去处理它，那么一个简单的 raise 语句就可以再次把它抛出。</p><blockquote><blockquote><blockquote><p>try:<br>        raise NameError(‘HiThere’)<br>    except NameError:<br>        print(‘An exception flew by!’)<br>        raise</p></blockquote></blockquote></blockquote><p>An exception flew by!<br>Traceback (most recent call last):<br>  File “<stdin>“, line 2, in ?<br>NameError: HiThere</stdin></p><h1 id="用户自定义异常"><a href="#用户自定义异常" class="headerlink" title="用户自定义异常"></a>用户自定义异常</h1><p>你可以通过创建一个新的异常类来拥有自己的异常。异常类继承自 Exception 类，可以直接继承，或者间接继承，例如:</p><blockquote><blockquote><blockquote><p>class MyError(Exception):<br>        def <strong>init</strong>(self, value):<br>            self.value = value<br>        def <strong>str</strong>(self):<br>            return repr(self.value)</p></blockquote></blockquote></blockquote><blockquote><blockquote><blockquote><p>try:<br>        raise MyError(2*2)<br>    except MyError as e:<br>        print(‘My exception occurred, value:’, e.value)</p></blockquote></blockquote></blockquote><p>My exception occurred, value: 4</p><blockquote><blockquote><blockquote><p>raise MyError(‘oops!’)<br>Traceback (most recent call last):<br>  File “<stdin>“, line 1, in ?<br><strong>main</strong>.MyError: ‘oops!’<br>在这个例子中，类 Exception 默认的 <strong>init</strong>() 被覆盖。</stdin></p></blockquote></blockquote></blockquote><p>当创建一个模块有可能抛出多种不同的异常时，一种通常的做法是为这个包建立一个基础异常类，然后基于这个基础类为不同的错误情况创建不同的子类:</p><p>class Error(Exception):<br>    “””Base class for exceptions in this module.”””<br>    pass</p><p>class InputError(Error):<br>    “””Exception raised for errors in the input.</p><pre><code>Attributes:    expression -- input expression in which the error occurred    message -- explanation of the error&quot;&quot;&quot;def __init__(self, expression, message):    self.expression = expression    self.message = message</code></pre><p>class TransitionError(Error):<br>    “””Raised when an operation attempts a state transition that’s not<br>    allowed.</p><pre><code>Attributes:    previous -- state at beginning of transition    next -- attempted new state    message -- explanation of why the specific transition is not allowed&quot;&quot;&quot;def __init__(self, previous, next, message):    self.previous = previous    self.next = next    self.message = message</code></pre><p>大多数的异常的名字都以”Error”结尾，就跟标准的异常命名一样。</p><h1 id="定义清理行为"><a href="#定义清理行为" class="headerlink" title="定义清理行为"></a>定义清理行为</h1><p>try 语句还有另外一个可选的子句，它定义了无论在任何情况下都会执行的清理行为。 例如:</p><blockquote><blockquote><blockquote><p>try:<br>…     raise KeyboardInterrupt<br>… finally:<br>…     print(‘Goodbye, world!’)<br>…<br>Goodbye, world!<br>Traceback (most recent call last):<br>  File “<stdin>“, line 2, in <module><br>KeyboardInterrupt<br>以上例子不管 try 子句里面有没有发生异常，finally 子句都会执行。</module></stdin></p></blockquote></blockquote></blockquote><p>如果一个异常在 try 子句里（或者在 except 和 else 子句里）被抛出，而又没有任何的 except 把它截住，那么这个异常会在 finally 子句执行后被抛出。</p><p>下面是一个更加复杂的例子（在同一个 try 语句里包含 except 和 finally 子句）:</p><blockquote><blockquote><blockquote><p>def divide(x, y):<br>        try:<br>            result = x / y<br>        except ZeroDivisionError:<br>            print(“division by zero!”)<br>        else:<br>            print(“result is”, result)<br>        finally:<br>            print(“executing finally clause”)</p></blockquote></blockquote></blockquote><blockquote><blockquote><blockquote><p>divide(2, 1)<br>result is 2.0<br>executing finally clause<br>divide(2, 0)<br>division by zero!<br>executing finally clause<br>divide(“2”, “1”)<br>executing finally clause<br>Traceback (most recent call last):<br>  File “<stdin>“, line 1, in ?<br>  File “<stdin>“, line 3, in divide<br>TypeError: unsupported operand type(s) for /: ‘str’ and ‘str’</stdin></stdin></p></blockquote></blockquote></blockquote><h1 id="预定义的清理行为"><a href="#预定义的清理行为" class="headerlink" title="预定义的清理行为"></a>预定义的清理行为</h1><p>一些对象定义了标准的清理行为，无论系统是否成功的使用了它，一旦不需要它了，那么这个标准的清理行为就会执行。<br>下面这个例子展示了尝试打开一个文件，然后把内容打印到屏幕上:</p><p>for line in open(“myfile.txt”):<br>    print(line, end=””)<br>以上这段代码的问题是，当执行完毕后，文件会保持打开状态，并没有被关闭。</p><p>关键词 with 语句就可以保证诸如文件之类的对象在使用完之后一定会正确的执行他的清理方法:</p><p>with open(“myfile.txt”) as f:<br>    for line in f:<br>        print(line, end=””)<br>以上这段代码执行完毕后，就算在处理过程中出问题了，文件 f 总是会关闭。</p>]]></content>
+      
+      
       <categories>
-        <category>基础常识</category>
+          
+          <category> 基础进阶 </category>
+          
       </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>文件操作-PYTHON</title>
-    <url>/2020/03/19/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C-PYTHON/</url>
-    <content><![CDATA[<h2 id="读取文件"><a href="#读取文件" class="headerlink" title="读取文件"></a>读取文件</h2><p>读取文件使用python内置方法open()打开文件，使用.read()读取全部内容，示例如下：</p>
-<a id="more"></a>
-<pre><code>path = &quot;c:\py.txt&quot;
-fi = open(path, &quot;r&quot;)
-print(fi.read())
-fi.close()</code></pre><p><strong>with语法</strong></p>
-<p>with是python2.5引入的自动释放资源的语法模式，确保使用过程中不管是否发生了异常，都会释放资源.<br>使用with读取文件，是不需要自己手动close的，示例如下：</p>
-<pre><code>with open(path) as fi:
-    print(fi.read())</code></pre><p><strong>逐行读取文件</strong><br>.read()是读取文件的全部内容，使用.readlines()，示例如下：</p>
-<pre><code>with open(path, &quot;r&quot;) as fi:
-    lines = fi.readlines()
-print(len(lines))</code></pre><p><strong>open方法的模式</strong></p>
-<p>上面的示例可以看出来，open(目录,操作模式)的时候必须指定操作模式，open的操作模式：</p>
-<blockquote>
-<p>读取模式：’r’(默认模式) | 写入模式：’w’ | 附加模式：’a’.</p>
-</blockquote>
-<p>python模式是读取，所以”r”可以省略，示例如下：</p>
-<pre><code>path = &quot;c:\py.txt&quot;
-fi = open(path)
-print(fi.read())
-fi.close()</code></pre><h2 id="文件写入"><a href="#文件写入" class="headerlink" title="文件写入"></a>文件写入</h2><p>文件写入分为两种方式，一种是覆盖(w)，另一种是追加(a)。</p>
-<p>文件覆盖的写入，代码如下：</p>
-<pre><code>with open(path, &quot;w&quot;) as fi:
-    fi.write(&quot;第一行\n第二行\n第三行&quot;)</code></pre><p>文件的追加，代码如下：</p>
-<pre><code>with open(path, &quot;a&quot;) as fi:
-    fi.write(&quot;\n第1行\n第2行\n第3行&quot;)</code></pre><blockquote>
-<p>注意：文件写入，如果文件不存在会重建，不会报错。</p>
-</blockquote>
-<h2 id="更多文件操作"><a href="#更多文件操作" class="headerlink" title="更多文件操作"></a>更多文件操作</h2><p>os.getcwd()：获取当前运行目录</p>
-<p>os.listdir(path)：获取指定目录下的列表</p>
-<p>os.path.exists(path)：检查是否存在文件或文件夹</p>
-<p>os.mkdir(path)：创建文件夹，已经存在文件会报错</p>
-<p>os.remove(path)：删除文件夹，只能删除文件夹</p>
-<p>os.rename(old, new)：文件重命名</p>
-<p>示例如下：</p>
-<pre><code>import os
-
-# 获取当前程序运行目录
-print(os.getcwd())
-
-# 获取指定目录下的列表
-print(os.listdir(&quot;E:\\server&quot;))
-
-# 检查是否存在文件或文件夹
-print(os.path.exists(&quot;E:\\test\\a.txt&quot;))
-
-# 创建文件夹，已经存在文件会报错
-os.mkdir(&quot;E:\\test1&quot;)
-
-# 删除文件夹，只能删除文件夹
-os.remove(&quot;E:\\test1&quot;)
-
-# 文件重命名
-os.rename(&quot;E:\\test\\a.txt&quot;, &quot;E:\\test\\b.txt&quot;)
-</code></pre>]]></content>
+      
+      
+        <tags>
+            
+            <tag> Python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>安装常用工具包-LINUX</title>
+      <link href="/2020/03/19/%E5%AE%89%E8%A3%85%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%8C%85-LINUX/"/>
+      <url>/2020/03/19/%E5%AE%89%E8%A3%85%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%8C%85-LINUX/</url>
+      
+        <content type="html"><![CDATA[<p>全部操作都在root用户下执行</p><a id="more"></a><h1 id="安装编译相关工具"><a href="#安装编译相关工具" class="headerlink" title="安装编译相关工具"></a>安装编译相关工具</h1><p>yum -y groupinstall “Development tools”<br>yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel<br>yum install libffi-devel -y<br>2.下载安装包解压<br>wget <a href="https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz" target="_blank" rel="noopener">https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz</a><br>tar -xvJf  Python-3.7.0.tar.xz<br>3.编译安装<br>mkdir /usr/local/python3 #创建编译安装目录<br>cd Python-3.7.0<br>./configure –prefix=/usr/local/python3<br>make &amp;&amp; make install<br>4.创建软连接<br>ln -s /usr/local/python3/bin/python3 /usr/local/bin/python3<br>ln -s /usr/local/python3/bin/pip3 /usr/local/bin/pip3<br>5.验证是否成功<br>python3 -V<br>pip3 -V</p><h1 id="添加Nginx的源"><a href="#添加Nginx的源" class="headerlink" title="添加Nginx的源"></a>添加Nginx的源</h1><p>rpm -Uvh <a href="http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm" target="_blank" rel="noopener">http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm</a></p><h1 id="安装Nginx"><a href="#安装Nginx" class="headerlink" title="安装Nginx"></a>安装Nginx</h1><p>yum install -y nginx<br>安装成功后，配置文件目录为/etc/nginx</p><h1 id="启动Nginx"><a href="#启动Nginx" class="headerlink" title="启动Nginx"></a>启动Nginx</h1><p>systemctl start nginx.service #启动Nginx<br>systemctl enable nginx.service #设置开机自启</p><h1 id="yum安装redis"><a href="#yum安装redis" class="headerlink" title="yum安装redis"></a>yum安装redis</h1><p>yum install -y epel-release<br>yum install -y redis</p><h1 id="启动redis"><a href="#启动redis" class="headerlink" title="启动redis"></a>启动redis</h1><p>service redis start #启动redis<br>service redis status #查看redis状态</p><hr><p>ps -ef | grep redis #查看redis进程<br>service redis stop #停止redis</p><h1 id="设置开机自启"><a href="#设置开机自启" class="headerlink" title="设置开机自启"></a>设置开机自启</h1><p>chkconfig redis on</p><h1 id="修改redis配置"><a href="#修改redis配置" class="headerlink" title="修改redis配置"></a>修改redis配置</h1><p>vim /etc/redis.conf<br>修改如下内容:</p><p>port 6379 #启动端口<br>requirepass 111111 #访问密码<br>重启redis</p><p>service redis restart<br>登录redis<br>注: 127.0.0.1:6379&gt;为redis数据库前缀</p><p>redis-cli #登录redis<br>127.0.0.1:6379&gt; auth 111111 #认证登录<br>127.0.0.1:6379&gt; keys * #查看当前的key</p><h1 id="下载安装mysql-yum-源"><a href="#下载安装mysql-yum-源" class="headerlink" title="下载安装mysql yum 源"></a>下载安装mysql yum 源</h1><p>wget -i -c <a href="http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm" target="_blank" rel="noopener">http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm</a><br>yum install -y mysql57-community-release-el7-10.noarch.rpm<br>安装mysql并启动<br>yum install -y mysql-community-server #安装mysql<br>systemctl start  mysqld.service #启动<br>systemctl status mysqld.service #查看运行状态<br>登录mysql<br>grep “password” /var/log/mysqld.log #查看mysql生成的密码<br>mysql -uroot -p #以root用户登录mysql<br>修改root密码<br>注: mysql&gt; 为提示符；新密码需符合：包含字母大小写、特殊符和数字，且位数大于4</p><p>mysql&gt; ALTER USER ‘root’@’localhost’ IDENTIFIED BY ‘new password’;<br> 授权root用户远程访问<br>mysql&gt; use mysql;<br>mysql&gt; grant all privileges  on <em>.</em> to root@’%’ identified by “password”;<br>mysql&gt; flush privileges;</p><h1 id="下载sqlite安装包"><a href="#下载sqlite安装包" class="headerlink" title="下载sqlite安装包"></a>下载sqlite安装包</h1><p>cd /opt<br>wget <a href="http://www.sqlite.org/2015/sqlite-autoconf-3081101.tar.gz" target="_blank" rel="noopener">http://www.sqlite.org/2015/sqlite-autoconf-3081101.tar.gz</a> #下载安装包<br>tar zxvf sqlite-autoconf-3081101.tar.gz  #进行解压<br>3.编译安装<br>cd sqlite-autoconf-3081101/<br>./configure<br>make &amp;&amp; make install<br>yum install sqlite-devel<br>4.链接sqlite3<br>cd #回到用户目录<br>sqlite3 #链接sqlite3</p><p>5.退出sqlite3<br>sqlite3链接成功后，执行如下：</p><p>sqlite&gt; .quit #退出sqlite3</p>]]></content>
+      
+      
       <categories>
-        <category>基础常识</category>
+          
+          <category> 基础-Linux </category>
+          
       </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>内置模块---PYTHON</title>
-    <url>/2020/03/18/%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97-PYTHON/</url>
-    <content><![CDATA[<p>常用内置模块列表：</p>
-<ul>
-<li>os</li>
-<li>sys</li>
-<li>json</li>
-</ul>
-<a id="more"></a>
-
-<h1 id="os模块"><a href="#os模块" class="headerlink" title="os模块"></a>os模块</h1><p>os.getcwd() #获取当前程序目录</p>
-<p>os.listdir(‘dirname’) #列出指定目录下的所有文件和子目录，包括隐藏文件，并以列表方式打印</p>
-<p>os.remove() #删除一个文件</p>
-<p>os.rename(“oldname”,”newname”) #重命名文件/目录</p>
-<p>os.path.isfile(path) #如果path是一个存在的文件，返回True，否则返回False</p>
-<p>os.path.exists(path) #如果path存在，返回True；如果path不存在，返回False</p>
-<p>os.path.getatime(path) #返回path所指向的文件或者目录的最后存取时间</p>
-<p>os.path.getmtime(path) #返回path所指向的文件或者目录的最后修改时间</p>
-<h1 id="sys模块"><a href="#sys模块" class="headerlink" title="sys模块"></a>sys模块</h1><p>sys.exit(n) #退出程序，正常退出时exit(0)</p>
-<p>sys.version  #获取Python解释程序的版本信息</p>
-<p>sys.maxint #最大的Int值</p>
-<p>sys.platform #返回操作系统平台名称</p>
-<h1 id="json模块"><a href="#json模块" class="headerlink" title="json模块"></a>json模块</h1><p>json模块用于字符串 和 python数据类型间进行转换</p>
-<p>json模块提供了四个功能：dumps、dump、loads、load</p>
-<p>dumps、dump #把对象转换成str</p>
-<p>loads、load #把str转换成json</p>
-]]></content>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>垃圾回收gc</title>
-    <url>/2020/03/18/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6gc/</url>
-    <content><![CDATA[<hr>
-<p>python的垃圾收回机制不想c和c++是开发者自己管理维护内存的，python的垃圾回收是系统自己处理的，所以作为普通的开发者，我们不需要关注垃圾回收部分的内容，如果想要深层次理解python请继续看下文。</p>
-<a id="more"></a>
-
-<p><strong>python垃圾回收机制</strong><br>Python的GC模块主要运用了引用计数来跟踪和回收垃圾。在引用计数的基础上，还可以通过“标记－清除”解决容器对象可能产生的循环引用的问题。通过分代回收以空间换取时间进一步提高垃圾回收的效率。</p>
-<h2 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h2><p><strong>原理：</strong>当一个对象的引用被创建或者复制时，对象的引用计数加1；当一个对象的引用被销毁时，对象的引用计数减1，当对象的引用计数减少为0时，就意味着对象已经再没有被使用了，可以将其内存释放掉。</p>
-<p><strong>优点：</strong>引用计数有一个很大的优点，即实时性，任何内存，一旦没有指向它的引用，就会被立即回收，而其他的垃圾收集技术必须在某种特殊条件下才能进行无效内存的回收。</p>
-<p><strong>缺点：</strong>但是它也有弱点，引用计数机制所带来的维护引用计数的额外操作与Python运行中所进行的内存分配和释放，引用赋值的次数是成正比的，这显然比其它那些垃圾收集技术所带来的额外操作只是与待回收的内存数量有关的效率要低。同时，引用技术还存在另外一个很大的问题－循环引用，因为对象之间相互引用，每个对象的引用都不会为0，所以这些对象所占用的内存始终都不会被释放掉。</p>
-<h2 id="标记－清除"><a href="#标记－清除" class="headerlink" title="标记－清除"></a>标记－清除</h2><p>标记－清除只关注那些可能会产生循环引用的对象，显然，像是PyIntObject、PyStringObject这些不可变对象是不可能产生循环引用的，因为它们内部不可能持有其它对象的引用。Python中的循环引用总是发生在container对象之间，也就是能够在内部持有其它对象的对象，比如list、dict、class等等。这也使得该方法带来的开销只依赖于container对象的的数量。</p>
-<p><strong>原理：</strong></p>
-<ol>
-<li>寻找跟对象（root object）的集合作为垃圾检测动作的起点，跟对象也就是一些全局引用和函数栈中的引用，这些引用所指向的对象是不可被删除的；</li>
-<li>从root object集合出发，沿着root object集合中的每一个引用，如果能够到达某个对象，则说明这个对象是可达的，那么就不会被删除，这个过程就是垃圾检测阶段；</li>
-<li>当检测阶段结束以后，所有的对象就分成可达和不可达两部分，所有的可达对象都进行保留，其它的不可达对象所占用的内存将会被回收，这就是垃圾回收阶段。（底层采用的是链表将这些集合的对象连接在一起）；</li>
-</ol>
-<p><strong>缺点：</strong>标记和清除的过程效率不高。</p>
-<h2 id="分代回收"><a href="#分代回收" class="headerlink" title="分代回收"></a>分代回收</h2><p><strong>原理：</strong>将系统中的所有内存块根据其存活时间划分为不同的集合，每一个集合就成为一个“代”，Python默认定义了三代对象集合，垃圾收集的频率随着“代”的存活时间的增大而减小。也就是说，活得越长的对象，就越不可能是垃圾，就应该减少对它的垃圾收集频率。那么如何来衡量这个存活时间：通常是利用几次垃圾收集动作来衡量，如果一个对象经过的垃圾收集次数越多，可以得出：该对象存活时间就越长。</p>
-]]></content>
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>定时任务-LINUX</title>
+      <link href="/2020/03/19/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1-LINUX/"/>
+      <url>/2020/03/19/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1-LINUX/</url>
+      
+        <content type="html"><![CDATA[<h4 id="定时任务分为两种模式"><a href="#定时任务分为两种模式" class="headerlink" title="定时任务分为两种模式"></a>定时任务分为两种模式</h4><p> 1.系统级别的定时任务：临时文件清理、系统信息采集、日志文件切割<br> 2.用户级别的定时任务：定时向互联网同步时间、定时备份系统配置文件、定时备份数据库的数据 </p><a id="more"></a><h4 id="定时任务-标准规范"><a href="#定时任务-标准规范" class="headerlink" title="定时任务 标准规范"></a>定时任务 标准规范</h4><pre><code class="shell">[root@oldboy ~]# vim /etc/crontabSHELL=/bin/bash        执行命令的解释器PATH=/sbin:/bin:/usr/sbin:/usr/bin       环境变量MAILTO=root           邮件发给谁# For details see man 4 crontabs# Example of job definition:# .---------------- minute (0 - 59)     分钟# |  .------------- hour (0 - 23)     小时# |  |  .---------- day of month (1 - 31)     日期# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...        月份# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat  星期# |  |  |  |  |# *  *  *  *  * user-name  command to be executed *  表示任意的(分、时、日、月、周)时间都执行 -  表示一个时间范围段, 如5-7点 ,  表示分隔时段, 如6,0,4表示周六、日、四 /1 表示每隔n单位时间, 如*/10 每10分钟</code></pre><h4 id="常用的一些定时任务段"><a href="#常用的一些定时任务段" class="headerlink" title="常用的一些定时任务段"></a>常用的一些定时任务段</h4><pre><code class="shell">00 02 * * * ls      #每天的凌晨2点整执行00 02 1 * * ls      #每月的1日的凌晨2点整执行00 02 14 2 * ls     #每年的2月14日凌晨2点执行00 02 * * 7 ls      #每周天的凌晨2点整执行00 02 * 6 5 ls      #每年的6月周五凌晨2点执行00 02 14 * 7 ls     #每月14日或每周日的凌晨2点都执行00 02 14 2 7 ls     #每年的2月14日或每年2月的周天的凌晨2点执行   */10  02 * * * ls   #每天凌晨2点，每隔10分钟执行一次* * * * *  ls       #每分钟都执行00 00 14 2 *  ls    #每年2月14日的凌晨执行命令 */5 * * * *  ls     #每隔5分钟执行一次00 02 * 1,5,8 * ls  #每年的1月5月8月凌晨2点执行00 02 1-8 * *  ls    #每月1号到8号凌晨2点执行0 21 * * * ls       #每天晚上21:00执行45 4 1,10,22 * * ls #每月1、10、22日的4:45执行45 4 1-10 * * l     #每月1到10日的4:45执行3,15 8-11 */2 * * ls #每隔两天的上午8点到11点的第3和第15分钟执行0 23-7/1 * * * ls   #晚上11点到早上7点之间，每隔一小时执行15 21 * * 1-5 ls    #周一到周五每天晚上21:15执行</code></pre>]]></content>
+      
+      
       <categories>
-        <category>基础常识</category>
+          
+          <category> 基础进阶-Linux </category>
+          
       </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HTTP 模块</title>
-    <url>/2020/03/18/HTTP-%E6%A8%A1%E5%9D%97/</url>
-    <content><![CDATA[<p>python中的http/https请求使用urllib库，使用urllib的request模块的发送get和post请求。  </p>
-<a id="more"></a>
-<h2 id="get请求"><a href="#get请求" class="headerlink" title="get请求"></a>get请求</h2><p>请求网页地址并返回网页html内容，示例如下：</p>
-<pre><code>from urllib import request
-
-
-def getHtml(url):
-    with request.urlopen(url) as r:
-        data = r.read()
-        return data.decode(&quot;utf-8&quot;)
-
-
-print(getHtml(&quot;http://vipstone.cnblogs.com&quot;))</code></pre><p>对返回的数据进行编码处理data.decode(“utf-8”)即可。</p>
-<h2 id="post请求"><a href="#post请求" class="headerlink" title="post请求"></a>post请求</h2><p>post请求并传递参数，对参数进行encode处理，示例如下：</p>
-<pre><code>from urllib import request, parse
-
-
-params = parse.urlencode([(&quot;name&quot;, &quot;老王&quot;), (&quot;pwd&quot;, &quot;123456&quot;)])
-req = request.Request(&quot;http://127.0.0.1:8360/video/login&quot;)
-req.add_header(&quot;User-Agent&quot;, &quot;Mozilla/6.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/8.0 Mobile/10A5376e Safari/8536.25&quot;)
-
-with request.urlopen(req, data=params.encode(&quot;utf-8&quot;)) as r:
-    data = r.read()
-    print(data.decode(&quot;utf-8&quot;))</code></pre><p>如上所示，需要使用urllib的parse对参数进行编码处理，也可以给http头添加内容。</p>
-]]></content>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>人工智能三学派</title>
-    <url>/2020/03/17/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%89%E5%AD%A6%E6%B4%BE/</url>
-    <content><![CDATA[<p>人工智能：</p>
-<p>让机器具备人的思维和意识。</p>
-<p>人工智能三学派：</p>
-<a id="more"></a>
-
-<p>行为主义：基于控制论，构建感知-动作控制系统（控制论：平衡/行走/避障等自适应控制系统）</p>
-<p>符号主义：基于算术逻辑表达式，求解问题先把问题描述为表达式，在求解表达式。（可用公式描述，实现理性思维）</p>
-<p>连接主义：仿生学，模仿神经元连接关系（放脑神经元连接，实现感性思维，例如神经网络）</p>
-<p>用计算机仿出神经网络的连接关系让计算机具备感性思维。</p>
-<ol>
-<li>准备数据（采集大量“特征/标签”数据）</li>
-<li>搭建网络（搭建神经网络结构）</li>
-<li>优化参数（训练网络获取最佳参数【反向传播：优化连接的权重知道模型的识别准确率达到要求，得到最优的连线权重，保存】）</li>
-<li>应用网络（将网络保存为模型，输入新数据，输出分类或预测结果【前向传播：输出概率值 概率值最大的就是分类和预测的结果】）</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>A.I.</tag>
-      </tags>
-  </entry>
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>条件循环和判断-PYTHON</title>
+      <link href="/2020/03/19/%E6%9D%A1%E4%BB%B6%E5%BE%AA%E7%8E%AF%E5%92%8C%E5%88%A4%E6%96%AD-PYTHON/"/>
+      <url>/2020/03/19/%E6%9D%A1%E4%BB%B6%E5%BE%AA%E7%8E%AF%E5%92%8C%E5%88%A4%E6%96%AD-PYTHON/</url>
+      
+        <content type="html"><![CDATA[<p>条件判断的重要值是True和False，注意首字母大写，示例如下：</p><a id="more"></a><pre><code>if True:    print(&quot;真&quot;)else:    print(&quot;假&quot;)# 输出：真</code></pre><h1 id="非真判断"><a href="#非真判断" class="headerlink" title="非真判断"></a>非真判断</h1><p>非真判断使用not关键字，示例如下：</p><pre><code>if not True:    print(&quot;True&quot;)else:    print(&quot;False&quot;)# 输出：False</code></pre><h1 id="多情况判断"><a href="#多情况判断" class="headerlink" title="多情况判断"></a>多情况判断</h1><p>多情况判断使用if/elif/else，示例如下：</p><pre><code>age = 18if age &lt; 16:    print(&quot;青少年&quot;)elif age &lt; 18:    print(&quot;青年&quot;)elif age &lt; 60:    print(&quot;成人&quot;)else:    print(&quot;老年&quot;)# 输出：成人</code></pre><p>python用空格缩进代表代码块，所以要主要代码缩进.</p><h1 id="满足多条件"><a href="#满足多条件" class="headerlink" title="满足多条件"></a>满足多条件</h1><p>使用and关键字，示例如下：</p><pre><code>age = 18name = &quot;laowang&quot;if age == 18 and name == &quot;laowang&quot;:    print(&quot;良好少年&quot;)else:    print(&quot;不良少年&quot;)# 输出：良好少年</code></pre><h1 id="至少满足一种条件"><a href="#至少满足一种条件" class="headerlink" title="至少满足一种条件"></a>至少满足一种条件</h1><p>使用or关键字，示例如下：</p><pre><code>age = 18name = &quot;laowang&quot;if age == 18 or name == &quot;xiaoli&quot;:    print(&quot;良好少年&quot;)else:    print(&quot;不良少年&quot;)# 输出：良好少年</code></pre><p><strong>False值</strong><br>python中0、空字符串、空列表、空元祖值、空字典都为false.</p><h2 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h2><p><strong>for循环</strong><br>基础示例如下：</p><pre><code>list = [&quot;focus&quot;, &quot;mouse&quot;, &quot;click&quot;]for item in list:    print(item)# 输出：focus# 输出：mouse# 输出：click</code></pre><h1 id="break跳出循环"><a href="#break跳出循环" class="headerlink" title="break跳出循环"></a>break跳出循环</h1><pre><code>list = [&quot;focus&quot;, &quot;mouse&quot;, &quot;click&quot;]for item in list:    if item == &quot;mouse&quot;:        break    print(item)# 输出：focus</code></pre><h1 id="continue跳过该次循环"><a href="#continue跳过该次循环" class="headerlink" title="continue跳过该次循环"></a>continue跳过该次循环</h1><pre><code>list = [&quot;focus&quot;, &quot;mouse&quot;, &quot;click&quot;]for item in list:    if item == &quot;mouse&quot;:        continue    print(item)# 输出：focus# 输出：click</code></pre><h1 id="使用enumerate获取下标"><a href="#使用enumerate获取下标" class="headerlink" title="使用enumerate获取下标"></a>使用enumerate获取下标</h1><pre><code>list = [&quot;focus&quot;, &quot;mouse&quot;, &quot;click&quot;]for index, item in enumerate(list):    print(&quot;index:{} item:{}&quot;.format(index, item))# 输出如下：# index:0 item:focus# index:1 item:mouse# index:2 item:click</code></pre><h1 id="while循环"><a href="#while循环" class="headerlink" title="while循环"></a>while循环</h1><p>基础示例如下：</p><pre><code>num = 1while num &lt; 3:    print(num)    num = num+1# 输出：1# 输出：2</code></pre><p>在while中break和continue同样有效，和上文for循环作用相同，请参考上文。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 基础常识 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>时间模块-PYTHON</title>
+      <link href="/2020/03/19/%E6%97%B6%E9%97%B4%E6%A8%A1%E5%9D%97-PYTHON/"/>
+      <url>/2020/03/19/%E6%97%B6%E9%97%B4%E6%A8%A1%E5%9D%97-PYTHON/</url>
+      
+        <content type="html"><![CDATA[<p>python中使用时间需要导入time模块，使用time.time()方法获取当前时间戳，示例如下：</p><a id="more"></a><pre><code># 导入time模块import timeprint(time.time())# 输出：1523584077.842348</code></pre><h2 id="格式化时间"><a href="#格式化时间" class="headerlink" title="格式化时间"></a>格式化时间</h2><p>格式化时间，使用time中的strftime()，示例如下：</p><pre><code># 导入time模块import timeprint(time.time())# 输出：1523584077.842348print(time.localtime(time.time()))# 输出：time.struct_time(tm_year=2018, tm_mon=4, tm_mday=13, tm_hour=9, tm_min=50, tm_sec=12, tm_wday=4, tm_yday=103, tm_isdst=0)# 时间格式化print(time.strftime(&quot;%Y-%m-%d %H:%M:%S&quot;, time.localtime(time.time())))# 输出：2018-04-13 09:52:10</code></pre><p><strong>程序计时器</strong></p><p>使用场景：有时候我们需要计算程序的运行时长，使用以下代码：</p><pre><code>import datetimeimport time#开始计时startTime = datetime.datetime.now()time.sleep(1)#结束计时endTime = datetime.datetime.now()print(endTime - startTime)#输出：0:00:01.000791</code></pre><h2 id="格式化符号说明"><a href="#格式化符号说明" class="headerlink" title="格式化符号说明"></a>格式化符号说明</h2><p>%y 两位数的年份表示（00-99）</p><p>%Y 四位数的年份表示（000-9999）</p><p>%m 月份（01-12）</p><p>%d 月内中的一天（0-31）</p><p>%H 24小时制小时数（0-23）</p><p>%I 12小时制小时数（01-12）</p><p>%M 分钟数（00=59）</p><p>%S 秒（00-59）</p><p>%a 本地简化星期名称</p><p>%A 本地完整星期名称</p><p>%b 本地简化的月份名称</p><p>%B 本地完整的月份名称</p><p>%c 本地相应的日期表示和时间表示</p><p>%j 年内的一天（001-366）</p><p>%p 本地A.M.或P.M.的等价符</p><p>%U 一年中的星期数（00-53）星期天为星期的开始</p><p>%w 星期（0-6），星期天为星期的开始</p><p>%W 一年中的星期数（00-53）星期一为星期的开始</p><p>%x 本地相应的日期表示</p><p>%X 本地相应的时间表示</p><p>%Z 当前时区的名称</p><p>%% %号本身</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 基础常识 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>文件操作-PYTHON</title>
+      <link href="/2020/03/19/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C-PYTHON/"/>
+      <url>/2020/03/19/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C-PYTHON/</url>
+      
+        <content type="html"><![CDATA[<h2 id="读取文件"><a href="#读取文件" class="headerlink" title="读取文件"></a>读取文件</h2><p>读取文件使用python内置方法open()打开文件，使用.read()读取全部内容，示例如下：</p><a id="more"></a><pre><code>path = &quot;c:\py.txt&quot;fi = open(path, &quot;r&quot;)print(fi.read())fi.close()</code></pre><p><strong>with语法</strong></p><p>with是python2.5引入的自动释放资源的语法模式，确保使用过程中不管是否发生了异常，都会释放资源.<br>使用with读取文件，是不需要自己手动close的，示例如下：</p><pre><code>with open(path) as fi:    print(fi.read())</code></pre><p><strong>逐行读取文件</strong><br>.read()是读取文件的全部内容，使用.readlines()，示例如下：</p><pre><code>with open(path, &quot;r&quot;) as fi:    lines = fi.readlines()print(len(lines))</code></pre><p><strong>open方法的模式</strong></p><p>上面的示例可以看出来，open(目录,操作模式)的时候必须指定操作模式，open的操作模式：</p><blockquote><p>读取模式：’r’(默认模式) | 写入模式：’w’ | 附加模式：’a’.</p></blockquote><p>python模式是读取，所以”r”可以省略，示例如下：</p><pre><code>path = &quot;c:\py.txt&quot;fi = open(path)print(fi.read())fi.close()</code></pre><h2 id="文件写入"><a href="#文件写入" class="headerlink" title="文件写入"></a>文件写入</h2><p>文件写入分为两种方式，一种是覆盖(w)，另一种是追加(a)。</p><p>文件覆盖的写入，代码如下：</p><pre><code>with open(path, &quot;w&quot;) as fi:    fi.write(&quot;第一行\n第二行\n第三行&quot;)</code></pre><p>文件的追加，代码如下：</p><pre><code>with open(path, &quot;a&quot;) as fi:    fi.write(&quot;\n第1行\n第2行\n第3行&quot;)</code></pre><blockquote><p>注意：文件写入，如果文件不存在会重建，不会报错。</p></blockquote><h2 id="更多文件操作"><a href="#更多文件操作" class="headerlink" title="更多文件操作"></a>更多文件操作</h2><p>os.getcwd()：获取当前运行目录</p><p>os.listdir(path)：获取指定目录下的列表</p><p>os.path.exists(path)：检查是否存在文件或文件夹</p><p>os.mkdir(path)：创建文件夹，已经存在文件会报错</p><p>os.remove(path)：删除文件夹，只能删除文件夹</p><p>os.rename(old, new)：文件重命名</p><p>示例如下：</p><pre><code>import os# 获取当前程序运行目录print(os.getcwd())# 获取指定目录下的列表print(os.listdir(&quot;E:\\server&quot;))# 检查是否存在文件或文件夹print(os.path.exists(&quot;E:\\test\\a.txt&quot;))# 创建文件夹，已经存在文件会报错os.mkdir(&quot;E:\\test1&quot;)# 删除文件夹，只能删除文件夹os.remove(&quot;E:\\test1&quot;)# 文件重命名os.rename(&quot;E:\\test\\a.txt&quot;, &quot;E:\\test\\b.txt&quot;)</code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 基础常识 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>内置模块---PYTHON</title>
+      <link href="/2020/03/18/%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97-PYTHON/"/>
+      <url>/2020/03/18/%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97-PYTHON/</url>
+      
+        <content type="html"><![CDATA[<p>常用内置模块列表：</p><ul><li>os</li><li>sys</li><li>json</li></ul><a id="more"></a><h1 id="os模块"><a href="#os模块" class="headerlink" title="os模块"></a>os模块</h1><p>os.getcwd() #获取当前程序目录</p><p>os.listdir(‘dirname’) #列出指定目录下的所有文件和子目录，包括隐藏文件，并以列表方式打印</p><p>os.remove() #删除一个文件</p><p>os.rename(“oldname”,”newname”) #重命名文件/目录</p><p>os.path.isfile(path) #如果path是一个存在的文件，返回True，否则返回False</p><p>os.path.exists(path) #如果path存在，返回True；如果path不存在，返回False</p><p>os.path.getatime(path) #返回path所指向的文件或者目录的最后存取时间</p><p>os.path.getmtime(path) #返回path所指向的文件或者目录的最后修改时间</p><h1 id="sys模块"><a href="#sys模块" class="headerlink" title="sys模块"></a>sys模块</h1><p>sys.exit(n) #退出程序，正常退出时exit(0)</p><p>sys.version  #获取Python解释程序的版本信息</p><p>sys.maxint #最大的Int值</p><p>sys.platform #返回操作系统平台名称</p><h1 id="json模块"><a href="#json模块" class="headerlink" title="json模块"></a>json模块</h1><p>json模块用于字符串 和 python数据类型间进行转换</p><p>json模块提供了四个功能：dumps、dump、loads、load</p><p>dumps、dump #把对象转换成str</p><p>loads、load #把str转换成json</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>垃圾回收gc</title>
+      <link href="/2020/03/18/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6gc/"/>
+      <url>/2020/03/18/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6gc/</url>
+      
+        <content type="html"><![CDATA[<hr><p>python的垃圾收回机制不想c和c++是开发者自己管理维护内存的，python的垃圾回收是系统自己处理的，所以作为普通的开发者，我们不需要关注垃圾回收部分的内容，如果想要深层次理解python请继续看下文。</p><a id="more"></a><p><strong>python垃圾回收机制</strong><br>Python的GC模块主要运用了引用计数来跟踪和回收垃圾。在引用计数的基础上，还可以通过“标记－清除”解决容器对象可能产生的循环引用的问题。通过分代回收以空间换取时间进一步提高垃圾回收的效率。</p><h2 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h2><p><strong>原理：</strong>当一个对象的引用被创建或者复制时，对象的引用计数加1；当一个对象的引用被销毁时，对象的引用计数减1，当对象的引用计数减少为0时，就意味着对象已经再没有被使用了，可以将其内存释放掉。</p><p><strong>优点：</strong>引用计数有一个很大的优点，即实时性，任何内存，一旦没有指向它的引用，就会被立即回收，而其他的垃圾收集技术必须在某种特殊条件下才能进行无效内存的回收。</p><p><strong>缺点：</strong>但是它也有弱点，引用计数机制所带来的维护引用计数的额外操作与Python运行中所进行的内存分配和释放，引用赋值的次数是成正比的，这显然比其它那些垃圾收集技术所带来的额外操作只是与待回收的内存数量有关的效率要低。同时，引用技术还存在另外一个很大的问题－循环引用，因为对象之间相互引用，每个对象的引用都不会为0，所以这些对象所占用的内存始终都不会被释放掉。</p><h2 id="标记－清除"><a href="#标记－清除" class="headerlink" title="标记－清除"></a>标记－清除</h2><p>标记－清除只关注那些可能会产生循环引用的对象，显然，像是PyIntObject、PyStringObject这些不可变对象是不可能产生循环引用的，因为它们内部不可能持有其它对象的引用。Python中的循环引用总是发生在container对象之间，也就是能够在内部持有其它对象的对象，比如list、dict、class等等。这也使得该方法带来的开销只依赖于container对象的的数量。</p><p><strong>原理：</strong></p><ol><li>寻找跟对象（root object）的集合作为垃圾检测动作的起点，跟对象也就是一些全局引用和函数栈中的引用，这些引用所指向的对象是不可被删除的；</li><li>从root object集合出发，沿着root object集合中的每一个引用，如果能够到达某个对象，则说明这个对象是可达的，那么就不会被删除，这个过程就是垃圾检测阶段；</li><li>当检测阶段结束以后，所有的对象就分成可达和不可达两部分，所有的可达对象都进行保留，其它的不可达对象所占用的内存将会被回收，这就是垃圾回收阶段。（底层采用的是链表将这些集合的对象连接在一起）；</li></ol><p><strong>缺点：</strong>标记和清除的过程效率不高。</p><h2 id="分代回收"><a href="#分代回收" class="headerlink" title="分代回收"></a>分代回收</h2><p><strong>原理：</strong>将系统中的所有内存块根据其存活时间划分为不同的集合，每一个集合就成为一个“代”，Python默认定义了三代对象集合，垃圾收集的频率随着“代”的存活时间的增大而减小。也就是说，活得越长的对象，就越不可能是垃圾，就应该减少对它的垃圾收集频率。那么如何来衡量这个存活时间：通常是利用几次垃圾收集动作来衡量，如果一个对象经过的垃圾收集次数越多，可以得出：该对象存活时间就越长。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 基础常识 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>HTTP 模块</title>
+      <link href="/2020/03/18/HTTP-%E6%A8%A1%E5%9D%97/"/>
+      <url>/2020/03/18/HTTP-%E6%A8%A1%E5%9D%97/</url>
+      
+        <content type="html"><![CDATA[<p>python中的http/https请求使用urllib库，使用urllib的request模块的发送get和post请求。  </p><a id="more"></a><h2 id="get请求"><a href="#get请求" class="headerlink" title="get请求"></a>get请求</h2><p>请求网页地址并返回网页html内容，示例如下：</p><pre><code>from urllib import requestdef getHtml(url):    with request.urlopen(url) as r:        data = r.read()        return data.decode(&quot;utf-8&quot;)print(getHtml(&quot;http://vipstone.cnblogs.com&quot;))</code></pre><p>对返回的数据进行编码处理data.decode(“utf-8”)即可。</p><h2 id="post请求"><a href="#post请求" class="headerlink" title="post请求"></a>post请求</h2><p>post请求并传递参数，对参数进行encode处理，示例如下：</p><pre><code>from urllib import request, parseparams = parse.urlencode([(&quot;name&quot;, &quot;老王&quot;), (&quot;pwd&quot;, &quot;123456&quot;)])req = request.Request(&quot;http://127.0.0.1:8360/video/login&quot;)req.add_header(&quot;User-Agent&quot;, &quot;Mozilla/6.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/8.0 Mobile/10A5376e Safari/8536.25&quot;)with request.urlopen(req, data=params.encode(&quot;utf-8&quot;)) as r:    data = r.read()    print(data.decode(&quot;utf-8&quot;))</code></pre><p>如上所示，需要使用urllib的parse对参数进行编码处理，也可以给http头添加内容。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>人工智能三学派</title>
+      <link href="/2020/03/17/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%89%E5%AD%A6%E6%B4%BE/"/>
+      <url>/2020/03/17/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%89%E5%AD%A6%E6%B4%BE/</url>
+      
+        <content type="html"><![CDATA[<p>人工智能：</p><p>让机器具备人的思维和意识。</p><p>人工智能三学派：</p><a id="more"></a><p>行为主义：基于控制论，构建感知-动作控制系统（控制论：平衡/行走/避障等自适应控制系统）</p><p>符号主义：基于算术逻辑表达式，求解问题先把问题描述为表达式，在求解表达式。（可用公式描述，实现理性思维）</p><p>连接主义：仿生学，模仿神经元连接关系（放脑神经元连接，实现感性思维，例如神经网络）</p><p>用计算机仿出神经网络的连接关系让计算机具备感性思维。</p><ol><li>准备数据（采集大量“特征/标签”数据）</li><li>搭建网络（搭建神经网络结构）</li><li>优化参数（训练网络获取最佳参数【反向传播：优化连接的权重知道模型的识别准确率达到要求，得到最优的连线权重，保存】）</li><li>应用网络（将网络保存为模型，输入新数据，输出分类或预测结果【前向传播：输出概率值 概率值最大的就是分类和预测的结果】）</li></ol>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> A.I. </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+  
+  
 </search>

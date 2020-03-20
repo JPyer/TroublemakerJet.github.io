@@ -1,0 +1,161 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><meta name="baidu-site-verification"><title>迭代器生成器-PYTHON | 艾利克斯工作室</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="艾利克斯工作室" type="application/atom+xml">
+</head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><body><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">LITREILY</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/profile.jpg" width="128" height="128"></a><h1 class="ttl"><a href="/">艾利克斯工作室</a></h1></div><p class="m-desc">路在脚下<br>The road is under your feet.</p><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">归档</a></li><li><span class="dot">●</span><a href="/categories/">分类</a></li><li><span class="dot">●</span><a href="/tags/">标签</a></li><li><span class="dot">●</span><a href="/about/">关于</a></li><li><span class="dot">●</span><a href="/atom.xml">RSS</a></li><li><span class="dot">●</span><a href="/Case/">案例</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">迭代器生成器-PYTHON</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2020/03/20/%E8%BF%AD%E4%BB%A3%E5%99%A8%E7%94%9F%E6%88%90%E5%99%A8-PYTHON/">2020-03-20</a></span><span class="p-category"><i class="fa fa-folder"></i><a href="/categories/%E5%9F%BA%E7%A1%80%E8%BF%9B%E9%98%B6/">基础进阶</a></span><span class="p-view" id="busuanzi_container_page_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></div><div class="p-content"><p>Python 迭代器与生成器<br>可以被next()函数调用并不断返回下一个值的对象称为迭代器：Iterator。<br>在Python中，这种一边循环一边计算的机制，称为生成器：generator</p>
+<a id="more"></a>
+<h1 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h1><p>迭代是Python最强大的功能之一，是访问集合元素的一种方式。<br>迭代器是一个可以记住遍历的位置的对象。<br>迭代器对象从集合的第一个元素开始访问，直到所有的元素被访问完结束。<br>迭代器只能往前不会后退。<br>迭代器有两个基本的方法：iter() 和 next()。<br>字符串，列表或元组对象都可用于创建迭代器：</p>
+<pre><code>&gt;&gt;&gt;list=[1,2,3,4]
+&gt;&gt;&gt; it = iter(list)    # 创建迭代器对象
+&gt;&gt;&gt; print (next(it))   # 输出迭代器的下一个元素
+1
+&gt;&gt;&gt; print (next(it))
+2
+&gt;&gt;&gt;</code></pre><h1 id="迭代器对象可以使用常规for语句进行遍历："><a href="#迭代器对象可以使用常规for语句进行遍历：" class="headerlink" title="迭代器对象可以使用常规for语句进行遍历："></a>迭代器对象可以使用常规for语句进行遍历：</h1><pre><code>#!/usr/bin/python3
+
+list=[1,2,3,4]
+it = iter(list)    # 创建迭代器对象
+for x in it:
+    print (x, end=&quot; &quot;)
+执行以上程序，输出结果如下：
+
+1 2 3 4</code></pre><p>也可以使用 next() 函数：</p>
+<pre><code>#!/usr/bin/python3
+
+import sys         # 引入 sys 模块
+
+list=[1,2,3,4]
+it = iter(list)    # 创建迭代器对象
+
+while True:
+    try:
+        print (next(it))
+    except StopIteration:
+        sys.exit()
+执行以上程序，输出结果如下：
+
+1
+2
+3
+4</code></pre><h1 id="创建一个迭代器"><a href="#创建一个迭代器" class="headerlink" title="创建一个迭代器"></a>创建一个迭代器</h1><p>把一个类作为一个迭代器使用需要在类中实现两个方法 <strong>iter</strong>() 与 <strong>next</strong>() 。<br>如果你已经了解的面向对象编程，就知道类都有一个构造函数，Python 的构造函数为 <strong>init</strong>(), 它会在对象初始化的时候执行。<br>更多内容查阅：Python 面向对象<br><strong>iter</strong>() 方法返回一个特殊的迭代器对象， 这个迭代器对象实现了 <strong>next</strong>() 方法并通过 StopIteration 异常标识迭代的完成。<br><strong>next</strong>() 方法（Python 2 里是 next()）会返回下一个迭代器对象。<br>创建一个返回数字的迭代器，初始值为 1，逐步递增 1：</p>
+<pre><code>class MyNumbers:
+  def __iter__(self):
+    self.a = 1
+    return self
+
+  def __next__(self):
+    x = self.a
+    self.a += 1
+    return x
+
+myclass = MyNumbers()
+myiter = iter(myclass)
+
+print(next(myiter))
+print(next(myiter))
+print(next(myiter))
+print(next(myiter))
+print(next(myiter))
+执行输出结果为：
+
+1
+2
+3
+4
+5</code></pre><h1 id="StopIteration"><a href="#StopIteration" class="headerlink" title="StopIteration"></a>StopIteration</h1><p>StopIteration 异常用于标识迭代的完成，防止出现无限循环的情况，在 <strong>next</strong>() 方法中我们可以设置在完成指定循环次数后触发 StopIteration 异常来结束迭代。<br>在 20 次迭代后停止执行：</p>
+<pre><code>class MyNumbers:
+  def __iter__(self):
+    self.a = 1
+    return self
+
+  def __next__(self):
+    if self.a &lt;= 20:
+      x = self.a
+      self.a += 1
+      return x
+    else:
+      raise StopIteration
+
+myclass = MyNumbers()
+myiter = iter(myclass)
+
+for x in myiter:
+  print(x)
+执行输出结果为：
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20</code></pre><h1 id="生成器"><a href="#生成器" class="headerlink" title="生成器"></a>生成器</h1><p>在 Python 中，使用了 yield 的函数被称为生成器（generator）。<br>跟普通函数不同的是，生成器是一个返回迭代器的函数，只能用于迭代操作，更简单点理解生成器就是一个迭代器。<br>在调用生成器运行的过程中，每次遇到 yield 时函数会暂停并保存当前所有的运行信息，返回 yield 的值, 并在下一次执行 next() 方法时从当前位置继续运行。<br>调用一个生成器函数，返回的是一个迭代器对象。<br>以下实例使用 yield 实现斐波那契数列：</p>
+<pre><code>#!/usr/bin/python3
+
+import sys
+
+def fibonacci(n): # 生成器函数 - 斐波那契
+    a, b, counter = 0, 1, 0
+    while True:
+        if (counter &gt; n): 
+            return
+        yield a
+        a, b = b, a + b
+        counter += 1
+f = fibonacci(10) # f 是一个迭代器，由生成器返回生成
+
+while True:
+    try:
+        print (next(f), end=&quot; &quot;)
+    except StopIteration:
+        sys.exit()
+执行以上程序，输出结果如下：
+
+0 1 1 2 3 5 8 13 21 34 55</code></pre></div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:Likj128@126.com">Alexis (KangJ)</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/03/20/%E8%BF%AD%E4%BB%A3%E5%99%A8%E7%94%9F%E6%88%90%E5%99%A8-PYTHON/">http://likj128.github.io/2020/03/20/迭代器生成器-PYTHON/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="http://likj128.github.io">Alexis (KangJ)的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/Python/">Python</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#迭代器"><span class="toc-number">1.</span> <span class="toc-text">迭代器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#迭代器对象可以使用常规for语句进行遍历："><span class="toc-number">2.</span> <span class="toc-text">迭代器对象可以使用常规for语句进行遍历：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#创建一个迭代器"><span class="toc-number">3.</span> <span class="toc-text">创建一个迭代器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#StopIteration"><span class="toc-number">4.</span> <span class="toc-text">StopIteration</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#生成器"><span class="toc-number">5.</span> <span class="toc-text">生成器</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2020/03/20/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-PYTHON/">&lt; 面向对象-PYTHON</a><a class="next" href="/2020/03/20/%E5%A4%9A%E7%BA%BF%E7%A8%8B-PYTHON/">多线程-PYTHON &gt;</a></div><div id="valine-comment"><style type="text/css">.v * { color: #CECECE; }
+.v a { color: #0F9FB4; }
+.v a:hover { color: #216C73; }
+.v li { list-style: inherit; }
+.v .vwrap { border: 1px solid #223441; border-radius: 0; }
+.v .vwrap:hover { box-shadow: 0 0 6px 1px #223441; }
+.v .vbtn { border-radius: 0; color: #cecece; background: none; }
+.v .vlist .vcard .vh { border-bottom-color: #293D4E; }
+.v .vwrap .vheader .vinput { border-bottom-color: #223441; }
+.v .vwrap .vheader .vinput:focus { border-bottom-color: #339EB4; }
+.v code, .v pre,.v .vlist .vcard .vhead .vsys { background: #203240; }
+.v code, .v pre { color: #F0F0F0; font-size: 95%; }
+.v .vlist .vcard .vcontent.expand:before { background: linear-gradient(180deg,hsla(206,33%,19%,0),hsla(206,33%,19%,.9)); }
+.v .vlist .vcard .vcontent.expand:after { background: hsla(206,33%,19%,.9); }</style><div id="vcomment"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+var verify = 'false' == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'',
+  appKey:'',
+  lang: 'zh-cn',
+  placeholder:'ヾﾉ≧∀≦)o Come on, say something...',
+  avatar:'identicon',
+  guest_info:guest_info,
+  pageSize:'10'
+})</script></div></section><footer><p>Copyright © 2020 - 2020 <a href="/." rel="nofollow">艾利克斯工作室</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span></span> <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span></span> | Personal by<a rel="nofollow" target="_blank" href="https://alexisli.cn"> Alexis.</a>Powered by<a rel="nofollow" target="_blank" href="http://www.beianbeian.com/beianxinxi/f72222db0e8cf7f7b49ceee25f65c49e.html"> 晋ICP备19013202号.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+    search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css"></body></html>

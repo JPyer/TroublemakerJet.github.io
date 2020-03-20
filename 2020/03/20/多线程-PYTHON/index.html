@@ -1,0 +1,266 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><meta name="baidu-site-verification"><title>多线程-PYTHON | 艾利克斯工作室</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="艾利克斯工作室" type="application/atom+xml">
+</head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><body><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">LITREILY</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/profile.jpg" width="128" height="128"></a><h1 class="ttl"><a href="/">艾利克斯工作室</a></h1></div><p class="m-desc">路在脚下<br>The road is under your feet.</p><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">归档</a></li><li><span class="dot">●</span><a href="/categories/">分类</a></li><li><span class="dot">●</span><a href="/tags/">标签</a></li><li><span class="dot">●</span><a href="/about/">关于</a></li><li><span class="dot">●</span><a href="/atom.xml">RSS</a></li><li><span class="dot">●</span><a href="/Case/">案例</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">多线程-PYTHON</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2020/03/20/%E5%A4%9A%E7%BA%BF%E7%A8%8B-PYTHON/">2020-03-20</a></span><span class="p-category"><i class="fa fa-folder"></i><a href="/categories/%E5%9F%BA%E7%A1%80%E8%BF%9B%E9%98%B6/">基础进阶</a></span><span class="p-view" id="busuanzi_container_page_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></div><div class="p-content"><p>Python 多线程Threading<br>任何进程默认就会启动一个线程，我们把该线程称为主线程，主线程又可以启动新的线程，Python的threading模块有个current_thread()函数，它永远返回当前线程的实例。主线程实例的名字叫MainThread，子线程的名字在创建时指定，我们用LoopThread命名子线程。</p>
+<a id="more"></a>
+<p>多线程类似于同时执行多个不同程序，多线程运行有如下优点：</p>
+<p>使用线程可以把占据长时间的程序中的任务放到后台去处理。<br>用户界面可以更加吸引人，比如用户点击了一个按钮去触发某些事件的处理，可以弹出一个进度条来显示处理的进度<br>程序的运行速度可能加快<br>在一些等待的任务实现上如用户输入、文件读写和网络收发数据等，线程就比较有用了。在这种情况下我们可以释放一些珍贵的资源如内存占用等等。<br>线程在执行过程中与进程还是有区别的。每个独立的线程有一个程序运行的入口、顺序执行序列和程序的出口。但是线程不能够独立执行，必须依存在应用程序中，由应用程序提供多个线程执行控制。</p>
+<p>每个线程都有他自己的一组CPU寄存器，称为线程的上下文，该上下文反映了线程上次运行该线程的CPU寄存器的状态。</p>
+<p>指令指针和堆栈指针寄存器是线程上下文中两个最重要的寄存器，线程总是在进程得到上下文中运行的，这些地址都用于标志拥有线程的进程地址空间中的内存。</p>
+<p>线程可以被抢占（中断）。<br>在其他线程正在运行时，线程可以暂时搁置（也称为睡眠） — 这就是线程的退让。<br>线程可以分为:</p>
+<p>内核线程：由操作系统内核创建和撤销。<br>用户线程：不需要内核支持而在用户程序中实现的线程。<br>Python3 线程中常用的两个模块为：</p>
+<p>_thread<br>threading(推荐使用)<br>thread 模块已被废弃。用户可以使用 threading 模块代替。所以，在 Python3 中不能再使用”thread” 模块。为了兼容性，Python3 将 thread 重命名为 “_thread”。</p>
+<h1 id="开始学习Python线程"><a href="#开始学习Python线程" class="headerlink" title="开始学习Python线程"></a>开始学习Python线程</h1><p>Python中使用线程有两种方式：函数或者用类来包装线程对象。</p>
+<p>函数式：调用 _thread 模块中的start_new_thread()函数来产生新线程。语法如下:</p>
+<p>_thread.start_new_thread ( function, args[, kwargs] )</p>
+<h1 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明:"></a>参数说明:</h1><p>function – 线程函数。<br>args – 传递给线程函数的参数,他必须是个tuple类型。<br>kwargs – 可选参数。<br>实例：</p>
+<pre><code>#!/usr/bin/python3
+import _thread
+import time
+# 为线程定义一个函数
+def print_time( threadName, delay):
+   count = 0
+   while count &lt; 5:
+      time.sleep(delay)
+      count += 1
+      print (&quot;%s: %s&quot; % ( threadName, time.ctime(time.time()) ))
+# 创建两个线程 
+try:
+   _thread.start_new_thread( print_time, (&quot;Thread-1&quot;, 2, ) )
+   _thread.start_new_thread( print_time, (&quot;Thread-2&quot;, 4, ) )
+except:
+   print (&quot;Error: 无法启动线程&quot;)
+while 1:
+   pass
+
+执行以上程序输出结果如下：
+
+Thread-1: Wed Apr  6 11:36:31 2016
+Thread-1: Wed Apr  6 11:36:33 2016
+Thread-2: Wed Apr  6 11:36:33 2016
+Thread-1: Wed Apr  6 11:36:35 2016
+Thread-1: Wed Apr  6 11:36:37 2016
+Thread-2: Wed Apr  6 11:36:37 2016
+Thread-1: Wed Apr  6 11:36:39 2016
+Thread-2: Wed Apr  6 11:36:41 2016
+Thread-2: Wed Apr  6 11:36:45 2016
+Thread-2: Wed Apr  6 11:36:49 2016
+执行以上程后可以按下 ctrl-c to 退出。</code></pre><h1 id="线程模块"><a href="#线程模块" class="headerlink" title="线程模块"></a>线程模块</h1><p>Python3 通过两个标准库 _thread 和 threading 提供对线程的支持。</p>
+<p>_thread 提供了低级别的、原始的线程以及一个简单的锁，它相比于 threading 模块的功能还是比较有限的。</p>
+<p>threading 模块除了包含 _thread 模块中的所有方法外，还提供的其他方法：</p>
+<p>threading.currentThread(): 返回当前的线程变量。<br>threading.enumerate(): 返回一个包含正在运行的线程的list。正在运行指线程启动后、结束前，不包括启动前和终止后的线程。<br>threading.activeCount(): 返回正在运行的线程数量，与len(threading.enumerate())有相同的结果。<br>除了使用方法外，线程模块同样提供了Thread类来处理线程，Thread类提供了以下方法:</p>
+<p>run(): 用以表示线程活动的方法。<br>start():启动线程活动。<br>join([time]): 等待至线程中止。这阻塞调用线程直至线程的join() 方法被调用中止-正常退出或者抛出未处理的异常-或者是可选的超时发生。<br>isAlive(): 返回线程是否活动的。<br>getName(): 返回线程名。<br>setName(): 设置线程名。</p>
+<h1 id="使用-threading-模块创建线程"><a href="#使用-threading-模块创建线程" class="headerlink" title="使用 threading 模块创建线程"></a>使用 threading 模块创建线程</h1><p>我们可以通过直接从 threading.Thread 继承创建一个新的子类，并实例化后调用 start() 方法启动新线程，即它调用了线程的 run() 方法：</p>
+<pre><code>#!/usr/bin/python3
+import threading
+import time
+exitFlag = 0
+class myThread (threading.Thread):
+    def __init__(self, threadID, name, counter):
+        threading.Thread.__init__(self)
+        self.threadID = threadID
+        self.name = name
+        self.counter = counter
+    def run(self):
+        print (&quot;开始线程：&quot; + self.name)
+        print_time(self.name, self.counter, 5)
+        print (&quot;退出线程：&quot; + self.name)
+def print_time(threadName, delay, counter):
+    while counter:
+        if exitFlag:
+            threadName.exit()
+        time.sleep(delay)
+        print (&quot;%s: %s&quot; % (threadName, time.ctime(time.time())))
+        counter -= 1
+# 创建新线程
+thread1 = myThread(1, &quot;Thread-1&quot;, 1)
+thread2 = myThread(2, &quot;Thread-2&quot;, 2)
+# 开启新线程
+thread1.start()
+thread2.start()
+thread1.join()
+thread2.join()
+print (&quot;退出主线程&quot;)
+以上程序执行结果如下；
+
+开始线程：Thread-1
+开始线程：Thread-2
+Thread-1: Wed Apr  6 11:46:46 2016
+Thread-1: Wed Apr  6 11:46:47 2016
+Thread-2: Wed Apr  6 11:46:47 2016
+Thread-1: Wed Apr  6 11:46:48 2016
+Thread-1: Wed Apr  6 11:46:49 2016
+Thread-2: Wed Apr  6 11:46:49 2016
+Thread-1: Wed Apr  6 11:46:50 2016
+退出线程：Thread-1
+Thread-2: Wed Apr  6 11:46:51 2016
+Thread-2: Wed Apr  6 11:46:53 2016
+Thread-2: Wed Apr  6 11:46:55 2016
+退出线程：Thread-2
+退出主线程</code></pre><h1 id="线程同步"><a href="#线程同步" class="headerlink" title="线程同步"></a>线程同步</h1><p>如果多个线程共同对某个数据修改，则可能出现不可预料的结果，为了保证数据的正确性，需要对多个线程进行同步。</p>
+<p>使用 Thread 对象的 Lock 和 Rlock 可以实现简单的线程同步，这两个对象都有 acquire 方法和 release 方法，对于那些需要每次只允许一个线程操作的数据，可以将其操作放到 acquire 和 release 方法之间。如下：</p>
+<p>多线程的优势在于可以同时运行多个任务（至少感觉起来是这样）。但是当线程需要共享数据时，可能存在数据不同步的问题。</p>
+<p>考虑这样一种情况：一个列表里所有元素都是0，线程”set”从后向前把所有元素改成1，而线程”print”负责从前往后读取列表并打印。</p>
+<p>那么，可能线程”set”开始改的时候，线程”print”便来打印列表了，输出就成了一半0一半1，这就是数据的不同步。为了避免这种情况，引入了锁的概念。</p>
+<p>锁有两种状态——锁定和未锁定。每当一个线程比如”set”要访问共享数据时，必须先获得锁定；如果已经有别的线程比如”print”获得锁定了，那么就让线程”set”暂停，也就是同步阻塞；等到线程”print”访问完毕，释放锁以后，再让线程”set”继续。</p>
+<p>经过这样的处理，打印列表时要么全部输出0，要么全部输出1，不会再出现一半0一半1的尴尬场面。</p>
+<p>实例：</p>
+<pre><code>#!/usr/bin/python3
+import threading
+import time
+class myThread (threading.Thread):
+    def __init__(self, threadID, name, counter):
+        threading.Thread.__init__(self)
+        self.threadID = threadID
+        self.name = name
+        self.counter = counter
+    def run(self):
+        print (&quot;开启线程： &quot; + self.name)
+        # 获取锁，用于线程同步
+        threadLock.acquire()
+        print_time(self.name, self.counter, 3)
+        # 释放锁，开启下一个线程
+        threadLock.release()
+def print_time(threadName, delay, counter):
+    while counter:
+        time.sleep(delay)
+        print (&quot;%s: %s&quot; % (threadName, time.ctime(time.time())))
+        counter -= 1
+threadLock = threading.Lock()
+threads = []
+# 创建新线程
+thread1 = myThread(1, &quot;Thread-1&quot;, 1)
+thread2 = myThread(2, &quot;Thread-2&quot;, 2)
+# 开启新线程
+thread1.start()
+thread2.start()
+# 添加线程到线程列表
+threads.append(thread1)
+threads.append(thread2)
+# 等待所有线程完成
+for t in threads:
+    t.join()
+print (&quot;退出主线程&quot;)
+执行以上程序，输出结果为：
+
+开启线程： Thread-1
+开启线程： Thread-2
+Thread-1: Wed Apr  6 11:52:57 2016
+Thread-1: Wed Apr  6 11:52:58 2016
+Thread-1: Wed Apr  6 11:52:59 2016
+Thread-2: Wed Apr  6 11:53:01 2016
+Thread-2: Wed Apr  6 11:53:03 2016
+Thread-2: Wed Apr  6 11:53:05 2016
+退出主线程</code></pre><h1 id="线程优先级队列（-Queue）"><a href="#线程优先级队列（-Queue）" class="headerlink" title="线程优先级队列（ Queue）"></a>线程优先级队列（ Queue）</h1><p>Python 的 Queue 模块中提供了同步的、线程安全的队列类，包括FIFO（先入先出)队列Queue，LIFO（后入先出）队列LifoQueue，和优先级队列 PriorityQueue。</p>
+<p>这些队列都实现了锁原语，能够在多线程中直接使用，可以使用队列来实现线程间的同步。</p>
+<p>Queue 模块中的常用方法:</p>
+<pre><code>Queue.qsize() 返回队列的大小
+Queue.empty() 如果队列为空，返回True,反之False
+Queue.full() 如果队列满了，返回True,反之False
+Queue.full 与 maxsize 大小对应
+Queue.get([block[, timeout]])获取队列，timeout等待时间
+Queue.get_nowait() 相当Queue.get(False)
+Queue.put(item) 写入队列，timeout等待时间
+Queue.put_nowait(item) 相当Queue.put(item, False)
+Queue.task_done() 在完成一项工作之后，Queue.task_done()函数向任务已经完成的队列发送一个信号
+Queue.join() 实际上意味着等到队列为空，再执行别的操作</code></pre><p>实例:</p>
+<pre><code>#!/usr/bin/python3
+import queue
+import threading
+import time
+exitFlag = 0
+class myThread (threading.Thread):
+    def __init__(self, threadID, name, q):
+        threading.Thread.__init__(self)
+        self.threadID = threadID
+        self.name = name
+        self.q = q
+    def run(self):
+        print (&quot;开启线程：&quot; + self.name)
+        process_data(self.name, self.q)
+        print (&quot;退出线程：&quot; + self.name)
+def process_data(threadName, q):
+    while not exitFlag:
+        queueLock.acquire()
+        if not workQueue.empty():
+            data = q.get()
+            queueLock.release()
+            print (&quot;%s processing %s&quot; % (threadName, data))
+        else:
+            queueLock.release()
+        time.sleep(1)
+threadList = [&quot;Thread-1&quot;, &quot;Thread-2&quot;, &quot;Thread-3&quot;]
+nameList = [&quot;One&quot;, &quot;Two&quot;, &quot;Three&quot;, &quot;Four&quot;, &quot;Five&quot;]
+queueLock = threading.Lock()
+workQueue = queue.Queue(10)
+threads = []
+threadID = 1
+# 创建新线程
+for tName in threadList:
+    thread = myThread(threadID, tName, workQueue)
+    thread.start()
+    threads.append(thread)
+    threadID += 1
+# 填充队列
+queueLock.acquire()
+for word in nameList:
+    workQueue.put(word)
+queueLock.release()
+# 等待队列清空
+while not workQueue.empty():
+    pass
+# 通知线程是时候退出
+exitFlag = 1
+# 等待所有线程完成
+for t in threads:
+    t.join()
+print (&quot;退出主线程&quot;)
+以上程序执行结果：
+
+开启线程：Thread-1
+开启线程：Thread-2
+开启线程：Thread-3
+Thread-3 processing One
+Thread-1 processing Two
+Thread-2 processing Three
+Thread-3 processing Four
+Thread-1 processing Five
+退出线程：Thread-3
+退出线程：Thread-2
+退出线程：Thread-1
+退出主线程</code></pre></div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:Likj128@126.com">Alexis (KangJ)</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/03/20/%E5%A4%9A%E7%BA%BF%E7%A8%8B-PYTHON/">http://likj128.github.io/2020/03/20/多线程-PYTHON/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="http://likj128.github.io">Alexis (KangJ)的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/Python/">Python</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#开始学习Python线程"><span class="toc-number">1.</span> <span class="toc-text">开始学习Python线程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参数说明"><span class="toc-number">2.</span> <span class="toc-text">参数说明:</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#线程模块"><span class="toc-number">3.</span> <span class="toc-text">线程模块</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用-threading-模块创建线程"><span class="toc-number">4.</span> <span class="toc-text">使用 threading 模块创建线程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#线程同步"><span class="toc-number">5.</span> <span class="toc-text">线程同步</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#线程优先级队列（-Queue）"><span class="toc-number">6.</span> <span class="toc-text">线程优先级队列（ Queue）</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2020/03/20/%E8%BF%AD%E4%BB%A3%E5%99%A8%E7%94%9F%E6%88%90%E5%99%A8-PYTHON/">&lt; 迭代器生成器-PYTHON</a><a class="next" href="/2020/03/19/%E9%94%99%E8%AF%AF%E5%92%8C%E5%BC%82%E5%B8%B8-PYTHON/">错误和异常-PYTHON &gt;</a></div><div id="valine-comment"><style type="text/css">.v * { color: #CECECE; }
+.v a { color: #0F9FB4; }
+.v a:hover { color: #216C73; }
+.v li { list-style: inherit; }
+.v .vwrap { border: 1px solid #223441; border-radius: 0; }
+.v .vwrap:hover { box-shadow: 0 0 6px 1px #223441; }
+.v .vbtn { border-radius: 0; color: #cecece; background: none; }
+.v .vlist .vcard .vh { border-bottom-color: #293D4E; }
+.v .vwrap .vheader .vinput { border-bottom-color: #223441; }
+.v .vwrap .vheader .vinput:focus { border-bottom-color: #339EB4; }
+.v code, .v pre,.v .vlist .vcard .vhead .vsys { background: #203240; }
+.v code, .v pre { color: #F0F0F0; font-size: 95%; }
+.v .vlist .vcard .vcontent.expand:before { background: linear-gradient(180deg,hsla(206,33%,19%,0),hsla(206,33%,19%,.9)); }
+.v .vlist .vcard .vcontent.expand:after { background: hsla(206,33%,19%,.9); }</style><div id="vcomment"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+var verify = 'false' == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'',
+  appKey:'',
+  lang: 'zh-cn',
+  placeholder:'ヾﾉ≧∀≦)o Come on, say something...',
+  avatar:'identicon',
+  guest_info:guest_info,
+  pageSize:'10'
+})</script></div></section><footer><p>Copyright © 2020 - 2020 <a href="/." rel="nofollow">艾利克斯工作室</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span></span> <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span></span> | Personal by<a rel="nofollow" target="_blank" href="https://alexisli.cn"> Alexis.</a>Powered by<a rel="nofollow" target="_blank" href="http://www.beianbeian.com/beianxinxi/f72222db0e8cf7f7b49ceee25f65c49e.html"> 晋ICP备19013202号.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+    search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css"></body></html>
