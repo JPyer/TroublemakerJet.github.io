@@ -1,0 +1,191 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><meta name="baidu-site-verification"><title>标准库-PYTHON | 艾利克斯工作室</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="艾利克斯工作室" type="application/atom+xml">
+</head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><body><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">LITREILY</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/profile.jpg" width="128" height="128"></a><h1 class="ttl"><a href="/">艾利克斯工作室</a></h1></div><p class="m-desc">路在脚下<br>The road is under your feet.</p><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">归档</a></li><li><span class="dot">●</span><a href="/categories/">分类</a></li><li><span class="dot">●</span><a href="/tags/">标签</a></li><li><span class="dot">●</span><a href="/about/">关于</a></li><li><span class="dot">●</span><a href="/atom.xml">RSS</a></li><li><span class="dot">●</span><a href="/Case/">案例</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">标准库-PYTHON</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2020/03/20/%E6%A0%87%E5%87%86%E5%BA%93-PYTHON/">2020-03-20</a></span><span class="p-category"><i class="fa fa-folder"></i><a href="/categories/%E5%9F%BA%E7%A1%80%E5%B8%B8%E8%AF%86/">基础常识</a></span><span class="p-view" id="busuanzi_container_page_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></div><div class="p-content"><p>Python 标准库示例说明<br>Python拥有一个强大的标准库。Python语言的核心只包含数字、字符串、列表、字典、文件等常见类型和函数，而由Python标准库提供了系统管理、网络通信、文本处理、数据库接口、图形系统、XML处理等额外的功能。</p>
+<a id="more"></a>
+
+<h1 id="操作系统接口"><a href="#操作系统接口" class="headerlink" title="操作系统接口"></a>操作系统接口</h1><p>os模块提供了不少与操作系统相关联的函数。</p>
+<pre><code>&gt;&gt;&gt; import os
+&gt;&gt;&gt; os.getcwd()      # 返回当前的工作目录
+&#39;C:\\Python34&#39;
+&gt;&gt;&gt; os.chdir(&#39;/server/accesslogs&#39;)   # 修改当前的工作目录
+&gt;&gt;&gt; os.system(&#39;mkdir today&#39;)   # 执行系统命令 mkdir 
+0</code></pre><p>建议使用 “import os” 风格而非 “from os import *”。这样可以保证随操作系统不同而有所变化的 os.open() 不会覆盖内置函数 open()。</p>
+<p>在使用 os 这样的大型模块时内置的 dir() 和 help() 函数非常有用:</p>
+<pre><code>&gt;&gt;&gt; import os
+&gt;&gt;&gt; dir(os)</code></pre><returns a list of all module functions>
+>>> help(os)
+<returns an extensive manual page created from the module's docstrings>
+针对日常的文件和目录管理任务，:mod:shutil 模块提供了一个易于使用的高级接口:
+```
+>>> import shutil
+>>> shutil.copyfile('data.db', 'archive.db')
+>>> shutil.move('/build/executables', 'installdir')
+
+<h1 id="文件通配符"><a href="#文件通配符" class="headerlink" title="文件通配符"></a>文件通配符</h1><p>glob模块提供了一个函数用于从目录通配符搜索中生成文件列表:</p>
+<pre><code>&gt;&gt;&gt; import glob
+&gt;&gt;&gt; glob.glob(&#39;*.py&#39;)
+[&#39;primes.py&#39;, &#39;random.py&#39;, &#39;quote.py&#39;]
+命令行参数
+通用工具脚本经常调用命令行参数。这些命令行参数以链表形式存储于 sys 模块的 argv 变量。例如在命令行中执行 “python demo.py one two three” 后可以得到以下输出结果:
+
+&gt;&gt;&gt; import sys
+&gt;&gt;&gt; print(sys.argv)
+[&#39;demo.py&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;]
+错误输出重定向和程序终止
+sys 还有 stdin，stdout 和 stderr 属性，即使在 stdout 被重定向时，后者也可以用于显示警告和错误信息。
+
+&gt;&gt;&gt; sys.stderr.write(&#39;Warning, log file not found starting a new one\n&#39;)
+Warning, log file not found starting a new one
+大多脚本的定向终止都使用 “sys.exit()”。</code></pre><h1 id="字符串正则匹配"><a href="#字符串正则匹配" class="headerlink" title="字符串正则匹配"></a>字符串正则匹配</h1><p>re模块为高级字符串处理提供了正则表达式工具。对于复杂的匹配和处理，正则表达式提供了简洁、优化的解决方案:</p>
+<pre><code>&gt;&gt;&gt; import re
+&gt;&gt;&gt; re.findall(r&#39;\bf[a-z]*&#39;, &#39;which foot or hand fell fastest&#39;)
+[&#39;foot&#39;, &#39;fell&#39;, &#39;fastest&#39;]
+&gt;&gt;&gt; re.sub(r&#39;(\b[a-z]+) \1&#39;, r&#39;\1&#39;, &#39;cat in the the hat&#39;)
+&#39;cat in the hat&#39;
+如果只需要简单的功能，应该首先考虑字符串方法，因为它们非常简单，易于阅读和调试:
+
+&gt;&gt;&gt; &#39;tea for too&#39;.replace(&#39;too&#39;, &#39;two&#39;)
+&#39;tea for two&#39;</code></pre><h1 id="数学"><a href="#数学" class="headerlink" title="数学"></a>数学</h1><p>math模块为浮点运算提供了对底层C函数库的访问:</p>
+<pre><code>&gt;&gt;&gt; import math
+&gt;&gt;&gt; math.cos(math.pi / 4)
+0.70710678118654757
+&gt;&gt;&gt; math.log(1024, 2)
+10.0
+random提供了生成随机数的工具。
+
+&gt;&gt;&gt; import random
+&gt;&gt;&gt; random.choice([&#39;apple&#39;, &#39;pear&#39;, &#39;banana&#39;])
+&#39;apple&#39;
+&gt;&gt;&gt; random.sample(range(100), 10)   # sampling without replacement
+[30, 83, 16, 4, 8, 81, 41, 50, 18, 33]
+&gt;&gt;&gt; random.random()    # random float
+0.17970987693706186
+&gt;&gt;&gt; random.randrange(6)    # random integer chosen from range(6)</code></pre><h1 id="访问-互联网"><a href="#访问-互联网" class="headerlink" title="访问 互联网"></a>访问 互联网</h1><p>有几个模块用于访问互联网以及处理网络通信协议。其中最简单的两个是用于处理从 urls 接收的数据的 urllib.request 以及用于发送电子邮件的 smtplib:</p>
+<pre><code>&gt;&gt;&gt; from urllib.request import urlopen
+&gt;&gt;&gt; for line in urlopen(&#39;http://tycho.usno.navy.mil/cgi-bin/timer.pl&#39;):
+...     line = line.decode(&#39;utf-8&#39;)  # Decoding the binary data to text.
+...     if &#39;EST&#39; in line or &#39;EDT&#39; in line:  # look for Eastern Time
+...         print(line)
+&lt;BR&gt;Nov. 25, 09:43:32 PM EST
+&gt;&gt;&gt; import smtplib
+&gt;&gt;&gt; server = smtplib.SMTP(&#39;localhost&#39;)
+&gt;&gt;&gt; server.sendmail(&#39;soothsayer@example.org&#39;, &#39;jcaesar@example.org&#39;,
+... &quot;&quot;&quot;To: jcaesar@example.org
+... From: soothsayer@example.org
+...
+... Beware the Ides of March.
+... &quot;&quot;&quot;)
+&gt;&gt;&gt; server.quit()</code></pre><p>注意第二个例子需要本地有一个在运行的邮件服务器。</p>
+<pre><code>#处理get请求，不传data，则为get请求
+import urllib
+from urllib.request import urlopen
+from urllib.parse import urlencode
+url=&#39;http://www.ai8py.com/login&#39;
+data={&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:123456}
+req_data=urlencode(data)#将字典类型的请求数据转变为url编码
+res=urlopen(url+&#39;?&#39;+req_data)#通过urlopen方法访问拼接好的url
+res=res.read().decode()#read()方法是读取返回数据内容，decode是转换返回数据的bytes格式为str
+print(res)
+#处理post请求,如果传了data，则为post请求
+import urllib
+from urllib.request import Request
+from urllib.parse import urlencode
+url=&#39;http://www.ai8py.com/login&#39;
+data={&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:123456}
+data=urlencode(data)#将字典类型的请求数据转变为url编码
+data=data.encode(&#39;ascii&#39;)#将url编码类型的请求数据转变为bytes类型
+req_data=Request(url,data)#将url和请求数据处理为一个Request对象，供urlopen调用
+with urlopen(req_data) as res:
+    res=res.read().decode()#read()方法是读取返回数据内容，decode是转换返回数据的bytes格式为str
+print(res)</code></pre><h1 id="日期和时间"><a href="#日期和时间" class="headerlink" title="日期和时间"></a>日期和时间</h1><p>datetime模块为日期和时间处理同时提供了简单和复杂的方法。</p>
+<p>支持日期和时间算法的同时，实现的重点放在更有效的处理和格式化输出。</p>
+<p>该模块还支持时区处理:</p>
+<pre><code>&gt;&gt;&gt; # dates are easily constructed and formatted
+&gt;&gt;&gt; from datetime import date
+&gt;&gt;&gt; now = date.today()
+&gt;&gt;&gt; now
+datetime.date(2003, 12, 2)
+&gt;&gt;&gt; now.strftime(&quot;%m-%d-%y. %d %b %Y is a %A on the %d day of %B.&quot;)
+&#39;12-02-03. 02 Dec 2003 is a Tuesday on the 02 day of December.&#39;
+&gt;&gt;&gt; # dates support calendar arithmetic
+&gt;&gt;&gt; birthday = date(1964, 7, 31)
+&gt;&gt;&gt; age = now - birthday
+&gt;&gt;&gt; age.days
+14368</code></pre><p>常用时间处理方法</p>
+<p>今天 today = datetime.date.today()<br>昨天 yesterday = today - datetime.timedelta(days=1)<br>上个月 last_month = today.month - 1 if today.month - 1 else 12<br>当前时间戳 time_stamp = time.time()<br>时间戳转datetime datetime.datetime.fromtimestamp(time_stamp)<br>datetime转时间戳 int(time.mktime(today.timetuple()))<br>datetime转字符串 today_str = today.strftime(“%Y-%m-%d”)<br>字符串转datetime today = datetime.datetime.strptime(today_str, “%Y-%m-%d”)<br>补时差 today + datetime.timedelta(hours=8)</p>
+<h1 id="数据压缩"><a href="#数据压缩" class="headerlink" title="数据压缩"></a>数据压缩</h1><p>以下模块直接支持通用的数据打包和压缩格式：zlib，gzip，bz2，zipfile，以及 tarfile。</p>
+<pre><code>&gt;&gt;&gt; import zlib
+&gt;&gt;&gt; s = b&#39;witch which has which witches wrist watch&#39;
+&gt;&gt;&gt; len(s)
+41
+&gt;&gt;&gt; t = zlib.compress(s)
+&gt;&gt;&gt; len(t)
+37
+&gt;&gt;&gt; zlib.decompress(t)
+b&#39;witch which has which witches wrist watch&#39;
+&gt;&gt;&gt; zlib.crc32(s)
+226805979</code></pre><h1 id="性能度量"><a href="#性能度量" class="headerlink" title="性能度量"></a>性能度量</h1><p>有些用户对了解解决同一问题的不同方法之间的性能差异很感兴趣。Python 提供了一个度量工具，为这些问题提供了直接答案。</p>
+<p>例如，使用元组封装和拆封来交换元素看起来要比使用传统的方法要诱人的多,timeit 证明了现代的方法更快一些。</p>
+<pre><code>&gt;&gt;&gt; from timeit import Timer
+&gt;&gt;&gt; Timer(&#39;t=a; a=b; b=t&#39;, &#39;a=1; b=2&#39;).timeit()
+0.57535828626024577
+&gt;&gt;&gt; Timer(&#39;a,b = b,a&#39;, &#39;a=1; b=2&#39;).timeit()
+0.54962537085770791
+相对于 timeit 的细粒度，:mod:profile 和 pstats 模块提供了针对更大代码块的时间度量工具。</code></pre><h1 id="测试模块"><a href="#测试模块" class="headerlink" title="测试模块"></a>测试模块</h1><p>开发高质量软件的方法之一是为每一个函数开发测试代码，并且在开发过程中经常进行测试</p>
+<p>doctest模块提供了一个工具，扫描模块并根据程序中内嵌的文档字符串执行测试。</p>
+<p>测试构造如同简单的将它的输出结果剪切并粘贴到文档字符串中。</p>
+<p>通过用户提供的例子，它强化了文档，允许 doctest 模块确认代码的结果是否与文档一致:</p>
+<pre><code>def average(values):
+    &quot;&quot;&quot;Computes the arithmetic mean of a list of numbers.
+    &gt;&gt;&gt; print(average([20, 30, 70]))
+    40.0
+    &quot;&quot;&quot;
+    return sum(values) / len(values)
+import doctest
+doctest.testmod()   # 自动验证嵌入测试
+unittest模块不像 doctest模块那么容易使用，不过它可以在一个独立的文件里提供一个更全面的测试集:
+
+import unittest
+class TestStatisticalFunctions(unittest.TestCase):
+    def test_average(self):
+        self.assertEqual(average([20, 30, 70]), 40.0)
+        self.assertEqual(round(average([1, 5, 7]), 1), 4.3)
+        self.assertRaises(ZeroDivisionError, average, [])
+        self.assertRaises(TypeError, average, 20, 30, 70)
+unittest.main() # Calling from the command line invokes all tests</code></pre></returns></returns></div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:Likj128@126.com">Alexis (KangJ)</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/03/20/%E6%A0%87%E5%87%86%E5%BA%93-PYTHON/">http://likj128.github.io/2020/03/20/标准库-PYTHON/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="http://likj128.github.io">Alexis (KangJ)的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/Python/">Python</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#操作系统接口"><span class="toc-number">1.</span> <span class="toc-text">操作系统接口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#文件通配符"><span class="toc-number">2.</span> <span class="toc-text">文件通配符</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#字符串正则匹配"><span class="toc-number">3.</span> <span class="toc-text">字符串正则匹配</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#数学"><span class="toc-number">4.</span> <span class="toc-text">数学</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#访问-互联网"><span class="toc-number">5.</span> <span class="toc-text">访问 互联网</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#日期和时间"><span class="toc-number">6.</span> <span class="toc-text">日期和时间</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#数据压缩"><span class="toc-number">7.</span> <span class="toc-text">数据压缩</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#性能度量"><span class="toc-number">8.</span> <span class="toc-text">性能度量</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#测试模块"><span class="toc-number">9.</span> <span class="toc-text">测试模块</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2020/03/21/Django-PYTHON-Web%E6%A1%86%E6%9E%B6/">&lt; Django-PYTHON Web框架</a><a class="next" href="/2020/03/20/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-PYTHON/">面向对象-PYTHON &gt;</a></div><div id="valine-comment"><style type="text/css">.v * { color: #CECECE; }
+.v a { color: #0F9FB4; }
+.v a:hover { color: #216C73; }
+.v li { list-style: inherit; }
+.v .vwrap { border: 1px solid #223441; border-radius: 0; }
+.v .vwrap:hover { box-shadow: 0 0 6px 1px #223441; }
+.v .vbtn { border-radius: 0; color: #cecece; background: none; }
+.v .vlist .vcard .vh { border-bottom-color: #293D4E; }
+.v .vwrap .vheader .vinput { border-bottom-color: #223441; }
+.v .vwrap .vheader .vinput:focus { border-bottom-color: #339EB4; }
+.v code, .v pre,.v .vlist .vcard .vhead .vsys { background: #203240; }
+.v code, .v pre { color: #F0F0F0; font-size: 95%; }
+.v .vlist .vcard .vcontent.expand:before { background: linear-gradient(180deg,hsla(206,33%,19%,0),hsla(206,33%,19%,.9)); }
+.v .vlist .vcard .vcontent.expand:after { background: hsla(206,33%,19%,.9); }</style><div id="vcomment"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+var verify = 'false' == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'99FfVECWi1xns2SAjWOtTNza-gzGzoHsz',
+  appKey:'6t7I76O3iToh6BGjc5rjWqDX',
+  lang: 'zh-cn',
+  placeholder:'ヾﾉ≧∀≦)o Come on, say something...',
+  avatar:'identicon',
+  guest_info:guest_info,
+  pageSize:'10'
+})</script></div></section><footer><p>Copyright © 2020 - 2020 <a href="/." rel="nofollow">艾利克斯工作室</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span></span> <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span></span> | Personal by<a rel="nofollow" target="_blank" href="https://alexisli.cn"> Alexis.</a>Powered by<a rel="nofollow" target="_blank" href="http://www.beianbeian.com/beianxinxi/f72222db0e8cf7f7b49ceee25f65c49e.html"> 晋ICP备19013202号.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+    search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css"></body></html>

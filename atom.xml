@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://likj128.github.io/"/>
-  <updated>2020-03-20T01:09:29.218Z</updated>
+  <updated>2020-03-21T00:09:38.334Z</updated>
   <id>http://likj128.github.io/</id>
   
   <author>
@@ -15,6 +15,69 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Flask-PYTHON Web框架</title>
+    <link href="http://likj128.github.io/2020/03/21/Flask-PYTHON-Web%E6%A1%86%E6%9E%B6/"/>
+    <id>http://likj128.github.io/2020/03/21/Flask-PYTHON-Web%E6%A1%86%E6%9E%B6/</id>
+    <published>2020-03-21T00:05:31.000Z</published>
+    <updated>2020-03-21T00:09:38.334Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h1&gt;&lt;p&gt;Flask是一个基于Python开发并且依赖jinja2模板和Werkzeug WSGI服务的一个微型框架，&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Web 框架" scheme="http://likj128.github.io/categories/Web-%E6%A1%86%E6%9E%B6/"/>
+    
+    
+      <category term="Python" scheme="http://likj128.github.io/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Django-PYTHON Web框架</title>
+    <link href="http://likj128.github.io/2020/03/21/Django-PYTHON-Web%E6%A1%86%E6%9E%B6/"/>
+    <id>http://likj128.github.io/2020/03/21/Django-PYTHON-Web%E6%A1%86%E6%9E%B6/</id>
+    <published>2020-03-20T23:39:08.000Z</published>
+    <updated>2020-03-21T00:04:04.637Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h1&gt;&lt;p&gt;本章开始不再介绍 Python 标准库，如有需求可编辑基础技术发送至邮箱或者添加好友回复即可。开始介绍一个著名的 Web 框架：Django。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Web 框架" scheme="http://likj128.github.io/categories/Web-%E6%A1%86%E6%9E%B6/"/>
+    
+    
+      <category term="Python" scheme="http://likj128.github.io/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>标准库-PYTHON</title>
+    <link href="http://likj128.github.io/2020/03/20/%E6%A0%87%E5%87%86%E5%BA%93-PYTHON/"/>
+    <id>http://likj128.github.io/2020/03/20/%E6%A0%87%E5%87%86%E5%BA%93-PYTHON/</id>
+    <published>2020-03-20T09:52:18.000Z</published>
+    <updated>2020-03-20T09:58:42.356Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Python 标准库示例说明&lt;br&gt;Python拥有一个强大的标准库。Python语言的核心只包含数字、字符串、列表、字典、文件等常见类型和函数，而由Python标准库提供了系统管理、网络通信、文本处理、数据库接口、图形系统、XML处理等额外的功能。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="基础常识" scheme="http://likj128.github.io/categories/%E5%9F%BA%E7%A1%80%E5%B8%B8%E8%AF%86/"/>
+    
+    
+      <category term="Python" scheme="http://likj128.github.io/tags/Python/"/>
+    
+  </entry>
   
   <entry>
     <title>面向对象-PYTHON</title>
