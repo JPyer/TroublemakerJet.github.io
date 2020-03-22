@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://likj128.github.io/"/>
-  <updated>2020-03-21T00:09:38.334Z</updated>
+  <updated>2020-03-22T03:42:59.762Z</updated>
   <id>http://likj128.github.io/</id>
   
   <author>
@@ -15,6 +15,48 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Linux Shell编程-基础教程</title>
+    <link href="http://likj128.github.io/2020/03/22/Linux-Shell%E7%BC%96%E7%A8%8B-%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/"/>
+    <id>http://likj128.github.io/2020/03/22/Linux-Shell%E7%BC%96%E7%A8%8B-%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/</id>
+    <published>2020-03-22T03:15:54.000Z</published>
+    <updated>2020-03-22T03:42:59.762Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Linux-Shell-编程&quot;&gt;&lt;a href=&quot;#Linux-Shell-编程&quot; class=&quot;headerlink&quot; title=&quot;Linux Shell 编程&quot;&gt;&lt;/a&gt;Linux Shell 编程&lt;/h1&gt;&lt;p&gt;由于Linux不同于Windows，Linux是内核与界面分离的，它可以脱离图形界面而单独运行，同样也可以在内核的基础上运行图形化的桌面。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="基础教程" scheme="http://likj128.github.io/categories/%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/"/>
+    
+    
+      <category term="Linux" scheme="http://likj128.github.io/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux入门-基础教程</title>
+    <link href="http://likj128.github.io/2020/03/22/Linux%E5%85%A5%E9%97%A8-%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/"/>
+    <id>http://likj128.github.io/2020/03/22/Linux%E5%85%A5%E9%97%A8-%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/</id>
+    <published>2020-03-22T02:28:10.000Z</published>
+    <updated>2020-03-22T03:14:51.765Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;1-1-Linux操作系统简介&quot;&gt;&lt;a href=&quot;#1-1-Linux操作系统简介&quot; class=&quot;headerlink&quot; title=&quot;1. 1 Linux操作系统简介&quot;&gt;&lt;/a&gt;1. 1 Linux操作系统简介&lt;/h1&gt;&lt;p&gt;Linux是一套免费使用和自由传播的类Unix操作系统，是一个基于POSIX和UNIX的多用户、多任务、支持多线程和多CPU的操作系统。它能运行主要的UNIX工具软件、应用程序和网络协议。它支持32位和64位硬件。Linux继承了Unix以网络为核心的设计思想，是一个性能稳定的多用户网络操作系统。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="基础教程" scheme="http://likj128.github.io/categories/%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/"/>
+    
+    
+      <category term="Linux" scheme="http://likj128.github.io/tags/Linux/"/>
+    
+  </entry>
   
   <entry>
     <title>Flask-PYTHON Web框架</title>
