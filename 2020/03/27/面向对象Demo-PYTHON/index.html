@@ -1,0 +1,180 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><meta name="baidu-site-verification"><title>面向对象Demo-PYTHON | 艾利克斯工作室</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="艾利克斯工作室" type="application/atom+xml">
+</head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><body><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">LITREILY</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/profile.jpg" width="128" height="128"></a><h1 class="ttl"><a href="/">艾利克斯工作室</a></h1></div><p class="m-desc">路在脚下<br>The road is under your feet.</p><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">归档</a></li><li><span class="dot">●</span><a href="/categories/">分类</a></li><li><span class="dot">●</span><a href="/tags/">标签</a></li><li><span class="dot">●</span><a href="/about/">关于</a></li><li><span class="dot">●</span><a href="/atom.xml">RSS</a></li><li><span class="dot">●</span><a href="/Case/">案例</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">面向对象Demo-PYTHON</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2020/03/27/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1Demo-PYTHON/">2020-03-27</a></span><span class="p-category"><i class="fa fa-folder"></i><a href="/categories/%E4%BB%A3%E7%A0%81%E6%A1%88%E4%BE%8B/">代码案例</a></span><span class="p-view" id="busuanzi_container_page_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></div><div class="p-content"><h1 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h1><p>小游戏案例。</p>
+<a id="more"></a>
+<h1 id="1-人类"><a href="#1-人类" class="headerlink" title="1. 人类"></a>1. 人类</h1><p>属性<br>姓名<br>血量<br>持有的枪<br>方法<br>安子弹<br>安弹夹<br>拿枪（持有抢）<br>开枪</p>
+<h1 id="2-子弹类"><a href="#2-子弹类" class="headerlink" title="2. 子弹类"></a>2. 子弹类</h1><p>属性<br>杀伤力<br>方法<br>伤害敌人(让敌人掉血)  </p>
+<h1 id="3-弹夹类"><a href="#3-弹夹类" class="headerlink" title="3. 弹夹类"></a>3. 弹夹类</h1><p>属性<br>容量（子弹存储的最大值）<br>当前保存的子弹<br>方法<br>保存子弹（安装子弹的时候）<br>弹出子弹（开枪的时候）  </p>
+<h1 id="4-枪类"><a href="#4-枪类" class="headerlink" title="4. 枪类"></a>4. 枪类</h1><p>属性<br>弹夹（默认没有弹夹，需要安装）<br>方法<br>连接弹夹（保存弹夹）<br>射子弹  </p>
+<h1 id="代码参考"><a href="#代码参考" class="headerlink" title="代码参考"></a>代码参考</h1><pre><code>class Person(object):
+    def __init__(self, new_name):
+        self.name = new_name
+        self.gun = None
+        self.ph = 100
+
+    def anzhuang_zidan(self, danjian_temp, zidan_temp):
+        # 让弹夹存储子弹
+        danjian_temp.baocun(zidan_temp)
+
+    def anzhuang_danjia(self, gun_temp, danjia_temp):
+        gun_temp.baocun(danjia_temp)
+
+    def na_gun(self, gun_temp):
+        self.gun = gun_temp
+
+    def __str__(self):
+        if self.gun:
+            return &quot;%s 的ph为:%d, 他一把%s：&quot; % (self.name, self.ph, self.gun)
+        else:
+            return &quot;%s 的ph为:%d, 他么有枪...&quot; % (self.name, self.ph)
+
+    def kaiqiang(self, diren):
+        # 让枪向敌人开火
+        self.gun.fire(diren)
+
+    def diaoxue(self, shashangli):
+        self.ph -= shashangli
+
+
+class Gun(object):
+    def __init__(self, new_name):
+        self.name = new_name
+        self.danjia = None
+
+    def baocun(self, danjia_temp):
+        self.danjia = danjia_temp
+
+    def __str__(self):
+        if self.danjia:
+            return &quot;%s有弹夹，%s&quot; % (self.name, self.danjia)
+        else:
+            return &quot;%s没有弹夹&quot;
+
+    def fire(self, diren):
+        # 从弹夹中拿出一个子弹
+        zidan_temp = self.danjia.tanchu_zidan()
+        if zidan_temp:
+            # 让子弹去伤害敌人
+            zidan_temp.shanghai(diren)
+        else:
+            print(&quot;%s没子弹了&quot; % self.name)
+
+
+class Danjia(object):
+    def __init__(self, new_max_num):
+        self.max_num = new_max_num
+        self.zidan_list = []
+
+    def baocun(self, zidan_temp):
+        self.zidan_list.append(zidan_temp)
+
+    def __str__(self):
+        return &quot;弹夹：%d/%d&quot; % (len(self.zidan_list), self.max_num)
+
+    def tanchu_zidan(self):
+        if len(self.zidan_list) &gt; 0:
+            return self.zidan_list.pop()
+        else:
+            return None
+
+
+class Bullet(object):
+    def __init__(self, new_shashangli):
+        self.shashangli = new_shashangli
+
+    def shanghai(self, diren):
+        diren.diaoxue(self.shashangli)
+
+# 创建老王对象
+lao_wang = Person(&quot;老王&quot;)
+
+# 创建一把枪
+ak47 = Gun(&quot;AK47&quot;)
+
+# 创建一个弹夹
+dan_jia = Danjia(20)  # 表示最大能够容纳20发子弹
+
+# 创建一颗子弹
+bullet = Bullet(10)  # 表示每颗子弹的杀伤力
+
+# 老王把一个子弹放到弹夹中
+lao_wang.anzhuang_zidan(dan_jia, bullet)
+
+# 测试弹夹的信息
+print(dan_jia)
+
+# 老王把弹夹放到枪中
+lao_wang.anzhuang_danjia(ak47, dan_jia)
+
+# 测试枪的信息
+print(ak47)
+
+# 老王拿起枪
+lao_wang.na_gun(ak47)
+
+# 测试老王的信息
+print(lao_wang)
+
+# 创建一个敌人
+gebi_laowang = Person(&quot;隔壁老王&quot;)
+
+# 老王向隔壁老王开枪
+lao_wang.kaiqiang(gebi_laowang)
+
+# 测试隔壁老王
+print(gebi_laowang)
+
+# 创建一些子弹
+for i in range(5):
+    bullet = Bullet(10)  # 表示每颗子弹的杀伤力
+    # 每创建一颗子弹就让老王把它放到弹夹中
+    lao_wang.anzhuang_zidan(dan_jia, bullet)
+
+lao_wang.kaiqiang(gebi_laowang)
+print(gebi_laowang)
+lao_wang.kaiqiang(gebi_laowang)
+print(gebi_laowang)
+lao_wang.kaiqiang(gebi_laowang)
+print(gebi_laowang)
+lao_wang.kaiqiang(gebi_laowang)
+print(gebi_laowang)
+lao_wang.kaiqiang(gebi_laowang)
+print(gebi_laowang)
+lao_wang.kaiqiang(gebi_laowang)
+print(gebi_laowang)</code></pre></div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:Likj128@126.com">Alexis (KangJ)</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/03/27/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1Demo-PYTHON/">http://likj128.github.io/2020/03/27/面向对象Demo-PYTHON/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="http://likj128.github.io">Alexis (KangJ)的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/Python/">Python</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#属性"><span class="toc-number">1.</span> <span class="toc-text">属性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-人类"><span class="toc-number">2.</span> <span class="toc-text">1. 人类</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-子弹类"><span class="toc-number">3.</span> <span class="toc-text">2. 子弹类</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-弹夹类"><span class="toc-number">4.</span> <span class="toc-text">3. 弹夹类</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-枪类"><span class="toc-number">5.</span> <span class="toc-text">4. 枪类</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#代码参考"><span class="toc-number">6.</span> <span class="toc-text">代码参考</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="next" href="/2020/03/22/Linux-Shell%E7%BC%96%E7%A8%8B-%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/">Linux Shell编程-基础教程 &gt;</a></div><div id="valine-comment"><style type="text/css">.v * { color: #CECECE; }
+.v a { color: #0F9FB4; }
+.v a:hover { color: #216C73; }
+.v li { list-style: inherit; }
+.v .vwrap { border: 1px solid #223441; border-radius: 0; }
+.v .vwrap:hover { box-shadow: 0 0 6px 1px #223441; }
+.v .vbtn { border-radius: 0; color: #cecece; background: none; }
+.v .vlist .vcard .vh { border-bottom-color: #293D4E; }
+.v .vwrap .vheader .vinput { border-bottom-color: #223441; }
+.v .vwrap .vheader .vinput:focus { border-bottom-color: #339EB4; }
+.v code, .v pre,.v .vlist .vcard .vhead .vsys { background: #203240; }
+.v code, .v pre { color: #F0F0F0; font-size: 95%; }
+.v .vlist .vcard .vcontent.expand:before { background: linear-gradient(180deg,hsla(206,33%,19%,0),hsla(206,33%,19%,.9)); }
+.v .vlist .vcard .vcontent.expand:after { background: hsla(206,33%,19%,.9); }</style><div id="vcomment"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+var verify = 'false' == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'99FfVECWi1xns2SAjWOtTNza-gzGzoHsz',
+  appKey:'6t7I76O3iToh6BGjc5rjWqDX',
+  lang: 'zh-cn',
+  placeholder:'ヾﾉ≧∀≦)o Come on, say something...',
+  avatar:'identicon',
+  guest_info:guest_info,
+  pageSize:'10'
+})</script></div></section><footer><p>Copyright © 2020 - 2020 <a href="/." rel="nofollow">艾利克斯工作室</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span></span> <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span></span> | Personal by<a rel="nofollow" target="_blank" href="https://alexisli.cn"> Alexis.</a>Powered by<a rel="nofollow" target="_blank" href="http://www.beianbeian.com/beianxinxi/f72222db0e8cf7f7b49ceee25f65c49e.html"> 晋ICP备19013202号.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+    search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css"></body></html>

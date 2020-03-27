@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://likj128.github.io/"/>
-  <updated>2020-03-22T03:42:59.762Z</updated>
+  <updated>2020-03-27T03:07:52.670Z</updated>
   <id>http://likj128.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>面向对象Demo-PYTHON</title>
+    <link href="http://likj128.github.io/2020/03/27/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1Demo-PYTHON/"/>
+    <id>http://likj128.github.io/2020/03/27/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1Demo-PYTHON/</id>
+    <published>2020-03-27T03:01:54.000Z</published>
+    <updated>2020-03-27T03:07:52.670Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;属性&quot;&gt;&lt;a href=&quot;#属性&quot; class=&quot;headerlink&quot; title=&quot;属性&quot;&gt;&lt;/a&gt;属性&lt;/h1&gt;&lt;p&gt;小游戏案例。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="代码案例" scheme="http://likj128.github.io/categories/%E4%BB%A3%E7%A0%81%E6%A1%88%E4%BE%8B/"/>
+    
+    
+      <category term="Python" scheme="http://likj128.github.io/tags/Python/"/>
+    
+  </entry>
   
   <entry>
     <title>Linux Shell编程-基础教程</title>

@@ -1,6 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>面向对象Demo-PYTHON</title>
+    <url>/2020/03/27/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1Demo-PYTHON/</url>
+    <content><![CDATA[<h1 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h1><p>小游戏案例。</p>
+<a id="more"></a>
+<h1 id="1-人类"><a href="#1-人类" class="headerlink" title="1. 人类"></a>1. 人类</h1><p>属性<br>姓名<br>血量<br>持有的枪<br>方法<br>安子弹<br>安弹夹<br>拿枪（持有抢）<br>开枪</p>
+<h1 id="2-子弹类"><a href="#2-子弹类" class="headerlink" title="2. 子弹类"></a>2. 子弹类</h1><p>属性<br>杀伤力<br>方法<br>伤害敌人(让敌人掉血)  </p>
+<h1 id="3-弹夹类"><a href="#3-弹夹类" class="headerlink" title="3. 弹夹类"></a>3. 弹夹类</h1><p>属性<br>容量（子弹存储的最大值）<br>当前保存的子弹<br>方法<br>保存子弹（安装子弹的时候）<br>弹出子弹（开枪的时候）  </p>
+<h1 id="4-枪类"><a href="#4-枪类" class="headerlink" title="4. 枪类"></a>4. 枪类</h1><p>属性<br>弹夹（默认没有弹夹，需要安装）<br>方法<br>连接弹夹（保存弹夹）<br>射子弹  </p>
+<h1 id="代码参考"><a href="#代码参考" class="headerlink" title="代码参考"></a>代码参考</h1><pre><code>class Person(object):
+    def __init__(self, new_name):
+        self.name = new_name
+        self.gun = None
+        self.ph = 100
+
+    def anzhuang_zidan(self, danjian_temp, zidan_temp):
+        # 让弹夹存储子弹
+        danjian_temp.baocun(zidan_temp)
+
+    def anzhuang_danjia(self, gun_temp, danjia_temp):
+        gun_temp.baocun(danjia_temp)
+
+    def na_gun(self, gun_temp):
+        self.gun = gun_temp
+
+    def __str__(self):
+        if self.gun:
+            return &quot;%s 的ph为:%d, 他一把%s：&quot; % (self.name, self.ph, self.gun)
+        else:
+            return &quot;%s 的ph为:%d, 他么有枪...&quot; % (self.name, self.ph)
+
+    def kaiqiang(self, diren):
+        # 让枪向敌人开火
+        self.gun.fire(diren)
+
+    def diaoxue(self, shashangli):
+        self.ph -= shashangli
+
+
+class Gun(object):
+    def __init__(self, new_name):
+        self.name = new_name
+        self.danjia = None
+
+    def baocun(self, danjia_temp):
+        self.danjia = danjia_temp
+
+    def __str__(self):
+        if self.danjia:
+            return &quot;%s有弹夹，%s&quot; % (self.name, self.danjia)
+        else:
+            return &quot;%s没有弹夹&quot;
+
+    def fire(self, diren):
+        # 从弹夹中拿出一个子弹
+        zidan_temp = self.danjia.tanchu_zidan()
+        if zidan_temp:
+            # 让子弹去伤害敌人
+            zidan_temp.shanghai(diren)
+        else:
+            print(&quot;%s没子弹了&quot; % self.name)
+
+
+class Danjia(object):
+    def __init__(self, new_max_num):
+        self.max_num = new_max_num
+        self.zidan_list = []
+
+    def baocun(self, zidan_temp):
+        self.zidan_list.append(zidan_temp)
+
+    def __str__(self):
+        return &quot;弹夹：%d/%d&quot; % (len(self.zidan_list), self.max_num)
+
+    def tanchu_zidan(self):
+        if len(self.zidan_list) &gt; 0:
+            return self.zidan_list.pop()
+        else:
+            return None
+
+
+class Bullet(object):
+    def __init__(self, new_shashangli):
+        self.shashangli = new_shashangli
+
+    def shanghai(self, diren):
+        diren.diaoxue(self.shashangli)
+
+# 创建老王对象
+lao_wang = Person(&quot;老王&quot;)
+
+# 创建一把枪
+ak47 = Gun(&quot;AK47&quot;)
+
+# 创建一个弹夹
+dan_jia = Danjia(20)  # 表示最大能够容纳20发子弹
+
+# 创建一颗子弹
+bullet = Bullet(10)  # 表示每颗子弹的杀伤力
+
+# 老王把一个子弹放到弹夹中
+lao_wang.anzhuang_zidan(dan_jia, bullet)
+
+# 测试弹夹的信息
+print(dan_jia)
+
+# 老王把弹夹放到枪中
+lao_wang.anzhuang_danjia(ak47, dan_jia)
+
+# 测试枪的信息
+print(ak47)
+
+# 老王拿起枪
+lao_wang.na_gun(ak47)
+
+# 测试老王的信息
+print(lao_wang)
+
+# 创建一个敌人
+gebi_laowang = Person(&quot;隔壁老王&quot;)
+
+# 老王向隔壁老王开枪
+lao_wang.kaiqiang(gebi_laowang)
+
+# 测试隔壁老王
+print(gebi_laowang)
+
+# 创建一些子弹
+for i in range(5):
+    bullet = Bullet(10)  # 表示每颗子弹的杀伤力
+    # 每创建一颗子弹就让老王把它放到弹夹中
+    lao_wang.anzhuang_zidan(dan_jia, bullet)
+
+lao_wang.kaiqiang(gebi_laowang)
+print(gebi_laowang)
+lao_wang.kaiqiang(gebi_laowang)
+print(gebi_laowang)
+lao_wang.kaiqiang(gebi_laowang)
+print(gebi_laowang)
+lao_wang.kaiqiang(gebi_laowang)
+print(gebi_laowang)
+lao_wang.kaiqiang(gebi_laowang)
+print(gebi_laowang)
+lao_wang.kaiqiang(gebi_laowang)
+print(gebi_laowang)</code></pre>]]></content>
+      <categories>
+        <category>代码案例</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux Shell编程-基础教程</title>
     <url>/2020/03/22/Linux-Shell%E7%BC%96%E7%A8%8B-%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/</url>
     <content><![CDATA[<h1 id="Linux-Shell-编程"><a href="#Linux-Shell-编程" class="headerlink" title="Linux Shell 编程"></a>Linux Shell 编程</h1><p>由于Linux不同于Windows，Linux是内核与界面分离的，它可以脱离图形界面而单独运行，同样也可以在内核的基础上运行图形化的桌面。</p>
