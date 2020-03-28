@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://likj128.github.io/"/>
-  <updated>2020-03-27T03:07:52.670Z</updated>
+  <updated>2020-03-28T03:36:51.716Z</updated>
   <id>http://likj128.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>让Python搞定MySQL数据库-PYTHON</title>
+    <link href="http://likj128.github.io/2020/03/28/%E8%AE%A9Python%E6%90%9E%E5%AE%9AMySQL%E6%95%B0%E6%8D%AE%E5%BA%93-PYTHON/"/>
+    <id>http://likj128.github.io/2020/03/28/%E8%AE%A9Python%E6%90%9E%E5%AE%9AMySQL%E6%95%B0%E6%8D%AE%E5%BA%93-PYTHON/</id>
+    <published>2020-03-28T03:09:30.000Z</published>
+    <updated>2020-03-28T03:36:51.716Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;MySQL是常用的数据库之一，也是面试必备技能之一。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术资讯" scheme="http://likj128.github.io/categories/%E6%8A%80%E6%9C%AF%E8%B5%84%E8%AE%AF/"/>
+    
+    
+      <category term="Python" scheme="http://likj128.github.io/tags/Python/"/>
+    
+  </entry>
   
   <entry>
     <title>面向对象Demo-PYTHON</title>

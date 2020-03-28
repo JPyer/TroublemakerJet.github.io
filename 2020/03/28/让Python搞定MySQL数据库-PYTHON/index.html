@@ -1,0 +1,274 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><meta name="baidu-site-verification"><title>让Python搞定MySQL数据库-PYTHON | 艾利克斯工作室</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="艾利克斯工作室" type="application/atom+xml">
+</head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><body><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">LITREILY</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/profile.jpg" width="128" height="128"></a><h1 class="ttl"><a href="/">艾利克斯工作室</a></h1></div><p class="m-desc">路在脚下<br>The road is under your feet.</p><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">归档</a></li><li><span class="dot">●</span><a href="/categories/">分类</a></li><li><span class="dot">●</span><a href="/tags/">标签</a></li><li><span class="dot">●</span><a href="/about/">关于</a></li><li><span class="dot">●</span><a href="/atom.xml">RSS</a></li><li><span class="dot">●</span><a href="/Case/">案例</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">让Python搞定MySQL数据库-PYTHON</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2020/03/28/%E8%AE%A9Python%E6%90%9E%E5%AE%9AMySQL%E6%95%B0%E6%8D%AE%E5%BA%93-PYTHON/">2020-03-28</a></span><span class="p-category"><i class="fa fa-folder"></i><a href="/categories/%E6%8A%80%E6%9C%AF%E8%B5%84%E8%AE%AF/">技术资讯</a></span><span class="p-view" id="busuanzi_container_page_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></div><div class="p-content"><p>MySQL是常用的数据库之一，也是面试必备技能之一。</p>
+<a id="more"></a>
+<p>本篇文章通过一次实战（Python &amp; SQL 语句结合使用 —-搞定MySQL数据库）</p>
+<h1 id="实战开始"><a href="#实战开始" class="headerlink" title="实战开始"></a>实战开始</h1><p>在github上下载fifa18球员数据，将这些信息存入到mysql。<br>①数据下载地址：<br><a href="https://github.com/amanthedorkknight/fifa18-all-player-statistics" target="_blank" rel="noopener">https://github.com/amanthedorkknight/fifa18-all-player-statistics</a><br>②选择：Complete-&gt;basicplayerdata.csv</p>
+<h1 id="数据从CSV导入MySQL"><a href="#数据从CSV导入MySQL" class="headerlink" title="数据从CSV导入MySQL"></a>数据从CSV导入MySQL</h1><p>1）创建对应库与表  </p>
+<pre><code>#创建公司数据库，编码格式utf-8
+CREATE DATABASE fifa18_db DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+#选择数据库：
+use fifa18_db;
+#创建球员表：id,名称，海报地址，俱乐部，年龄，薪资等，与csv文件对应
+create table player(id int Primary key auto_increment, 
+player_id int, name char(64), age int, poster char(64),
+
+                    flag char(64), overall int, potential int, club char(64) default &#39;&#39;, club_Logo char(64), 
+                   value char(16), wage char(16), special int) default charset =utf8;</code></pre><p>2）CSV读取文件<br>数据集中某些球员字段为空，插入时候需要补充默认值，使用DictReader读取。  </p>
+<pre><code>path = &#39;/home/linux/workdir/data/basicplayerdata.csv&#39;
+#字段名称
+field = [&#39;&#39;,&#39;ID&#39;,&#39;Name&#39;,&#39;Age&#39;,&#39;Photo&#39;,&#39;Nationality&#39;,&#39;Flag&#39;,&#39;Overall&#39;,&#39;Potential&#39;,&#39;Club&#39;,&#39;Club Logo&#39;,&#39;Value&#39;,&#39;Wage&#39;,&#39;Special&#39;]
+f = open(path)
+fcsv = csv.DictReader(f, fieldnames = field)
+#第一行去掉
+line = next(fcsv)
+#第一行有效数据
+line = next(fcsv)
+print(line)</code></pre><p>RESULT</p>
+<pre><code>OrderedDict([(&#39;&#39;, &#39;0&#39;), (&#39;ID&#39;, &#39;158023&#39;), (&#39;Name&#39;, &#39;L. Messi&#39;), (&#39;Age&#39;, &#39;30&#39;), 
+(&#39;Photo&#39;, &#39;https://cdn.sofifa.org/players/4/18/158023.png&#39;), (&#39;Nationality&#39;, &#39;Argentina&#39;), 
+(&#39;Flag&#39;, &#39;https://cdn.sofifa.org/flags/52.png&#39;), 
+(&#39;Overall&#39;, &#39;94&#39;), (&#39;Potential&#39;, &#39;94&#39;), (&#39;Club&#39;, &#39;FC Barcelona&#39;), 
+(&#39;Club Logo&#39;, &#39;https://cdn.sofifa.org/teams/2/18/light/241.png&#39;), 
+(&#39;Value&#39;, &#39;€118.5M&#39;), (&#39;Wage&#39;, &#39;€565K&#39;), (&#39;Special&#39;, &#39;2161&#39;)])</code></pre><p>3）读取一行并整理数据格式<br>CSV读取字段与数据库对应起来，且不要CSV文件种的第一列，整理数据格式为字典，key为数据库列名，value为CSV对应内容，代码实现。</p>
+<pre><code>sqlfield = [&#39;player_id&#39;,&#39;name&#39;,&#39;age&#39;,&#39;poster&#39;,&#39;nationality&#39;,&#39;flag&#39;,&#39;overall&#39;,&#39;potential&#39;,&#39;club&#39;,&#39;club_logo&#39;,&#39;value&#39;,&#39;wage&#39;,&#39;special&#39;]
+csvfield = [&#39;ID&#39;,&#39;Name&#39;,&#39;Age&#39;,&#39;Photo&#39;,&#39;Nationality&#39;,&#39;Flag&#39;,&#39;Overall&#39;,&#39;Potential&#39;,&#39;Club&#39;,&#39;Club Logo&#39;,&#39;Value&#39;,&#39;Wage&#39;,&#39;Special&#39;]
+#转成字典：
+keysinfo = dict(zip(sqlfield, csvfield))
+#填充数据：
+data = {}
+for sfield, cfield in keysinfo.items():
+    ele = line.get(cfield, &#39;&#39;)
+    data.setdefault(sfield, ele)
+print(data)</code></pre><p>RESULT</p>
+<pre><code>{&#39;player_id&#39;: &#39;158023&#39;, &#39;name&#39;: &#39;L. Messi&#39;, &#39;age&#39;: &#39;30&#39;, &#39;poster&#39;: &#39;https://cdn.sofifa.org/players/4/18/158023.png&#39;, 
+&#39;nationality&#39;: &#39;Argentina&#39;, &#39;flag&#39;: &#39;https://cdn.sofifa.org/flags/52.png&#39;, 
+&#39;overall&#39;: &#39;94&#39;, &#39;potential&#39;: &#39;94&#39;, &#39;club&#39;: &#39;FC Barcelona&#39;, 
+&#39;club_logo&#39;: &#39;https://cdn.sofifa.org/teams/2/18/light/241.png&#39;, 
+&#39;value&#39;: &#39;€118.5M&#39;, &#39;wage&#39;: &#39;€565K&#39;, &#39;special&#39;: &#39;2161&#39;}</code></pre><p>4）拼接sql语句<br>插入一条数据：获取插入字段与对应数据，拼接成sql语句。  </p>
+<pre><code>tablename = &#39;player&#39;
+keys = data.keys()
+fields = &#39;,&#39;.join(keys)
+vals = &#39;,&#39;.join([&quot;&#39;%s&#39;&quot;% val for val in data.values()])
+sql = f&quot;INSERT INTO {tablename}({fields}) VALUES({vals})&quot;
+print(sql)</code></pre><p>RESULT</p>
+<pre><code>INSERT INTO player(player_id,name,age,poster,nationality,flag,overall,potential,club,club_logo,value,wage,special) 
+VALUES(&#39;158023&#39;,&#39;L. Messi&#39;,&#39;30&#39;,&#39;https://cdn.sofifa.org/players/4/18/158023.png&#39;,&#39;Argentina&#39;,&#39;https://cdn.sofifa.org/flags/52.png&#39;,&#39;94&#39;,&#39;94&#39;,&#39;FC Barcelona&#39;,&#39;https://cdn.sofifa.org/teams/2/18/light/241.png&#39;,&#39;€118.5M&#39;,&#39;€565K&#39;,&#39;2161&#39;)</code></pre><p>5）连接数据库，并插入数据  </p>
+<pre><code>
+#编码格式：utf-8
+db = pymysql.connect(&quot;localhost&quot;,&quot;root&quot;,&quot;abc123&quot;,&quot;fifa18_db&quot;, charset=&#39;utf8&#39;)
+#获取游标
+cursor = db.cursor()
+cursor.execute(sql)
+#提交数据
+db.commit()
+#断开连接
+cursor.close()
+db.close()</code></pre><p>查看player中信息，插入成功。</p>
+<p align="left">
+    <img src="/images/SQL C.png" alt="Sample" width="791" height="220">
+</p>  
+
+<p>基本功能都已经实现，对代码进行整理，根据功能定义类及方法。  </p>
+<pre><code>import csv    
+import pymysql  
+class LoadDataFromCsvToMysql:
+    def __init__(self, csvpath, csvfield, mysqlfield, table, sqlconfig):
+        #初始化参数
+        pass
+    def connectSql(self):
+        #连接数据库，获取游标
+        pass
+    def disconnectSql(self):
+        #断开数据库，获取游标
+        pass
+    def processSql(self, sql):
+        #处理sql语句
+        pass
+    def loadCsv(self):
+        #打开csv文件，返回csv对象
+        pass
+    def closeCsv(self):
+        #关闭csv文件
+        pass
+    def gensql(self, linedata):
+        #生成sql语句
+        pass
+    def process(self):
+        #对外接口，打开文件并写数据库
+        pass</code></pre><p>类定义完成之后，我们可以将功能明确的方法实现。  </p>
+<pre><code>import csv
+import pymysql
+class LoadDataFromCsvToMysql:
+    def __init__(self, csvpath, csvfield, mysqlfield, table, sqlconfig):
+        #初始化参数
+        self.dbconfig = sqlconfig
+        self.inpath = csvpath
+        self.sqlfield =  mysqlfield
+        self.csvfield = csvfield
+        self.fieldmap = dict(zip(mysqlfield, csvfield[1:]))
+        self.tablename = table
+    def connectSql(self):
+        self.db = pymysql.connect(**self.dbconfig, charset=&#39;utf8&#39;)
+        self.cursor = self.db.cursor()
+    def disconnectSql(self):
+        self.cursor.close()
+        self.db.close()
+    def processSql(self, sql):
+        ret = self.cursor.execute(sql)
+        self.db.commit()
+        return ret
+    def loadCsv(self):
+        #打开csv文件
+        self.f = open(path)
+        fcsv = csv.DictReader(self.f, fieldnames = self.csvfield)
+        next(fcsv)
+        return fcsv
+    def closeCsv(self):
+        self.f.close()
+    def gensql(self, linedata):
+        pass
+    def process(self):
+        #测试数据库与csv文件打开关闭
+        self.connectSql()
+        print(&#39;connect sql...&#39;)
+        fcsv = self.loadCsv()
+        self.disconnectSql()
+        self.closeCsv()
+        print(&#39;disconnect sql&#39;)        path = &#39;/home/linux/workdir/data/basicplayerdata.csv&#39;
+sqlfield= [&#39;player_id&#39;,&#39;name&#39;,&#39;age&#39;,&#39;poster&#39;,&#39;nationality&#39;,&#39;flag&#39;,&#39;overall&#39;,&#39;potential&#39;,&#39;club&#39;,&#39;club_logo&#39;,&#39;value&#39;,&#39;wage&#39;,&#39;special&#39;]
+csvfield = [&#39;&#39;,&#39;ID&#39;,&#39;Name&#39;,&#39;Age&#39;,&#39;Photo&#39;,&#39;Nationality&#39;,&#39;Flag&#39;,&#39;Overall&#39;,&#39;Potential&#39;,&#39;Club&#39;,&#39;Club Logo&#39;,&#39;Value&#39;,&#39;Wage&#39;,&#39;Special&#39;]
+dbconfig = {&#39;host&#39;:&#39;localhost&#39;,&#39;port&#39;:3306,&#39;user&#39;:&#39;root&#39;,&#39;passwd&#39;:&#39;abc123&#39;,&#39;db&#39;:&#39;fifa18_db&#39;}
+obj = LoadDataFromCsvToMysql(path, csvfield, sqlfield,  &#39;player&#39;, dbconfig)
+obj.process()
+
+输出：
+
+connect sql...
+load csvfile
+disconnect sql
+</code></pre><p>6）完善process与gensql<br>process方法  </p>
+<pre><code>def process(self):
+        #测试数据库与csv文件打开关闭
+        self.connectSql()
+        print(&#39;connect sql...&#39;)
+        fcsv = self.loadCsv()
+        for line in fcsv:
+            sql = self.gensql(line)
+            print(sql)
+            n = self.processSql(sql)
+        self.disconnectSql()
+        self.closeCsv()
+        print(&#39;disconnect sql&#39;)</code></pre><p>gensql方法 将前面实现添加到此方法中  </p>
+<pre><code>def gensql(self, linedata):
+        #产生sql语句
+        data = {}
+        for sfield, cfield in self.fieldmap.items():
+            ele = linedata.get(cfield, &#39;&#39;)
+            data.setdefault(sfield, ele)
+        tablename = self.tablename
+        keys = data.keys()
+        fields = &#39;,&#39;.join(keys)
+        vals = &#39;,&#39;.join([&quot;&#39;%s&#39;&quot;% val for val in data.values()])
+        sql = f&quot;INSERT INTO {tablename}({fields}) VALUES({vals})&quot;
+        return sql</code></pre><p>测试前将player表中内容删除，然后使用代码先插入一条，并查看结果；如果测试没有问题，可以插入所有数据。实际运行出现问题：sql语句错误 ，字符串拼接错误  </p>
+<pre><code>&quot;(&#39;158023&#39;,&#39;L. Messi&#39;,&#39;30&#39;,&#39;https://cdn.sofifa.org/players/4/18/158023.png&#39;,..)&quot;</code></pre><p>双引号+单引号，但是文件中，某些字符串带单引号，所以出现字段错误。<br>修改sql拼接方法：</p>
+<pre><code>    def gensql(self, linedata):
+        #产生sql语句
+        data = {}
+        for sfield, cfield in self.fieldmap.items():
+            ele = linedata.get(cfield, &#39;&#39;)
+            data.setdefault(sfield, ele)
+        tablename = self.tablename
+        keys = data.keys()
+        fields = &#39;,&#39;.join(keys)
+        vals = &#39;,&#39;.join([&#39;&quot;%s&quot;&#39;% val for val in data.values()])
+        sql = f&#39;INSERT INTO {tablename}({fields}) VALUES({vals})&#39;
+        return sql</code></pre><p>RESULT</p>
+<pre><code>dstram&quot;,&quot;18&quot;,&quot;https://cdn.sofifa.org/players/4/18/238813.png&quot;,&quot;England&quot;,&quot;https://cdn.sofifa.org/flags/14.png&quot;,&quot;47&quot;,&quot;65&quot;,&quot;Crewe Alexandra&quot;,&quot;https://cdn.sofifa.org/teams/2/18/light/121.png&quot;,&quot;€60K&quot;,&quot;€1K&quot;,&quot;1305&quot;)
+INSERT INTO player(player_id,name,age,poster,nationality,flag,overall,potential,club,club_logo,value,wage,special) 
+VALUES(&quot;238306&quot;,&quot;A. Conway&quot;,&quot;19&quot;,&quot;https://cdn.sofifa.org/players/4/18/238306.png&quot;,&quot;Republic of Ireland&quot;,&quot;https://cdn.sofifa.org/flags/25.png&quot;,&quot;47&quot;,&quot;63&quot;,&quot;Galway United&quot;,&quot;https://cdn.sofifa.org/teams/2/18/light/1571.png&quot;,&quot;€60K&quot;,&quot;€1K&quot;,&quot;1314&quot;)
+disconnect sql
+1555235373.5942054 1555235392.2122808</code></pre><p>插入18000条数据，花费时间大概为20S左右；后续优化：每次插入500条数据，然后在查看花费时间，这个大家可以参考前面案例自己实现。  </p>
+<h1 id="查询数据"><a href="#查询数据" class="headerlink" title="查询数据"></a>查询数据</h1><p>需求：查询player表中阿根廷国家球员姓名，年龄，头像信息。读者朋友可以自己尝试去实现，考虑使用继承。<br>①sql中查询数据我们步骤：连接数据库，执行sql语句，关闭数据库；<br>②查询与写入很多方法通用，考虑继承LoadDataFromCsvToMysql类；<br>③需要重载init，process，processSql方法；<br>代码：</p>
+<pre><code>
+class QueryMysql(LoadDataFromCsvToMysql):
+    def __init__(self, sqlconfig):
+        #调用父类方法，初始化传一些无效参数
+        super(QueryMysql, self).__init__(&#39;&#39;,[], [], &#39;&#39;, dbconfig)
+    def genSql(self, table, fields, condition=None):
+        #查询语句生成
+        fds = &#39;,&#39;.join(fields)
+        cond = &#39;&#39;
+        print(condition)
+        if condition:
+            cond = f&#39; where {condition}&#39;
+        sql = f&#39;select {fds} from {table}{cond}&#39;
+        return sql
+    def process(self, tablename, fields, condition=None):
+        #对外接口
+        #调用父类中的连接数据库，关闭数据库方法
+        self.connectSql()
+        sql = self.genSql(tablename, fields, condition)
+        self.processSql(sql)
+        items = self.cursor.fetchall()
+        for item in items:
+            print(item)
+        print(&#39;all Argentina player:&#39;, len(items))
+        self.disconnectSql()        dbconfig= {&#39;host&#39;:&#39;localhost&#39;,&#39;port&#39;:3306,&#39;user&#39;:&#39;root&#39;,&#39;passwd&#39;:&#39;abc123&#39;,&#39;db&#39;:&#39;fifa18_db&#39;}
+tablename = &#39;player&#39;
+files = [&#39;name&#39;,&#39;poster&#39;, &#39;age&#39;]
+obj = QueryMysql(dbconfig)
+cond = &#39;nationality=&quot;Argentina&quot;&#39;
+obj.process(tablename, files, cond)
+
+
+
+RESULT 
+
+
+
+(&#39;L. Messi&#39;, &#39;https://cdn.sofifa.org/players/4/18/158023.png&#39;, 30)
+(&#39;G. Higuaín&#39;, &#39;https://cdn.sofifa.org/players/4/18/167664.png&#39;, 29)
+(&#39;P. Dybala&#39;, &#39;https://cdn.sofifa.org/players/4/18/211110.png&#39;, 23)...(&#39;A. Miño&#39;, &#39;https://cdn.sofifa.org/players/4/18/243298.png&#39;, 23)
+(&#39;T. Durso&#39;, &#39;https://cdn.sofifa.org/players/4/18/240955.png&#39;, 18)
+(&#39;K. Humeler&#39;, &#39;https://cdn.sofifa.org/players/4/18/240291.png&#39;, 20)
+(&#39;J. Mendive&#39;, &#39;https://cdn.sofifa.org/players/4/18/241584.png&#39;, 20)
+all Argentina player: 966</code></pre><h1 id="得出结果"><a href="#得出结果" class="headerlink" title="得出结果"></a>得出结果</h1><p>数据集中一共有966名Argentina球员</p>
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:Likj128@126.com">Alexis (KangJ)</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/03/28/%E8%AE%A9Python%E6%90%9E%E5%AE%9AMySQL%E6%95%B0%E6%8D%AE%E5%BA%93-PYTHON/">http://likj128.github.io/2020/03/28/让Python搞定MySQL数据库-PYTHON/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="http://likj128.github.io">Alexis (KangJ)的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/Python/">Python</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#实战开始"><span class="toc-number">1.</span> <span class="toc-text">实战开始</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#数据从CSV导入MySQL"><span class="toc-number">2.</span> <span class="toc-text">数据从CSV导入MySQL</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#查询数据"><span class="toc-number">3.</span> <span class="toc-text">查询数据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#得出结果"><span class="toc-number">4.</span> <span class="toc-text">得出结果</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="next" href="/2020/03/27/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1Demo-PYTHON/">面向对象Demo-PYTHON &gt;</a></div><div id="valine-comment"><style type="text/css">.v * { color: #CECECE; }
+.v a { color: #0F9FB4; }
+.v a:hover { color: #216C73; }
+.v li { list-style: inherit; }
+.v .vwrap { border: 1px solid #223441; border-radius: 0; }
+.v .vwrap:hover { box-shadow: 0 0 6px 1px #223441; }
+.v .vbtn { border-radius: 0; color: #cecece; background: none; }
+.v .vlist .vcard .vh { border-bottom-color: #293D4E; }
+.v .vwrap .vheader .vinput { border-bottom-color: #223441; }
+.v .vwrap .vheader .vinput:focus { border-bottom-color: #339EB4; }
+.v code, .v pre,.v .vlist .vcard .vhead .vsys { background: #203240; }
+.v code, .v pre { color: #F0F0F0; font-size: 95%; }
+.v .vlist .vcard .vcontent.expand:before { background: linear-gradient(180deg,hsla(206,33%,19%,0),hsla(206,33%,19%,.9)); }
+.v .vlist .vcard .vcontent.expand:after { background: hsla(206,33%,19%,.9); }</style><div id="vcomment"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+var verify = 'false' == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'99FfVECWi1xns2SAjWOtTNza-gzGzoHsz',
+  appKey:'6t7I76O3iToh6BGjc5rjWqDX',
+  lang: 'zh-cn',
+  placeholder:'ヾﾉ≧∀≦)o Come on, say something...',
+  avatar:'identicon',
+  guest_info:guest_info,
+  pageSize:'10'
+})</script></div></section><footer><p>Copyright © 2020 - 2020 <a href="/." rel="nofollow">艾利克斯工作室</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span></span> <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span></span> | Personal by<a rel="nofollow" target="_blank" href="https://alexisli.cn"> Alexis.</a>Powered by<a rel="nofollow" target="_blank" href="http://www.beianbeian.com/beianxinxi/f72222db0e8cf7f7b49ceee25f65c49e.html"> 晋ICP备19013202号.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+    search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css"></body></html>
