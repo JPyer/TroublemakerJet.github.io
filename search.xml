@@ -1,6 +1,418 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>flask-session组件-Web框架</title>
+    <url>/2020/03/30/flask-session%E7%BB%84%E4%BB%B6-Web%E6%A1%86%E6%9E%B6/</url>
+    <content><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>flask-session是flask框架的session组件，<br>由于原来flask内置session使用签名cookie保存，该组件则将支持session保存到多个地方<br>如：</p>
+<a id="more"></a>
+<pre><code>redis
+memcached
+filesystem
+mongodb
+sqlalchmey</code></pre><h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><pre><code>pip install flask-session</code></pre><h1 id="存储方式"><a href="#存储方式" class="headerlink" title="存储方式"></a>存储方式</h1><h1 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h1><p>第一种</p>
+<pre><code>import redis
+from flask import Flask, session
+from flask_session import Session
+app = Flask(__name__)
+app.debug = True
+app.secret_key = &#39;xxxx&#39;
+app.config[&#39;SESSION_TYPE&#39;] = &#39;redis&#39;  # session类型为redis
+app.config[&#39;SESSION_PERMANENT&#39;] = False  # 如果设置为True，则关闭浏览器session就失效。
+app.config[&#39;SESSION_USE_SIGNER&#39;] = False  # 是否对发送到浏览器上session的cookie值进行加密
+app.config[&#39;SESSION_KEY_PREFIX&#39;] = &#39;session:&#39;  # 保存到session中的值的前缀
+app.config[&#39;SESSION_REDIS&#39;] = redis.Redis(host=&#39;127.0.0.1&#39;, port=&#39;6379&#39;, password=&#39;123123&#39;)  
+# 用于连接redis的配置
+Session(app)
+@app.route(&#39;/index&#39;)
+def index():
+    session[&#39;k1&#39;] = &#39;v1&#39;
+    return &#39;xx&#39;
+if __name__ == &#39;__main__&#39;:
+    app.run()</code></pre><p>第二种</p>
+<pre><code>from flask import Flask,session
+from flask_session import RedisSessionInterface
+import redis
+app = Flask(__name__)
+conn=redis.Redis(host=&#39;127.0.0.1&#39;,port=6379)
+#use_signer是否对key签名
+#如果use_siginer为False,这表示不需要配置app.secret_key
+app.secret_key=&quot;aksdhkajs&quot;
+app.session_interface=RedisSessionInterface(conn,key_prefix=&#39;hades&#39;,
+                                            use_signer=True,permanent=False)
+&#39;&#39;&#39;
+之前的session
+seesion名字为配置文件中的名字
+    存:seesion  -&gt;加密--&gt;cookie
+    取:session --&gt;值  ----》解密
+redis的seesion
+seesion名字为配置文件中的名字
+    name=self.key_prefix + session.sid, value=val 是redis里面的键
+    val存到redis
+seesion  --&gt;name
+name加前缀---&gt;redis取
+&#39;&#39;&#39;
+@app.route(&#39;/&#39;)
+def hello_world():
+    session[&#39;name&#39;]=&#39;hades&#39;
+    return &#39;Hello World!&#39;
+@app.route(&quot;/index&quot;)
+def index():
+    print(session[&#39;name&#39;])
+    return &quot;ok&quot;
+if __name__ == &#39;__main__&#39;:
+    app.run()</code></pre><h1 id="memcached"><a href="#memcached" class="headerlink" title="memcached"></a>memcached</h1><pre><code>from flask import Flask, session
+from flask_session import Session
+import memcache
+app = Flask(__name__)
+app.debug = True
+app.secret_key = &#39;xxxx&#39;
+app.config[&#39;SESSION_TYPE&#39;] = &#39;memcached&#39; # session类型为memcached
+app.config[&#39;SESSION_PERMANENT&#39;] = True # 如果设置为True，则关闭浏览器session就失效。
+app.config[&#39;SESSION_USE_SIGNER&#39;] = False # 是否对发送到浏览器上session的cookie值进行加密
+app.config[&#39;SESSION_KEY_PREFIX&#39;] = &#39;session:&#39; # 保存到session中的值的前缀
+app.config[&#39;SESSION_MEMCACHED&#39;] = memcache.Client([&#39;10.211.55.4:12000&#39;])
+Session(app)
+@app.route(&#39;/index&#39;)
+def index():
+    session[&#39;k1&#39;] = &#39;v1&#39;
+    return &#39;xx&#39;
+if __name__ == &#39;__main__&#39;:
+    app.run()</code></pre><h1 id="filesystem"><a href="#filesystem" class="headerlink" title="filesystem"></a>filesystem</h1><pre><code>from flask import Flask, session
+from flask_session import Session
+app = Flask(__name__)
+app.debug = True
+app.secret_key = &#39;xxxx&#39;
+app.config[&#39;SESSION_TYPE&#39;] = &#39;filesystem&#39;  # session类型为filesystem
+app.config[
+    &#39;SESSION_FILE_DIR&#39;] = &#39;/Users/wupeiqi/PycharmProjects/grocery/96.Flask新课程/组件/2.flask-session&#39;  # 文件路径
+app.config[&#39;SESSION_FILE_THRESHOLD&#39;] = 500  # 存储session的个数如果大于这个值时，就要开始进行删除了
+app.config[&#39;SESSION_FILE_MODE&#39;] = 384  # 文件权限类型
+app.config[&#39;SESSION_PERMANENT&#39;] = True  # 如果设置为True，则关闭浏览器session就失效。
+app.config[&#39;SESSION_USE_SIGNER&#39;] = False  # 是否对发送到浏览器上session的cookie值进行加密
+app.config[&#39;SESSION_KEY_PREFIX&#39;] = &#39;session:&#39;  # 保存到session中的值的前缀
+Session(app)
+@app.route(&#39;/index&#39;)
+def index():
+    session[&#39;k1&#39;] = &#39;v1
+    return &#39;xx&#39;
+if __name__ == &#39;__main__&#39;:
+    app.run()</code></pre><h1 id="mongodb"><a href="#mongodb" class="headerlink" title="mongodb"></a>mongodb</h1><pre><code>from flask import Flask, session
+from flask_session import Session
+import pymongo
+app = Flask(__name__)
+app.debug = True
+app.secret_key = &#39;xxxx&#39;
+app.config[&#39;SESSION_TYPE&#39;] = &#39;mongodb&#39;  # session类型为mongodb
+app.config[&#39;SESSION_MONGODB&#39;] = pymongo.MongoClient()
+app.config[&#39;SESSION_MONGODB_DB&#39;] = &#39;mongo的db名称（数据库名称）&#39;
+app.config[&#39;SESSION_MONGODB_COLLECT&#39;] = &#39;mongo的collect名称（表名称）&#39;
+app.config[&#39;SESSION_PERMANENT&#39;] = True  # 如果设置为True，则关闭浏览器session就失效。
+app.config[&#39;SESSION_USE_SIGNER&#39;] = False  # 是否对发送到浏览器上session的cookie值进行加密
+app.config[&#39;SESSION_KEY_PREFIX&#39;] = &#39;session:&#39;  # 保存到session中的值的前缀
+Session(app)
+@app.route(&#39;/index&#39;)
+def index():
+    session[&#39;k1&#39;] = &#39;v1&#39;
+    session[&#39;k2&#39;] = &#39;v1&#39;
+    return &#39;xx&#39;
+if __name__ == &#39;__main__&#39;:
+    app.run()</code></pre><h1 id="mongodb操作简单示例："><a href="#mongodb操作简单示例：" class="headerlink" title="mongodb操作简单示例："></a>mongodb操作简单示例：</h1><pre><code>from pymongo import MongoClient
+# 创建链接
+conn = MongoClient(&#39;47.93.4.198&#39;, 27017)
+# 选择数据库
+db = conn[&#39;db1&#39;]
+# 选择表
+posts = db[&#39;posts&#39;]
+post_data = {
+    &#39;name&#39;: &#39;alex&#39;,
+    &#39;age&#39;: 18
+}
+# 表中插入数据
+# result = posts.insert_one(post_data)
+# 获取一条数据
+# row = posts.find_one()
+# print(row)
+# # 获取多条数据
+# rows = posts.find()
+# for row in rows:
+#     print(row)
+# 删除多条数据
+# rows = posts.delete_many(filter={})
+# print(rows)
+# 更新多条数据
+# posts.update({}, {&#39;name&#39;: &#39;wupeiqi&#39;})</code></pre><h1 id="sqlalchemy"><a href="#sqlalchemy" class="headerlink" title="sqlalchemy"></a>sqlalchemy</h1><pre><code>import redis
+from flask import Flask, session
+from flask_session import Session as FSession
+from flask_sqlalchemy import SQLAlchemy
+app = Flask(__name__)
+app.debug = True
+app.secret_key = &#39;xxxx&#39;
+# 设置数据库链接
+app.config[&#39;SQLALCHEMY_DATABASE_URI&#39;] = &#39;mysql+pymysql://root:123@127.0.0.1:3306/fssa?charset=utf8&#39;
+app.config[&#39;SQLALCHEMY_TRACK_MODIFICATIONS&#39;] = True
+# 实例化SQLAlchemy
+db = SQLAlchemy(app)
+app.config[&#39;SESSION_TYPE&#39;] = &#39;sqlalchemy&#39;  # session类型为sqlalchemy
+app.config[&#39;SESSION_SQLALCHEMY&#39;] = db # SQLAlchemy对象
+app.config[&#39;SESSION_SQLALCHEMY_TABLE&#39;] = &#39;session&#39; # session要保存的表名称
+app.config[&#39;SESSION_PERMANENT&#39;] = True  # 如果设置为True，则关闭浏览器session就失效。
+app.config[&#39;SESSION_USE_SIGNER&#39;] = False  # 是否对发送到浏览器上session的cookie值进行加密
+app.config[&#39;SESSION_KEY_PREFIX&#39;] = &#39;session:&#39;  # 保存到session中的值的前缀
+FSession(app)
+@app.route(&#39;/index&#39;)
+def index():
+    session[&#39;k1&#39;] = &#39;v1&#39;
+    session[&#39;k2&#39;] = &#39;v1&#39;
+    return &#39;xx&#39;
+if __name__ == &#39;__main__&#39;:
+    app.run()</code></pre><h1 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h1><p>在写好代码后，不要着急运行，需要先执行进入终端执行一条创建数据库表的命令：</p>
+<pre><code>bogon:pro-flask wupeiqi$ python3
+Python 3.5.1 (v3.5.1:37a07cee5969, Dec  5 2015, 21:12:44)
+[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+&gt;&gt;&gt; from app import db
+&gt;&gt;&gt; db.create_all()</code></pre>]]></content>
+      <categories>
+        <category>Web 框架</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SQLAlchemy--基本增删改查-PYTHON</title>
+    <url>/2020/03/30/SQLAlchemy-%E5%9F%BA%E6%9C%AC%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5-PYTHON/</url>
+    <content><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>SQLAlchemy是一个基于Python实现的ORM框架。该框架建立在 DB API之上，使用关系对象映射进行数据库操作，简言之便是：将类和对象转换成SQL，然后使用数据API执行SQL并获取执行结果。</p>
+<a id="more"></a>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><pre><code>pip install sqlalchemy</code></pre><h1 id="组成部分"><a href="#组成部分" class="headerlink" title="组成部分"></a>组成部分</h1><pre><code>Engine：框架的引擎
+Connection Pooling：数据库连接池
+Dialect：选择连接数据库的DB API种类
+Schema/Types：架构和类型
+SQL Exprression Language：SQL表达式语言</code></pre><p>SQLAlchemy本身无法操作数据库，其必须以来pymsql等第三方插件，Dialect用于和数据API进行交流，根据配置文件的不同调用不同的数据库API，从而实现对数据库的操作，如：  </p>
+<pre><code>MySQL-Python
+    mysql+mysqldb://&lt;user&gt;:&lt;password&gt;@&lt;host&gt;[:&lt;port&gt;]/&lt;dbname&gt;
+
+pymysql
+    mysql+pymysql://&lt;username&gt;:&lt;password&gt;@&lt;host&gt;/&lt;dbname&gt;[?&lt;options&gt;]
+
+MySQL-Connector
+    mysql+mysqlconnector://&lt;user&gt;:&lt;password&gt;@&lt;host&gt;[:&lt;port&gt;]/&lt;dbname&gt;
+
+cx_Oracle
+    oracle+cx_oracle://user:pass@host:port/dbname[?key=value&amp;key=value...]
+
+更多：http://docs.sqlalchemy.org/en/latest/dialects/index.html</code></pre><p>django中如何反向生成models</p>
+<pre><code>python manage.py inspectdb &gt; app/models.py</code></pre><h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p>SQLAlchemy只能创建表，删除表，不能在原先的表上在进行修改，如果要进行修改，可以在数据库进行修改，然后再在对应的类上进行修改。  </p>
+<h1 id="执行原生SQL（不常用）"><a href="#执行原生SQL（不常用）" class="headerlink" title="执行原生SQL（不常用）"></a>执行原生SQL（不常用）</h1><pre><code>import time
+import threading
+import sqlalchemy
+from sqlalchemy import create_engine
+from sqlalchemy.engine.base import Engine
+engine = create_engine(
+    &quot;mysql+pymysql://root:123456@127.0.0.1:3306/test?charset=utf8&quot;,
+    max_overflow=0,  # 超过连接池大小外最多创建的连接
+    pool_size=5,  # 连接池大小
+    pool_timeout=30,  # 池中没有线程最多等待的时间，否则报错
+    pool_recycle=-1  # 多久之后对线程池中的线程进行一次连接的回收（重置）
+)
+def task(arg):
+    conn = engine.raw_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        &quot;select * from app01_book&quot;
+    )
+    result = cursor.fetchall()
+    print(result)
+    cursor.close()
+    conn.close()
+for i in range(20):
+    t = threading.Thread(target=task, args=(i,))
+    t.start()</code></pre><h1 id="orm使用（重点）"><a href="#orm使用（重点）" class="headerlink" title="orm使用（重点）"></a>orm使用（重点）</h1><p>连接</p>
+<pre><code>from sqlalchemy import create_engine</code></pre><p>create_engine()返回一个Engine的实例，并且它表示通过数据库语法处理细节的核心接口，在这种情况下，数据库语法将会被解释称Python的类方法</p>
+<pre><code>engine = create_engine(&#39;mysql+pymysql://root:123456@localhost:3306/test&#39;,echo=True)</code></pre><p>连接 echo参数为True时，会显示每条执行的sql语句</p>
+<pre><code>engine = create_engine(&#39;mysql+pymysql://root:123456@localhost:3306/test&#39;)</code></pre><p>声明映像<br>通过使用Declarative方法，我们可以创建一些包含描述要被映射的实际数据库表的准则的映射类。<br>使用Declarative方法定义的映射类依据一个基类，这个基类是维系类和数据表关系的目录——我们所说的Declarative base class。在一个普通的模块入口中，应用通常只需要有一个base的实例。我们通过declarative_base()功能创建一个基类：</p>
+<pre><code>from sqlalchemy.ext.declarative import declarative_base
+Base = declarative_base()</code></pre><p>有了这个Base，我们可以依据这个base定义任意数量的映射类：</p>
+<pre><code>class User(Base):
+    __tablename__ = &#39;users&#39;  # 数据库表名称
+    id = Column(Integer, primary_key=True)  # id 主键
+    name = Column(String(32), index=True, nullable=False)  # name列，索引，不可为空
+    # email = Column(String(32), unique=True)
+    #datetime.datetime.now不能加括号，加了括号，以后永远是当前时间
+    # ctime = Column(DateTime, default=datetime.datetime.now)
+    # extra = Column(Text, nullable=True)
+    __table_args__ = (
+        # UniqueConstraint(&#39;id&#39;, &#39;name&#39;, name=&#39;uix_id_name&#39;), #联合唯一
+        # Index(&#39;ix_id_name&#39;, &#39;name&#39;, &#39;email&#39;), #索引
+    )</code></pre><p>注意: 用Declarative 构造的一个类至少需要一个tablename属性，一个主键行。  </p>
+<h1 id="生成表"><a href="#生成表" class="headerlink" title="生成表"></a>生成表</h1><p>SQLAlchemy不能通过类似于与django的makemigerations和migerate自动生成表，需要我们自己进行表的生成</p>
+<pre><code>def init_db():
+    &quot;&quot;&quot;
+    根据类创建数据库表
+    :return:
+    &quot;&quot;&quot;
+    engine = create_engine(
+        &quot;mysql+pymysql://root:123456@127.0.0.1:3306/aaa?charset=utf8&quot;,
+        max_overflow=0,  # 超过连接池大小外最多创建的连接
+        pool_size=5,  # 连接池大小
+        pool_timeout=30,  # 池中没有线程最多等待的时间，否则报错
+        pool_recycle=-1  # 多久之后对线程池中的线程进行一次连接的回收（重置）
+    )
+    Base.metadata.create_all(engine)</code></pre><h1 id="更改表字段"><a href="#更改表字段" class="headerlink" title="更改表字段"></a>更改表字段</h1><p>SQLAlchemy不支持在表创建完成后，再进行表里面的字段进行修改，增加，删除，所以如果要进行表的字段修改，有两种方法：<br>手动修改数据库，然后再在对应的类上进行字段的修改<br>删除表，然后修改字段后，再创建表</p>
+<h1 id="删除表"><a href="#删除表" class="headerlink" title="删除表"></a>删除表</h1><pre><code>def drop_db():
+    &quot;&quot;&quot;
+    根据类删除数据库表
+    :return:
+    &quot;&quot;&quot;
+    engine = create_engine(
+        &quot;mysql+pymysql://root:123456@127.0.0.1:3306/aaa?charset=utf8&quot;,
+        max_overflow=0,  # 超过连接池大小外最多创建的连接
+        pool_size=5,  # 连接池大小
+        pool_timeout=30,  # 池中没有线程最多等待的时间，否则报错
+        pool_recycle=-1  # 多久之后对线程池中的线程进行一次连接的回收（重置）
+    )
+    Base.metadata.drop_all(engine)</code></pre><p>完整代码</p>
+<pre><code>import datetime
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, DateTime, UniqueConstraint, Index
+Base = declarative_base()
+class Users(Base):
+    __tablename__ = &#39;users&#39;  # 数据库表名称
+    id = Column(Integer, primary_key=True)  # id 主键
+    name = Column(String(32), index=True, nullable=False)  # name列，索引，不可为空
+    age = Column(Integer, default=0)
+    # email = Column(String(32), unique=True)
+    #datetime.datetime.now不能加括号，加了括号，以后永远是当前时间
+    # ctime = Column(DateTime, default=datetime.datetime.now)
+    # extra = Column(Text, nullable=True)
+    __table_args__ = (
+        # UniqueConstraint(&#39;id&#39;, &#39;name&#39;, name=&#39;uix_id_name&#39;), #联合唯一
+        # Index(&#39;ix_id_name&#39;, &#39;name&#39;, &#39;email&#39;), #索引
+    )
+def init_db():
+    &quot;&quot;&quot;
+    根据类创建数据库表
+    :return:
+    &quot;&quot;&quot;
+    engine = create_engine(
+        &quot;mysql+pymysql://root:123456@127.0.0.1:3306/aaa?charset=utf8&quot;,
+        max_overflow=0,  # 超过连接池大小外最多创建的连接
+        pool_size=5,  # 连接池大小
+        pool_timeout=30,  # 池中没有线程最多等待的时间，否则报错
+        pool_recycle=-1  # 多久之后对线程池中的线程进行一次连接的回收（重置）
+    )
+    Base.metadata.create_all(engine)
+def drop_db():
+    &quot;&quot;&quot;
+    根据类删除数据库表
+    :return:
+    &quot;&quot;&quot;
+    engine = create_engine(
+        &quot;mysql+pymysql://root:123456@127.0.0.1:3306/aaa?charset=utf8&quot;,
+        max_overflow=0,  # 超过连接池大小外最多创建的连接
+        pool_size=5,  # 连接池大小
+        pool_timeout=30,  # 池中没有线程最多等待的时间，否则报错
+        pool_recycle=-1  # 多久之后对线程池中的线程进行一次连接的回收（重置）
+    )
+    Base.metadata.drop_all(engine)
+if __name__ == &#39;__main__&#39;:
+    # drop_db()
+    init_db()</code></pre><h1 id="常用操作（CURD）"><a href="#常用操作（CURD）" class="headerlink" title="常用操作（CURD）"></a>常用操作（CURD）</h1><p>创建映射类的实例</p>
+<pre><code>user1 = User(name=&#39;hades&#39;, age=18)
+user2 = User(name=&#39;bonnie&#39;, age=16)</code></pre><h1 id="创建会话Session"><a href="#创建会话Session" class="headerlink" title="创建会话Session"></a>创建会话Session</h1><p>准备好和数据库会话了，ORM通过Session与数据库建立连接的</p>
+<p>当应用第一次载入时，我们定义一个Session类（声明Create_engine()的同时），这个Session类为新的Session对象提供工厂服务。</p>
+<pre><code>from sqlalchemy.orm import sessionmaker
+Session = sessionmaker(bind=engine)</code></pre><p>这个定制的Session类会创建绑定到数据库的Session对象。如果需要和数据库建立连接，只需要实例化一个session对象</p>
+<pre><code>session =Session()</code></pre><p>虽然上面的Session已经和数据库引擎Engine关联，但是还没有打开任何连接。当它第一次被使用时，就会从Engine维护的一个连接池中检索是否存在连接，如果存在便会保持连接知道我们提交所有更改并且/或者关闭session对象。</p>
+<h1 id="增加add-add-all"><a href="#增加add-add-all" class="headerlink" title="增加add()/add_all()"></a>增加add()/add_all()</h1><pre><code># 增加一个
+session.add(user1)
+session.add(user2)</code></pre><pre><code># 增加多个,可以增加不同的映射实例
+# session.add_all([user1, user2, Hosts(ip=&#39;127.0.0.1&#39;)])</code></pre><h1 id="提交commit"><a href="#提交commit" class="headerlink" title="提交commit()"></a>提交commit()</h1><p>至此，我们可以认为，新添加的这个对象实例还在等待着；user1对象现在并不代表数据库中的一行数据。直到使用flush进程，Session才会让SQL保持连接。如果查询这条数据的话，所有等待信息会被第一时间刷新，查询结果也会立即发行。</p>
+<p>通过commit()可以提交所有剩余的更改到数据库。<br>注意：提交、查询都会执行所有的等待信息。<br>所有的增加，修改，删除都需要commit提交</p>
+<pre><code> session.commit()</code></pre><h1 id="回滚rollback"><a href="#回滚rollback" class="headerlink" title="回滚rollback()"></a>回滚rollback()</h1><pre><code>session.rollback()</code></pre><h1 id="查询-重点"><a href="#查询-重点" class="headerlink" title="查询(重点)"></a>查询(重点)</h1><p>通过Session的query()方法创建一个查询对象。这个函数的参数数量是可变的，参数可以是任何类或者类的描述集合</p>
+<p>下面是一个迭代输出User类的例子：</p>
+<pre><code>查询第一个
+session.query(Users).filter_by(name=&#39;lqz&#39;).first()</code></pre><h1 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h1><pre><code>session.query(User).order_by(User.id).all()
+desc(): 降序，一定要加（）
+session.query(User).order_by(User.id.desc()).all()
+asc()：升序
+session.query(User).order_by(Users.name.desc(),User.id.asc()).all()</code></pre><p>Query也支持ORM描述作为参数。任何时候，多个类的实体或者是基于列的实体表达都可以作为query()函数的参数，返回类型是元组：</p>
+<pre><code>session.query(User.name,User.fullname)
+session.query(User,User.name).all()</code></pre><h1 id="起别名"><a href="#起别名" class="headerlink" title="起别名"></a>起别名</h1><p>字段起别名： label()相当于row.name</p>
+<pre><code>session.query(User.name.label(&quot;name_label&quot;)).all()</code></pre><p>表起别名：aliased()</p>
+<pre><code>from sqlalchemy.orm import aliased
+user_alias = aliased(User,name=&#39;user_alias&#39;)
+session.query(user_alias,user_alias.name).all()
+Query 的基本操作包括LIMIT和OFFSET，使用python数组切片和ORDERBY结合可以让操作变得很方便。</code></pre><h1 id="限制"><a href="#限制" class="headerlink" title="限制"></a>限制</h1><p>用于分页，区间<br>只查询第二条和第三条数据</p>
+<pre><code>session.query(User).order_by(User.id)[1:3]</code></pre><h1 id="过滤"><a href="#过滤" class="headerlink" title="过滤"></a>过滤</h1><p>使用关键字变量过滤查询结果，filter 和filter_by都使用</p>
+<pre><code>filter传的是表达式，filter_by传的是参数
+session.query(User).filter(User.name==&#39;hades&#39;).all()
+session.query(User).filter_by(name=&#39;bonnie&#39;).all()</code></pre><h1 id="filter与filter-by的区别："><a href="#filter与filter-by的区别：" class="headerlink" title="filter与filter_by的区别："></a>filter与filter_by的区别：</h1><pre><code>filter：可以使用&gt; &lt; 等，但是列必须是： 表.列， filter的等于号是==
+filter：不支持组合查询
+filter_by： 可以直接写列，不支持&lt; &gt; filter_by 等于是==
+filter_by 可以支持组合查询</code></pre><h1 id="过滤方法"><a href="#过滤方法" class="headerlink" title="过滤方法"></a>过滤方法</h1><p>equals</p>
+<pre><code>session.query(User).filter(User.name == &#39;ed&#39;)
+not equals
+
+session.query(User).filter(User.name != &#39;ed&#39;)
+like
+
+session.query(User).filter(User.name.like(&#39;%ed%&#39;))
+in
+
+query.filter(User.name.in_([&#39;ed&#39;,&#39;wendy&#39;,&#39;jack&#39;]))</code></pre><h1 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h1><pre><code>session.query(User).filter(User.name.in_(session.query(User.name).filter(User.name.like(&#39;%ed%&#39;))
+not in
+
+query.filter(~User.name.in_(&#39;ed&#39;,&#39;wendy&#39;,&#39;jack&#39;))
+is null
+
+session.query(User).filter(User.name == None) 
+is not null
+
+session.query(User).filter(User.name != None)
+and
+
+session.query(Users).filter(and_(User.name ==&#39;ed&#39;,User.fullname ==&#39;Ed Jones&#39;)) # and
+session.query(Users).filter(User.name == &#39;ed&#39;,User.fullname ==&#39;Ed Jones&#39;) # and
+session.query(Users).filter(User.name == &#39;ed&#39;).filter(User.fullname == &#39;Ed Jones&#39;)# and
+or
+
+query.filter(or_(User.name=&#39;ed&#39;, User.name=&#39;wendy&#39;))</code></pre><h1 id="占位符查找"><a href="#占位符查找" class="headerlink" title="占位符查找"></a>占位符查找</h1><pre><code>#:value 和:name 相当于占位符，用params传参数
+session.query(Users).filter(text(&quot;id&lt;:value and name=:name&quot;)).params(value=224, name=&#39;fred&#39;).order_by(Users.id).all()</code></pre><h1 id="自定义查询sql"><a href="#自定义查询sql" class="headerlink" title="自定义查询sql"></a>自定义查询sql</h1><pre><code>session.query(Users).from_statement(text(&quot;SELECT * FROM users where name=:name&quot;)).params(name=&#39;ed&#39;).all()</code></pre><h1 id="统计计数"><a href="#统计计数" class="headerlink" title="统计计数"></a>统计计数</h1><pre><code>count = session.query(User).filter(User.name.like(&quot;%t%&quot;)).count()</code></pre><h1 id="分组"><a href="#分组" class="headerlink" title="分组"></a>分组</h1><pre><code>session.query(func.count(User.name),User.name).group_by(User.name)</code></pre><h1 id="having"><a href="#having" class="headerlink" title="having"></a>having</h1><p>having作为分组的筛选条件</p>
+<pre><code>session.query(func.min(User.id), func.avg(User.id)).group_by(Users.name).having(func.min(Users.id) &gt;2).all()</code></pre><h1 id="聚合函数"><a href="#聚合函数" class="headerlink" title="聚合函数"></a>聚合函数</h1><pre><code>func.count：统计行的数量，和count作用一样
+fc=session.query(func.count(User.name),User.name).group_by(User.name).all()
+func.avg：求平均值
+fc=session.query(func.avg(User.age),User.name).group_by(User.name).all()
+func.max：求最大值
+fc=session.query(func.max(User.age),User.name).group_by(User.name).all()
+func.min：求最小值
+fc=session.query(func.min(User.age),User.name).group_by(User.name).all()
+func.sum：求和
+fc=session.query(func.sum(User.age),User.name).group_by(User.name).all()</code></pre><h1 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h1><p>第一种：先查询出对象，然后再赋予对象字段新的值</p>
+<pre><code>obj = session.query(User).filter(User.name==&#39;hades&#39;).first()
+obj.age = 27
+session.commit()  # 一定要提交</code></pre><p>第二种：update()方法，需要传入一个字典</p>
+<pre><code>session.query(User).filter(User.name==&#39;hades&#39;).update({&#39;age&#39;:27})
+session.commit()  # 一定要提交</code></pre><p>第三种：在原先的基础上增加，类似于django中的F查询</p>
+<pre><code>比如：年龄加1岁
+注意：后面必须配合synchronize_session
+字符串：synchronize_session=False
+数字类型：synchronize_session=evaluata
+session.query(User).filter(User.id &gt; 0).update({User.name: User.name + &quot;099&quot;}, synchronize_session=False)
+# session.query(User).filter(User.id &gt; 0).update({&quot;age&quot;: User.age + 1}, synchronize_session=&quot;evaluate&quot;)
+# session.commit()
+# 删除delete()
+session.query(Users).filter(Users.id &gt; 4).delete()
+session.commit()</code></pre>]]></content>
+      <categories>
+        <category>技术资讯</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>使用mysql-connector操作MySQL-PYTHON</title>
     <url>/2020/03/29/%E4%BD%BF%E7%94%A8mysql-connector%E6%93%8D%E4%BD%9CMySQL-PYTHON/</url>
     <content><![CDATA[<h1 id="本文概述"><a href="#本文概述" class="headerlink" title="本文概述"></a>本文概述</h1><p>mysql-connector 是 MySQL 官方提供的驱动器。本文用python创建和删除mysql数据库数据表，实现数据插入、数据删除，数据查询、排序更新。</p>

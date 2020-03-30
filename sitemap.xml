@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://likj128.github.io/2020/03/30/flask-session%E7%BB%84%E4%BB%B6-Web%E6%A1%86%E6%9E%B6/</loc>
+    
+    <lastmod>2020-03-30T07:21:31.956Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://likj128.github.io/2020/03/30/SQLAlchemy-%E5%9F%BA%E6%9C%AC%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5-PYTHON/</loc>
+    
+    <lastmod>2020-03-30T07:15:07.405Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://likj128.github.io/2020/03/29/%E4%BD%BF%E7%94%A8mysql-connector%E6%93%8D%E4%BD%9CMySQL-PYTHON/</loc>
     
     <lastmod>2020-03-29T04:22:57.628Z</lastmod>

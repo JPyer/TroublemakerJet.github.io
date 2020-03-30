@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://likj128.github.io/"/>
-  <updated>2020-03-29T04:22:57.628Z</updated>
+  <updated>2020-03-30T07:21:31.956Z</updated>
   <id>http://likj128.github.io/</id>
   
   <author>
@@ -15,6 +15,48 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>flask-session组件-Web框架</title>
+    <link href="http://likj128.github.io/2020/03/30/flask-session%E7%BB%84%E4%BB%B6-Web%E6%A1%86%E6%9E%B6/"/>
+    <id>http://likj128.github.io/2020/03/30/flask-session%E7%BB%84%E4%BB%B6-Web%E6%A1%86%E6%9E%B6/</id>
+    <published>2020-03-30T07:16:14.000Z</published>
+    <updated>2020-03-30T07:21:31.956Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h1&gt;&lt;p&gt;flask-session是flask框架的session组件，&lt;br&gt;由于原来flask内置session使用签名cookie保存，该组件则将支持session保存到多个地方&lt;br&gt;如：&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Web 框架" scheme="http://likj128.github.io/categories/Web-%E6%A1%86%E6%9E%B6/"/>
+    
+    
+      <category term="Python" scheme="http://likj128.github.io/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SQLAlchemy--基本增删改查-PYTHON</title>
+    <link href="http://likj128.github.io/2020/03/30/SQLAlchemy-%E5%9F%BA%E6%9C%AC%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5-PYTHON/"/>
+    <id>http://likj128.github.io/2020/03/30/SQLAlchemy-%E5%9F%BA%E6%9C%AC%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5-PYTHON/</id>
+    <published>2020-03-30T06:56:51.000Z</published>
+    <updated>2020-03-30T07:15:07.405Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h1&gt;&lt;p&gt;SQLAlchemy是一个基于Python实现的ORM框架。该框架建立在 DB API之上，使用关系对象映射进行数据库操作，简言之便是：将类和对象转换成SQL，然后使用数据API执行SQL并获取执行结果。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术资讯" scheme="http://likj128.github.io/categories/%E6%8A%80%E6%9C%AF%E8%B5%84%E8%AE%AF/"/>
+    
+    
+      <category term="Python" scheme="http://likj128.github.io/tags/Python/"/>
+    
+  </entry>
   
   <entry>
     <title>使用mysql-connector操作MySQL-PYTHON</title>
@@ -389,52 +431,6 @@
     <summary type="html">
     
       &lt;h2 id=&quot;读取文件&quot;&gt;&lt;a href=&quot;#读取文件&quot; class=&quot;headerlink&quot; title=&quot;读取文件&quot;&gt;&lt;/a&gt;读取文件&lt;/h2&gt;&lt;p&gt;读取文件使用python内置方法open()打开文件，使用.read()读取全部内容，示例如下：&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="基础常识" scheme="http://likj128.github.io/categories/%E5%9F%BA%E7%A1%80%E5%B8%B8%E8%AF%86/"/>
-    
-    
-      <category term="Python" scheme="http://likj128.github.io/tags/Python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>内置模块---PYTHON</title>
-    <link href="http://likj128.github.io/2020/03/18/%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97-PYTHON/"/>
-    <id>http://likj128.github.io/2020/03/18/%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97-PYTHON/</id>
-    <published>2020-03-18T10:33:46.000Z</published>
-    <updated>2020-03-18T10:34:21.973Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;常用内置模块列表：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;os&lt;/li&gt;
-&lt;li&gt;sys&lt;/li&gt;
-&lt;li&gt;json&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="Python" scheme="http://likj128.github.io/tags/Python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>垃圾回收gc</title>
-    <link href="http://likj128.github.io/2020/03/18/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6gc/"/>
-    <id>http://likj128.github.io/2020/03/18/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6gc/</id>
-    <published>2020-03-18T10:22:36.000Z</published>
-    <updated>2020-03-19T02:25:23.076Z</updated>
-    
-    <summary type="html">
-    
-      &lt;hr&gt;
-&lt;p&gt;python的垃圾收回机制不想c和c++是开发者自己管理维护内存的，python的垃圾回收是系统自己处理的，所以作为普通的开发者，我们不需要关注垃圾回收部分的内容，如果想要深层次理解python请继续看下文。&lt;/p&gt;
     
     </summary>
     

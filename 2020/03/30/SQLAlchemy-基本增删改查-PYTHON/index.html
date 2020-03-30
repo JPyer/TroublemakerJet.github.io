@@ -1,0 +1,261 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><meta name="baidu-site-verification"><title>SQLAlchemy--基本增删改查-PYTHON | 艾利克斯工作室</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="艾利克斯工作室" type="application/atom+xml">
+</head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><body><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">LITREILY</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/profile.jpg" width="128" height="128"></a><h1 class="ttl"><a href="/">艾利克斯工作室</a></h1></div><p class="m-desc">路在脚下<br>The road is under your feet.</p><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">归档</a></li><li><span class="dot">●</span><a href="/categories/">分类</a></li><li><span class="dot">●</span><a href="/tags/">标签</a></li><li><span class="dot">●</span><a href="/about/">关于</a></li><li><span class="dot">●</span><a href="/atom.xml">RSS</a></li><li><span class="dot">●</span><a href="/Case/">案例</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">SQLAlchemy--基本增删改查-PYTHON</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2020/03/30/SQLAlchemy-%E5%9F%BA%E6%9C%AC%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5-PYTHON/">2020-03-30</a></span><span class="p-category"><i class="fa fa-folder"></i><a href="/categories/%E6%8A%80%E6%9C%AF%E8%B5%84%E8%AE%AF/">技术资讯</a></span><span class="p-view" id="busuanzi_container_page_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></div><div class="p-content"><h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>SQLAlchemy是一个基于Python实现的ORM框架。该框架建立在 DB API之上，使用关系对象映射进行数据库操作，简言之便是：将类和对象转换成SQL，然后使用数据API执行SQL并获取执行结果。</p>
+<a id="more"></a>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><pre><code>pip install sqlalchemy</code></pre><h1 id="组成部分"><a href="#组成部分" class="headerlink" title="组成部分"></a>组成部分</h1><pre><code>Engine：框架的引擎
+Connection Pooling：数据库连接池
+Dialect：选择连接数据库的DB API种类
+Schema/Types：架构和类型
+SQL Exprression Language：SQL表达式语言</code></pre><p>SQLAlchemy本身无法操作数据库，其必须以来pymsql等第三方插件，Dialect用于和数据API进行交流，根据配置文件的不同调用不同的数据库API，从而实现对数据库的操作，如：  </p>
+<pre><code>MySQL-Python
+    mysql+mysqldb://&lt;user&gt;:&lt;password&gt;@&lt;host&gt;[:&lt;port&gt;]/&lt;dbname&gt;
+
+pymysql
+    mysql+pymysql://&lt;username&gt;:&lt;password&gt;@&lt;host&gt;/&lt;dbname&gt;[?&lt;options&gt;]
+
+MySQL-Connector
+    mysql+mysqlconnector://&lt;user&gt;:&lt;password&gt;@&lt;host&gt;[:&lt;port&gt;]/&lt;dbname&gt;
+
+cx_Oracle
+    oracle+cx_oracle://user:pass@host:port/dbname[?key=value&amp;key=value...]
+
+更多：http://docs.sqlalchemy.org/en/latest/dialects/index.html</code></pre><p>django中如何反向生成models</p>
+<pre><code>python manage.py inspectdb &gt; app/models.py</code></pre><h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p>SQLAlchemy只能创建表，删除表，不能在原先的表上在进行修改，如果要进行修改，可以在数据库进行修改，然后再在对应的类上进行修改。  </p>
+<h1 id="执行原生SQL（不常用）"><a href="#执行原生SQL（不常用）" class="headerlink" title="执行原生SQL（不常用）"></a>执行原生SQL（不常用）</h1><pre><code>import time
+import threading
+import sqlalchemy
+from sqlalchemy import create_engine
+from sqlalchemy.engine.base import Engine
+engine = create_engine(
+    &quot;mysql+pymysql://root:123456@127.0.0.1:3306/test?charset=utf8&quot;,
+    max_overflow=0,  # 超过连接池大小外最多创建的连接
+    pool_size=5,  # 连接池大小
+    pool_timeout=30,  # 池中没有线程最多等待的时间，否则报错
+    pool_recycle=-1  # 多久之后对线程池中的线程进行一次连接的回收（重置）
+)
+def task(arg):
+    conn = engine.raw_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        &quot;select * from app01_book&quot;
+    )
+    result = cursor.fetchall()
+    print(result)
+    cursor.close()
+    conn.close()
+for i in range(20):
+    t = threading.Thread(target=task, args=(i,))
+    t.start()</code></pre><h1 id="orm使用（重点）"><a href="#orm使用（重点）" class="headerlink" title="orm使用（重点）"></a>orm使用（重点）</h1><p>连接</p>
+<pre><code>from sqlalchemy import create_engine</code></pre><p>create_engine()返回一个Engine的实例，并且它表示通过数据库语法处理细节的核心接口，在这种情况下，数据库语法将会被解释称Python的类方法</p>
+<pre><code>engine = create_engine(&#39;mysql+pymysql://root:123456@localhost:3306/test&#39;,echo=True)</code></pre><p>连接 echo参数为True时，会显示每条执行的sql语句</p>
+<pre><code>engine = create_engine(&#39;mysql+pymysql://root:123456@localhost:3306/test&#39;)</code></pre><p>声明映像<br>通过使用Declarative方法，我们可以创建一些包含描述要被映射的实际数据库表的准则的映射类。<br>使用Declarative方法定义的映射类依据一个基类，这个基类是维系类和数据表关系的目录——我们所说的Declarative base class。在一个普通的模块入口中，应用通常只需要有一个base的实例。我们通过declarative_base()功能创建一个基类：</p>
+<pre><code>from sqlalchemy.ext.declarative import declarative_base
+Base = declarative_base()</code></pre><p>有了这个Base，我们可以依据这个base定义任意数量的映射类：</p>
+<pre><code>class User(Base):
+    __tablename__ = &#39;users&#39;  # 数据库表名称
+    id = Column(Integer, primary_key=True)  # id 主键
+    name = Column(String(32), index=True, nullable=False)  # name列，索引，不可为空
+    # email = Column(String(32), unique=True)
+    #datetime.datetime.now不能加括号，加了括号，以后永远是当前时间
+    # ctime = Column(DateTime, default=datetime.datetime.now)
+    # extra = Column(Text, nullable=True)
+    __table_args__ = (
+        # UniqueConstraint(&#39;id&#39;, &#39;name&#39;, name=&#39;uix_id_name&#39;), #联合唯一
+        # Index(&#39;ix_id_name&#39;, &#39;name&#39;, &#39;email&#39;), #索引
+    )</code></pre><p>注意: 用Declarative 构造的一个类至少需要一个tablename属性，一个主键行。  </p>
+<h1 id="生成表"><a href="#生成表" class="headerlink" title="生成表"></a>生成表</h1><p>SQLAlchemy不能通过类似于与django的makemigerations和migerate自动生成表，需要我们自己进行表的生成</p>
+<pre><code>def init_db():
+    &quot;&quot;&quot;
+    根据类创建数据库表
+    :return:
+    &quot;&quot;&quot;
+    engine = create_engine(
+        &quot;mysql+pymysql://root:123456@127.0.0.1:3306/aaa?charset=utf8&quot;,
+        max_overflow=0,  # 超过连接池大小外最多创建的连接
+        pool_size=5,  # 连接池大小
+        pool_timeout=30,  # 池中没有线程最多等待的时间，否则报错
+        pool_recycle=-1  # 多久之后对线程池中的线程进行一次连接的回收（重置）
+    )
+    Base.metadata.create_all(engine)</code></pre><h1 id="更改表字段"><a href="#更改表字段" class="headerlink" title="更改表字段"></a>更改表字段</h1><p>SQLAlchemy不支持在表创建完成后，再进行表里面的字段进行修改，增加，删除，所以如果要进行表的字段修改，有两种方法：<br>手动修改数据库，然后再在对应的类上进行字段的修改<br>删除表，然后修改字段后，再创建表</p>
+<h1 id="删除表"><a href="#删除表" class="headerlink" title="删除表"></a>删除表</h1><pre><code>def drop_db():
+    &quot;&quot;&quot;
+    根据类删除数据库表
+    :return:
+    &quot;&quot;&quot;
+    engine = create_engine(
+        &quot;mysql+pymysql://root:123456@127.0.0.1:3306/aaa?charset=utf8&quot;,
+        max_overflow=0,  # 超过连接池大小外最多创建的连接
+        pool_size=5,  # 连接池大小
+        pool_timeout=30,  # 池中没有线程最多等待的时间，否则报错
+        pool_recycle=-1  # 多久之后对线程池中的线程进行一次连接的回收（重置）
+    )
+    Base.metadata.drop_all(engine)</code></pre><p>完整代码</p>
+<pre><code>import datetime
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, DateTime, UniqueConstraint, Index
+Base = declarative_base()
+class Users(Base):
+    __tablename__ = &#39;users&#39;  # 数据库表名称
+    id = Column(Integer, primary_key=True)  # id 主键
+    name = Column(String(32), index=True, nullable=False)  # name列，索引，不可为空
+    age = Column(Integer, default=0)
+    # email = Column(String(32), unique=True)
+    #datetime.datetime.now不能加括号，加了括号，以后永远是当前时间
+    # ctime = Column(DateTime, default=datetime.datetime.now)
+    # extra = Column(Text, nullable=True)
+    __table_args__ = (
+        # UniqueConstraint(&#39;id&#39;, &#39;name&#39;, name=&#39;uix_id_name&#39;), #联合唯一
+        # Index(&#39;ix_id_name&#39;, &#39;name&#39;, &#39;email&#39;), #索引
+    )
+def init_db():
+    &quot;&quot;&quot;
+    根据类创建数据库表
+    :return:
+    &quot;&quot;&quot;
+    engine = create_engine(
+        &quot;mysql+pymysql://root:123456@127.0.0.1:3306/aaa?charset=utf8&quot;,
+        max_overflow=0,  # 超过连接池大小外最多创建的连接
+        pool_size=5,  # 连接池大小
+        pool_timeout=30,  # 池中没有线程最多等待的时间，否则报错
+        pool_recycle=-1  # 多久之后对线程池中的线程进行一次连接的回收（重置）
+    )
+    Base.metadata.create_all(engine)
+def drop_db():
+    &quot;&quot;&quot;
+    根据类删除数据库表
+    :return:
+    &quot;&quot;&quot;
+    engine = create_engine(
+        &quot;mysql+pymysql://root:123456@127.0.0.1:3306/aaa?charset=utf8&quot;,
+        max_overflow=0,  # 超过连接池大小外最多创建的连接
+        pool_size=5,  # 连接池大小
+        pool_timeout=30,  # 池中没有线程最多等待的时间，否则报错
+        pool_recycle=-1  # 多久之后对线程池中的线程进行一次连接的回收（重置）
+    )
+    Base.metadata.drop_all(engine)
+if __name__ == &#39;__main__&#39;:
+    # drop_db()
+    init_db()</code></pre><h1 id="常用操作（CURD）"><a href="#常用操作（CURD）" class="headerlink" title="常用操作（CURD）"></a>常用操作（CURD）</h1><p>创建映射类的实例</p>
+<pre><code>user1 = User(name=&#39;hades&#39;, age=18)
+user2 = User(name=&#39;bonnie&#39;, age=16)</code></pre><h1 id="创建会话Session"><a href="#创建会话Session" class="headerlink" title="创建会话Session"></a>创建会话Session</h1><p>准备好和数据库会话了，ORM通过Session与数据库建立连接的</p>
+<p>当应用第一次载入时，我们定义一个Session类（声明Create_engine()的同时），这个Session类为新的Session对象提供工厂服务。</p>
+<pre><code>from sqlalchemy.orm import sessionmaker
+Session = sessionmaker(bind=engine)</code></pre><p>这个定制的Session类会创建绑定到数据库的Session对象。如果需要和数据库建立连接，只需要实例化一个session对象</p>
+<pre><code>session =Session()</code></pre><p>虽然上面的Session已经和数据库引擎Engine关联，但是还没有打开任何连接。当它第一次被使用时，就会从Engine维护的一个连接池中检索是否存在连接，如果存在便会保持连接知道我们提交所有更改并且/或者关闭session对象。</p>
+<h1 id="增加add-add-all"><a href="#增加add-add-all" class="headerlink" title="增加add()/add_all()"></a>增加add()/add_all()</h1><pre><code># 增加一个
+session.add(user1)
+session.add(user2)</code></pre><pre><code># 增加多个,可以增加不同的映射实例
+# session.add_all([user1, user2, Hosts(ip=&#39;127.0.0.1&#39;)])</code></pre><h1 id="提交commit"><a href="#提交commit" class="headerlink" title="提交commit()"></a>提交commit()</h1><p>至此，我们可以认为，新添加的这个对象实例还在等待着；user1对象现在并不代表数据库中的一行数据。直到使用flush进程，Session才会让SQL保持连接。如果查询这条数据的话，所有等待信息会被第一时间刷新，查询结果也会立即发行。</p>
+<p>通过commit()可以提交所有剩余的更改到数据库。<br>注意：提交、查询都会执行所有的等待信息。<br>所有的增加，修改，删除都需要commit提交</p>
+<pre><code> session.commit()</code></pre><h1 id="回滚rollback"><a href="#回滚rollback" class="headerlink" title="回滚rollback()"></a>回滚rollback()</h1><pre><code>session.rollback()</code></pre><h1 id="查询-重点"><a href="#查询-重点" class="headerlink" title="查询(重点)"></a>查询(重点)</h1><p>通过Session的query()方法创建一个查询对象。这个函数的参数数量是可变的，参数可以是任何类或者类的描述集合</p>
+<p>下面是一个迭代输出User类的例子：</p>
+<pre><code>查询第一个
+session.query(Users).filter_by(name=&#39;lqz&#39;).first()</code></pre><h1 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h1><pre><code>session.query(User).order_by(User.id).all()
+desc(): 降序，一定要加（）
+session.query(User).order_by(User.id.desc()).all()
+asc()：升序
+session.query(User).order_by(Users.name.desc(),User.id.asc()).all()</code></pre><p>Query也支持ORM描述作为参数。任何时候，多个类的实体或者是基于列的实体表达都可以作为query()函数的参数，返回类型是元组：</p>
+<pre><code>session.query(User.name,User.fullname)
+session.query(User,User.name).all()</code></pre><h1 id="起别名"><a href="#起别名" class="headerlink" title="起别名"></a>起别名</h1><p>字段起别名： label()相当于row.name</p>
+<pre><code>session.query(User.name.label(&quot;name_label&quot;)).all()</code></pre><p>表起别名：aliased()</p>
+<pre><code>from sqlalchemy.orm import aliased
+user_alias = aliased(User,name=&#39;user_alias&#39;)
+session.query(user_alias,user_alias.name).all()
+Query 的基本操作包括LIMIT和OFFSET，使用python数组切片和ORDERBY结合可以让操作变得很方便。</code></pre><h1 id="限制"><a href="#限制" class="headerlink" title="限制"></a>限制</h1><p>用于分页，区间<br>只查询第二条和第三条数据</p>
+<pre><code>session.query(User).order_by(User.id)[1:3]</code></pre><h1 id="过滤"><a href="#过滤" class="headerlink" title="过滤"></a>过滤</h1><p>使用关键字变量过滤查询结果，filter 和filter_by都使用</p>
+<pre><code>filter传的是表达式，filter_by传的是参数
+session.query(User).filter(User.name==&#39;hades&#39;).all()
+session.query(User).filter_by(name=&#39;bonnie&#39;).all()</code></pre><h1 id="filter与filter-by的区别："><a href="#filter与filter-by的区别：" class="headerlink" title="filter与filter_by的区别："></a>filter与filter_by的区别：</h1><pre><code>filter：可以使用&gt; &lt; 等，但是列必须是： 表.列， filter的等于号是==
+filter：不支持组合查询
+filter_by： 可以直接写列，不支持&lt; &gt; filter_by 等于是==
+filter_by 可以支持组合查询</code></pre><h1 id="过滤方法"><a href="#过滤方法" class="headerlink" title="过滤方法"></a>过滤方法</h1><p>equals</p>
+<pre><code>session.query(User).filter(User.name == &#39;ed&#39;)
+not equals
+
+session.query(User).filter(User.name != &#39;ed&#39;)
+like
+
+session.query(User).filter(User.name.like(&#39;%ed%&#39;))
+in
+
+query.filter(User.name.in_([&#39;ed&#39;,&#39;wendy&#39;,&#39;jack&#39;]))</code></pre><h1 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h1><pre><code>session.query(User).filter(User.name.in_(session.query(User.name).filter(User.name.like(&#39;%ed%&#39;))
+not in
+
+query.filter(~User.name.in_(&#39;ed&#39;,&#39;wendy&#39;,&#39;jack&#39;))
+is null
+
+session.query(User).filter(User.name == None) 
+is not null
+
+session.query(User).filter(User.name != None)
+and
+
+session.query(Users).filter(and_(User.name ==&#39;ed&#39;,User.fullname ==&#39;Ed Jones&#39;)) # and
+session.query(Users).filter(User.name == &#39;ed&#39;,User.fullname ==&#39;Ed Jones&#39;) # and
+session.query(Users).filter(User.name == &#39;ed&#39;).filter(User.fullname == &#39;Ed Jones&#39;)# and
+or
+
+query.filter(or_(User.name=&#39;ed&#39;, User.name=&#39;wendy&#39;))</code></pre><h1 id="占位符查找"><a href="#占位符查找" class="headerlink" title="占位符查找"></a>占位符查找</h1><pre><code>#:value 和:name 相当于占位符，用params传参数
+session.query(Users).filter(text(&quot;id&lt;:value and name=:name&quot;)).params(value=224, name=&#39;fred&#39;).order_by(Users.id).all()</code></pre><h1 id="自定义查询sql"><a href="#自定义查询sql" class="headerlink" title="自定义查询sql"></a>自定义查询sql</h1><pre><code>session.query(Users).from_statement(text(&quot;SELECT * FROM users where name=:name&quot;)).params(name=&#39;ed&#39;).all()</code></pre><h1 id="统计计数"><a href="#统计计数" class="headerlink" title="统计计数"></a>统计计数</h1><pre><code>count = session.query(User).filter(User.name.like(&quot;%t%&quot;)).count()</code></pre><h1 id="分组"><a href="#分组" class="headerlink" title="分组"></a>分组</h1><pre><code>session.query(func.count(User.name),User.name).group_by(User.name)</code></pre><h1 id="having"><a href="#having" class="headerlink" title="having"></a>having</h1><p>having作为分组的筛选条件</p>
+<pre><code>session.query(func.min(User.id), func.avg(User.id)).group_by(Users.name).having(func.min(Users.id) &gt;2).all()</code></pre><h1 id="聚合函数"><a href="#聚合函数" class="headerlink" title="聚合函数"></a>聚合函数</h1><pre><code>func.count：统计行的数量，和count作用一样
+fc=session.query(func.count(User.name),User.name).group_by(User.name).all()
+func.avg：求平均值
+fc=session.query(func.avg(User.age),User.name).group_by(User.name).all()
+func.max：求最大值
+fc=session.query(func.max(User.age),User.name).group_by(User.name).all()
+func.min：求最小值
+fc=session.query(func.min(User.age),User.name).group_by(User.name).all()
+func.sum：求和
+fc=session.query(func.sum(User.age),User.name).group_by(User.name).all()</code></pre><h1 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h1><p>第一种：先查询出对象，然后再赋予对象字段新的值</p>
+<pre><code>obj = session.query(User).filter(User.name==&#39;hades&#39;).first()
+obj.age = 27
+session.commit()  # 一定要提交</code></pre><p>第二种：update()方法，需要传入一个字典</p>
+<pre><code>session.query(User).filter(User.name==&#39;hades&#39;).update({&#39;age&#39;:27})
+session.commit()  # 一定要提交</code></pre><p>第三种：在原先的基础上增加，类似于django中的F查询</p>
+<pre><code>比如：年龄加1岁
+注意：后面必须配合synchronize_session
+字符串：synchronize_session=False
+数字类型：synchronize_session=evaluata
+session.query(User).filter(User.id &gt; 0).update({User.name: User.name + &quot;099&quot;}, synchronize_session=False)
+# session.query(User).filter(User.id &gt; 0).update({&quot;age&quot;: User.age + 1}, synchronize_session=&quot;evaluate&quot;)
+# session.commit()
+# 删除delete()
+session.query(Users).filter(Users.id &gt; 4).delete()
+session.commit()</code></pre></div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:Likj128@126.com">Alexis (KangJ)</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/03/30/SQLAlchemy-%E5%9F%BA%E6%9C%AC%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5-PYTHON/">http://likj128.github.io/2020/03/30/SQLAlchemy-基本增删改查-PYTHON/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="http://likj128.github.io">Alexis (KangJ)的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/Python/">Python</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#安装"><span class="toc-number">2.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#组成部分"><span class="toc-number">3.</span> <span class="toc-text">组成部分</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用"><span class="toc-number">4.</span> <span class="toc-text">使用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#执行原生SQL（不常用）"><span class="toc-number">5.</span> <span class="toc-text">执行原生SQL（不常用）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#orm使用（重点）"><span class="toc-number">6.</span> <span class="toc-text">orm使用（重点）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#生成表"><span class="toc-number">7.</span> <span class="toc-text">生成表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#更改表字段"><span class="toc-number">8.</span> <span class="toc-text">更改表字段</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#删除表"><span class="toc-number">9.</span> <span class="toc-text">删除表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#常用操作（CURD）"><span class="toc-number">10.</span> <span class="toc-text">常用操作（CURD）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#创建会话Session"><span class="toc-number">11.</span> <span class="toc-text">创建会话Session</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#增加add-add-all"><span class="toc-number">12.</span> <span class="toc-text">增加add()&#x2F;add_all()</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#提交commit"><span class="toc-number">13.</span> <span class="toc-text">提交commit()</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#回滚rollback"><span class="toc-number">14.</span> <span class="toc-text">回滚rollback()</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#查询-重点"><span class="toc-number">15.</span> <span class="toc-text">查询(重点)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#排序"><span class="toc-number">16.</span> <span class="toc-text">排序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#起别名"><span class="toc-number">17.</span> <span class="toc-text">起别名</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#限制"><span class="toc-number">18.</span> <span class="toc-text">限制</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#过滤"><span class="toc-number">19.</span> <span class="toc-text">过滤</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#filter与filter-by的区别："><span class="toc-number">20.</span> <span class="toc-text">filter与filter_by的区别：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#过滤方法"><span class="toc-number">21.</span> <span class="toc-text">过滤方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#子查询"><span class="toc-number">22.</span> <span class="toc-text">子查询</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#占位符查找"><span class="toc-number">23.</span> <span class="toc-text">占位符查找</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#自定义查询sql"><span class="toc-number">24.</span> <span class="toc-text">自定义查询sql</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#统计计数"><span class="toc-number">25.</span> <span class="toc-text">统计计数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#分组"><span class="toc-number">26.</span> <span class="toc-text">分组</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#having"><span class="toc-number">27.</span> <span class="toc-text">having</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#聚合函数"><span class="toc-number">28.</span> <span class="toc-text">聚合函数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#修改"><span class="toc-number">29.</span> <span class="toc-text">修改</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2020/03/30/flask-session%E7%BB%84%E4%BB%B6-Web%E6%A1%86%E6%9E%B6/">&lt; flask-session组件-Web框架</a><a class="next" href="/2020/03/29/%E4%BD%BF%E7%94%A8mysql-connector%E6%93%8D%E4%BD%9CMySQL-PYTHON/">使用mysql-connector操作MySQL-PYTHON &gt;</a></div><div id="valine-comment"><style type="text/css">.v * { color: #CECECE; }
+.v a { color: #0F9FB4; }
+.v a:hover { color: #216C73; }
+.v li { list-style: inherit; }
+.v .vwrap { border: 1px solid #223441; border-radius: 0; }
+.v .vwrap:hover { box-shadow: 0 0 6px 1px #223441; }
+.v .vbtn { border-radius: 0; color: #cecece; background: none; }
+.v .vlist .vcard .vh { border-bottom-color: #293D4E; }
+.v .vwrap .vheader .vinput { border-bottom-color: #223441; }
+.v .vwrap .vheader .vinput:focus { border-bottom-color: #339EB4; }
+.v code, .v pre,.v .vlist .vcard .vhead .vsys { background: #203240; }
+.v code, .v pre { color: #F0F0F0; font-size: 95%; }
+.v .vlist .vcard .vcontent.expand:before { background: linear-gradient(180deg,hsla(206,33%,19%,0),hsla(206,33%,19%,.9)); }
+.v .vlist .vcard .vcontent.expand:after { background: hsla(206,33%,19%,.9); }</style><div id="vcomment"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+var verify = 'false' == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'99FfVECWi1xns2SAjWOtTNza-gzGzoHsz',
+  appKey:'6t7I76O3iToh6BGjc5rjWqDX',
+  lang: 'zh-cn',
+  placeholder:'ヾﾉ≧∀≦)o Come on, say something...',
+  avatar:'identicon',
+  guest_info:guest_info,
+  pageSize:'10'
+})</script></div></section><footer><p>Copyright © 2020 - 2020 <a href="/." rel="nofollow">艾利克斯工作室</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span></span> <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span></span> | Personal by<a rel="nofollow" target="_blank" href="https://alexisli.cn"> Alexis.</a>Powered by<a rel="nofollow" target="_blank" href="http://www.beianbeian.com/beianxinxi/f72222db0e8cf7f7b49ceee25f65c49e.html"> 晋ICP备19013202号.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+    search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css"></body></html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><meta name="baidu-site-verification"><title>flask-session组件-Web框架 | 艾利克斯工作室</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="艾利克斯工作室" type="application/atom+xml">
+</head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><body><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">LITREILY</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/profile.jpg" width="128" height="128"></a><h1 class="ttl"><a href="/">艾利克斯工作室</a></h1></div><p class="m-desc">路在脚下<br>The road is under your feet.</p><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">归档</a></li><li><span class="dot">●</span><a href="/categories/">分类</a></li><li><span class="dot">●</span><a href="/tags/">标签</a></li><li><span class="dot">●</span><a href="/about/">关于</a></li><li><span class="dot">●</span><a href="/atom.xml">RSS</a></li><li><span class="dot">●</span><a href="/Case/">案例</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">flask-session组件-Web框架</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2020/03/30/flask-session%E7%BB%84%E4%BB%B6-Web%E6%A1%86%E6%9E%B6/">2020-03-30</a></span><span class="p-category"><i class="fa fa-folder"></i><a href="/categories/Web-%E6%A1%86%E6%9E%B6/">Web 框架</a></span><span class="p-view" id="busuanzi_container_page_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></div><div class="p-content"><h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>flask-session是flask框架的session组件，<br>由于原来flask内置session使用签名cookie保存，该组件则将支持session保存到多个地方<br>如：</p>
+<a id="more"></a>
+<pre><code>redis
+memcached
+filesystem
+mongodb
+sqlalchmey</code></pre><h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><pre><code>pip install flask-session</code></pre><h1 id="存储方式"><a href="#存储方式" class="headerlink" title="存储方式"></a>存储方式</h1><h1 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h1><p>第一种</p>
+<pre><code>import redis
+from flask import Flask, session
+from flask_session import Session
+app = Flask(__name__)
+app.debug = True
+app.secret_key = &#39;xxxx&#39;
+app.config[&#39;SESSION_TYPE&#39;] = &#39;redis&#39;  # session类型为redis
+app.config[&#39;SESSION_PERMANENT&#39;] = False  # 如果设置为True，则关闭浏览器session就失效。
+app.config[&#39;SESSION_USE_SIGNER&#39;] = False  # 是否对发送到浏览器上session的cookie值进行加密
+app.config[&#39;SESSION_KEY_PREFIX&#39;] = &#39;session:&#39;  # 保存到session中的值的前缀
+app.config[&#39;SESSION_REDIS&#39;] = redis.Redis(host=&#39;127.0.0.1&#39;, port=&#39;6379&#39;, password=&#39;123123&#39;)  
+# 用于连接redis的配置
+Session(app)
+@app.route(&#39;/index&#39;)
+def index():
+    session[&#39;k1&#39;] = &#39;v1&#39;
+    return &#39;xx&#39;
+if __name__ == &#39;__main__&#39;:
+    app.run()</code></pre><p>第二种</p>
+<pre><code>from flask import Flask,session
+from flask_session import RedisSessionInterface
+import redis
+app = Flask(__name__)
+conn=redis.Redis(host=&#39;127.0.0.1&#39;,port=6379)
+#use_signer是否对key签名
+#如果use_siginer为False,这表示不需要配置app.secret_key
+app.secret_key=&quot;aksdhkajs&quot;
+app.session_interface=RedisSessionInterface(conn,key_prefix=&#39;hades&#39;,
+                                            use_signer=True,permanent=False)
+&#39;&#39;&#39;
+之前的session
+seesion名字为配置文件中的名字
+    存:seesion  -&gt;加密--&gt;cookie
+    取:session --&gt;值  ----》解密
+redis的seesion
+seesion名字为配置文件中的名字
+    name=self.key_prefix + session.sid, value=val 是redis里面的键
+    val存到redis
+seesion  --&gt;name
+name加前缀---&gt;redis取
+&#39;&#39;&#39;
+@app.route(&#39;/&#39;)
+def hello_world():
+    session[&#39;name&#39;]=&#39;hades&#39;
+    return &#39;Hello World!&#39;
+@app.route(&quot;/index&quot;)
+def index():
+    print(session[&#39;name&#39;])
+    return &quot;ok&quot;
+if __name__ == &#39;__main__&#39;:
+    app.run()</code></pre><h1 id="memcached"><a href="#memcached" class="headerlink" title="memcached"></a>memcached</h1><pre><code>from flask import Flask, session
+from flask_session import Session
+import memcache
+app = Flask(__name__)
+app.debug = True
+app.secret_key = &#39;xxxx&#39;
+app.config[&#39;SESSION_TYPE&#39;] = &#39;memcached&#39; # session类型为memcached
+app.config[&#39;SESSION_PERMANENT&#39;] = True # 如果设置为True，则关闭浏览器session就失效。
+app.config[&#39;SESSION_USE_SIGNER&#39;] = False # 是否对发送到浏览器上session的cookie值进行加密
+app.config[&#39;SESSION_KEY_PREFIX&#39;] = &#39;session:&#39; # 保存到session中的值的前缀
+app.config[&#39;SESSION_MEMCACHED&#39;] = memcache.Client([&#39;10.211.55.4:12000&#39;])
+Session(app)
+@app.route(&#39;/index&#39;)
+def index():
+    session[&#39;k1&#39;] = &#39;v1&#39;
+    return &#39;xx&#39;
+if __name__ == &#39;__main__&#39;:
+    app.run()</code></pre><h1 id="filesystem"><a href="#filesystem" class="headerlink" title="filesystem"></a>filesystem</h1><pre><code>from flask import Flask, session
+from flask_session import Session
+app = Flask(__name__)
+app.debug = True
+app.secret_key = &#39;xxxx&#39;
+app.config[&#39;SESSION_TYPE&#39;] = &#39;filesystem&#39;  # session类型为filesystem
+app.config[
+    &#39;SESSION_FILE_DIR&#39;] = &#39;/Users/wupeiqi/PycharmProjects/grocery/96.Flask新课程/组件/2.flask-session&#39;  # 文件路径
+app.config[&#39;SESSION_FILE_THRESHOLD&#39;] = 500  # 存储session的个数如果大于这个值时，就要开始进行删除了
+app.config[&#39;SESSION_FILE_MODE&#39;] = 384  # 文件权限类型
+app.config[&#39;SESSION_PERMANENT&#39;] = True  # 如果设置为True，则关闭浏览器session就失效。
+app.config[&#39;SESSION_USE_SIGNER&#39;] = False  # 是否对发送到浏览器上session的cookie值进行加密
+app.config[&#39;SESSION_KEY_PREFIX&#39;] = &#39;session:&#39;  # 保存到session中的值的前缀
+Session(app)
+@app.route(&#39;/index&#39;)
+def index():
+    session[&#39;k1&#39;] = &#39;v1
+    return &#39;xx&#39;
+if __name__ == &#39;__main__&#39;:
+    app.run()</code></pre><h1 id="mongodb"><a href="#mongodb" class="headerlink" title="mongodb"></a>mongodb</h1><pre><code>from flask import Flask, session
+from flask_session import Session
+import pymongo
+app = Flask(__name__)
+app.debug = True
+app.secret_key = &#39;xxxx&#39;
+app.config[&#39;SESSION_TYPE&#39;] = &#39;mongodb&#39;  # session类型为mongodb
+app.config[&#39;SESSION_MONGODB&#39;] = pymongo.MongoClient()
+app.config[&#39;SESSION_MONGODB_DB&#39;] = &#39;mongo的db名称（数据库名称）&#39;
+app.config[&#39;SESSION_MONGODB_COLLECT&#39;] = &#39;mongo的collect名称（表名称）&#39;
+app.config[&#39;SESSION_PERMANENT&#39;] = True  # 如果设置为True，则关闭浏览器session就失效。
+app.config[&#39;SESSION_USE_SIGNER&#39;] = False  # 是否对发送到浏览器上session的cookie值进行加密
+app.config[&#39;SESSION_KEY_PREFIX&#39;] = &#39;session:&#39;  # 保存到session中的值的前缀
+Session(app)
+@app.route(&#39;/index&#39;)
+def index():
+    session[&#39;k1&#39;] = &#39;v1&#39;
+    session[&#39;k2&#39;] = &#39;v1&#39;
+    return &#39;xx&#39;
+if __name__ == &#39;__main__&#39;:
+    app.run()</code></pre><h1 id="mongodb操作简单示例："><a href="#mongodb操作简单示例：" class="headerlink" title="mongodb操作简单示例："></a>mongodb操作简单示例：</h1><pre><code>from pymongo import MongoClient
+# 创建链接
+conn = MongoClient(&#39;47.93.4.198&#39;, 27017)
+# 选择数据库
+db = conn[&#39;db1&#39;]
+# 选择表
+posts = db[&#39;posts&#39;]
+post_data = {
+    &#39;name&#39;: &#39;alex&#39;,
+    &#39;age&#39;: 18
+}
+# 表中插入数据
+# result = posts.insert_one(post_data)
+# 获取一条数据
+# row = posts.find_one()
+# print(row)
+# # 获取多条数据
+# rows = posts.find()
+# for row in rows:
+#     print(row)
+# 删除多条数据
+# rows = posts.delete_many(filter={})
+# print(rows)
+# 更新多条数据
+# posts.update({}, {&#39;name&#39;: &#39;wupeiqi&#39;})</code></pre><h1 id="sqlalchemy"><a href="#sqlalchemy" class="headerlink" title="sqlalchemy"></a>sqlalchemy</h1><pre><code>import redis
+from flask import Flask, session
+from flask_session import Session as FSession
+from flask_sqlalchemy import SQLAlchemy
+app = Flask(__name__)
+app.debug = True
+app.secret_key = &#39;xxxx&#39;
+# 设置数据库链接
+app.config[&#39;SQLALCHEMY_DATABASE_URI&#39;] = &#39;mysql+pymysql://root:123@127.0.0.1:3306/fssa?charset=utf8&#39;
+app.config[&#39;SQLALCHEMY_TRACK_MODIFICATIONS&#39;] = True
+# 实例化SQLAlchemy
+db = SQLAlchemy(app)
+app.config[&#39;SESSION_TYPE&#39;] = &#39;sqlalchemy&#39;  # session类型为sqlalchemy
+app.config[&#39;SESSION_SQLALCHEMY&#39;] = db # SQLAlchemy对象
+app.config[&#39;SESSION_SQLALCHEMY_TABLE&#39;] = &#39;session&#39; # session要保存的表名称
+app.config[&#39;SESSION_PERMANENT&#39;] = True  # 如果设置为True，则关闭浏览器session就失效。
+app.config[&#39;SESSION_USE_SIGNER&#39;] = False  # 是否对发送到浏览器上session的cookie值进行加密
+app.config[&#39;SESSION_KEY_PREFIX&#39;] = &#39;session:&#39;  # 保存到session中的值的前缀
+FSession(app)
+@app.route(&#39;/index&#39;)
+def index():
+    session[&#39;k1&#39;] = &#39;v1&#39;
+    session[&#39;k2&#39;] = &#39;v1&#39;
+    return &#39;xx&#39;
+if __name__ == &#39;__main__&#39;:
+    app.run()</code></pre><h1 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h1><p>在写好代码后，不要着急运行，需要先执行进入终端执行一条创建数据库表的命令：</p>
+<pre><code>bogon:pro-flask wupeiqi$ python3
+Python 3.5.1 (v3.5.1:37a07cee5969, Dec  5 2015, 21:12:44)
+[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+&gt;&gt;&gt; from app import db
+&gt;&gt;&gt; db.create_all()</code></pre></div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:Likj128@126.com">Alexis (KangJ)</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/03/30/flask-session%E7%BB%84%E4%BB%B6-Web%E6%A1%86%E6%9E%B6/">http://likj128.github.io/2020/03/30/flask-session组件-Web框架/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="http://likj128.github.io">Alexis (KangJ)的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/Python/">Python</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#安装"><span class="toc-number">2.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#存储方式"><span class="toc-number">3.</span> <span class="toc-text">存储方式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#redis"><span class="toc-number">4.</span> <span class="toc-text">redis</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#memcached"><span class="toc-number">5.</span> <span class="toc-text">memcached</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#filesystem"><span class="toc-number">6.</span> <span class="toc-text">filesystem</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#mongodb"><span class="toc-number">7.</span> <span class="toc-text">mongodb</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#mongodb操作简单示例："><span class="toc-number">8.</span> <span class="toc-text">mongodb操作简单示例：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#sqlalchemy"><span class="toc-number">9.</span> <span class="toc-text">sqlalchemy</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#注意"><span class="toc-number">10.</span> <span class="toc-text">注意</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="next" href="/2020/03/30/SQLAlchemy-%E5%9F%BA%E6%9C%AC%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5-PYTHON/">SQLAlchemy--基本增删改查-PYTHON &gt;</a></div><div id="valine-comment"><style type="text/css">.v * { color: #CECECE; }
+.v a { color: #0F9FB4; }
+.v a:hover { color: #216C73; }
+.v li { list-style: inherit; }
+.v .vwrap { border: 1px solid #223441; border-radius: 0; }
+.v .vwrap:hover { box-shadow: 0 0 6px 1px #223441; }
+.v .vbtn { border-radius: 0; color: #cecece; background: none; }
+.v .vlist .vcard .vh { border-bottom-color: #293D4E; }
+.v .vwrap .vheader .vinput { border-bottom-color: #223441; }
+.v .vwrap .vheader .vinput:focus { border-bottom-color: #339EB4; }
+.v code, .v pre,.v .vlist .vcard .vhead .vsys { background: #203240; }
+.v code, .v pre { color: #F0F0F0; font-size: 95%; }
+.v .vlist .vcard .vcontent.expand:before { background: linear-gradient(180deg,hsla(206,33%,19%,0),hsla(206,33%,19%,.9)); }
+.v .vlist .vcard .vcontent.expand:after { background: hsla(206,33%,19%,.9); }</style><div id="vcomment"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+var verify = 'false' == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'99FfVECWi1xns2SAjWOtTNza-gzGzoHsz',
+  appKey:'6t7I76O3iToh6BGjc5rjWqDX',
+  lang: 'zh-cn',
+  placeholder:'ヾﾉ≧∀≦)o Come on, say something...',
+  avatar:'identicon',
+  guest_info:guest_info,
+  pageSize:'10'
+})</script></div></section><footer><p>Copyright © 2020 - 2020 <a href="/." rel="nofollow">艾利克斯工作室</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span></span> <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span></span> | Personal by<a rel="nofollow" target="_blank" href="https://alexisli.cn"> Alexis.</a>Powered by<a rel="nofollow" target="_blank" href="http://www.beianbeian.com/beianxinxi/f72222db0e8cf7f7b49ceee25f65c49e.html"> 晋ICP备19013202号.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+    search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css"></body></html>
