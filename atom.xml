@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://likj128.github.io/"/>
-  <updated>2020-03-30T07:21:31.956Z</updated>
+  <updated>2020-03-31T02:42:38.448Z</updated>
   <id>http://likj128.github.io/</id>
   
   <author>
@@ -15,6 +15,48 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>小程序开发快速入门（二）</title>
+    <link href="http://likj128.github.io/2020/03/31/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
+    <id>http://likj128.github.io/2020/03/31/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%8C%EF%BC%89/</id>
+    <published>2020-03-31T02:26:35.000Z</published>
+    <updated>2020-03-31T02:42:38.448Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;创建项目&quot;&gt;&lt;a href=&quot;#创建项目&quot; class=&quot;headerlink&quot; title=&quot;创建项目&quot;&gt;&lt;/a&gt;创建项目&lt;/h1&gt;&lt;p&gt;在微信开发者工具中创建一个小程序项目，根据自己需要选择云开发，云开发是微信提供的后台功能，&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="微信小程序教程" scheme="http://likj128.github.io/categories/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%95%99%E7%A8%8B/"/>
+    
+    
+      <category term="小程序" scheme="http://likj128.github.io/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>小程序开发快速入门（一）</title>
+    <link href="http://likj128.github.io/2020/03/31/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89/"/>
+    <id>http://likj128.github.io/2020/03/31/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89/</id>
+    <published>2020-03-31T02:18:15.000Z</published>
+    <updated>2020-03-31T02:26:09.265Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h1&gt;&lt;p&gt;微信小程序的技术栈和 Web 开发类似，页面展示使用微信自定制的类似 HTML 和 CSS 的标记语言，互动与数据存取使用 JavaScript。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="微信小程序教程" scheme="http://likj128.github.io/categories/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%95%99%E7%A8%8B/"/>
+    
+    
+      <category term="小程序" scheme="http://likj128.github.io/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/"/>
+    
+  </entry>
   
   <entry>
     <title>flask-session组件-Web框架</title>
@@ -389,48 +431,6 @@
     <summary type="html">
     
       &lt;p&gt;条件判断的重要值是True和False，注意首字母大写，示例如下：&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="基础常识" scheme="http://likj128.github.io/categories/%E5%9F%BA%E7%A1%80%E5%B8%B8%E8%AF%86/"/>
-    
-    
-      <category term="Python" scheme="http://likj128.github.io/tags/Python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>时间模块-PYTHON</title>
-    <link href="http://likj128.github.io/2020/03/19/%E6%97%B6%E9%97%B4%E6%A8%A1%E5%9D%97-PYTHON/"/>
-    <id>http://likj128.github.io/2020/03/19/%E6%97%B6%E9%97%B4%E6%A8%A1%E5%9D%97-PYTHON/</id>
-    <published>2020-03-19T02:24:59.000Z</published>
-    <updated>2020-03-19T02:26:00.462Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;python中使用时间需要导入time模块，使用time.time()方法获取当前时间戳，示例如下：&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="基础常识" scheme="http://likj128.github.io/categories/%E5%9F%BA%E7%A1%80%E5%B8%B8%E8%AF%86/"/>
-    
-    
-      <category term="Python" scheme="http://likj128.github.io/tags/Python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>文件操作-PYTHON</title>
-    <link href="http://likj128.github.io/2020/03/19/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C-PYTHON/"/>
-    <id>http://likj128.github.io/2020/03/19/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C-PYTHON/</id>
-    <published>2020-03-19T02:20:49.000Z</published>
-    <updated>2020-03-19T02:25:16.510Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;读取文件&quot;&gt;&lt;a href=&quot;#读取文件&quot; class=&quot;headerlink&quot; title=&quot;读取文件&quot;&gt;&lt;/a&gt;读取文件&lt;/h2&gt;&lt;p&gt;读取文件使用python内置方法open()打开文件，使用.read()读取全部内容，示例如下：&lt;/p&gt;
     
     </summary>
     

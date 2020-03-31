@@ -1,6 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>小程序开发快速入门（二）</title>
+    <url>/2020/03/31/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%8C%EF%BC%89/</url>
+    <content><![CDATA[<h1 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h1><p>在微信开发者工具中创建一个小程序项目，根据自己需要选择云开发，云开发是微信提供的后台功能，<a id="more"></a>譬如云数据库、云存储、云函数等，创建小程序项目的时候需要输入 appid，appid 在小程序后台的设置中可以找到  </p>
+<h1 id="小程序项目结构"><a href="#小程序项目结构" class="headerlink" title="小程序项目结构"></a>小程序项目结构</h1><pre><code>├── README.md
+├── cloudfunctions
+│   ├── login
+│   └── openapi
+├── miniprogram
+│   ├── app.js
+│   ├── app.json
+│   ├── app.wxss
+│   ├── images
+│   ├── pages
+│   ├── sitemap.json
+│   └── style
+└── project.config.json</code></pre><p>cloudfunctions：小程序的云开发代码（非必须），需要部署到云端；</p>
+<p>miniprogram：小程序的页面文件以及交互逻辑代码；</p>
+<p>project.config.json：项目的配置文件，是微信开发者工具使用的配置文件，可以使用的配置项见<a href="https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html" target="_blank" rel="noopener" title="项目配置文件">项目配置</a>  </p>
+<h1 id="部署云函数"><a href="#部署云函数" class="headerlink" title="部署云函数"></a>部署云函数</h1><p>第一次使用云开发功能的时候，创建项目时会提示你开通云开发功能，按提示开通即可。在 cloudfunctions 目录中实现了几个云函数，这些云函数是 node.js 项目。  </p>
+<p align="center">
+    <img src="/images/小程序.png" alt="Sample" width="1015" height="599">
+</p>
+在云函数目录上点击鼠标右键->选择上传并部署，然后预览中的小程序就可以调用云函数。如果调用没有部署的云函数，会提示云函数未部署。
+
+<p>云开发功能不是必须的，后台服务完全可以在自己的服务器上部署。云开发是腾讯提供的函数功能，另外还有云存储、云数据库等，使用云开发能够简化后端服务开发，减少维护工作。  </p>
+<h1 id="预览小程序"><a href="#预览小程序" class="headerlink" title="预览小程序"></a>预览小程序</h1><p>微信开发者界面左侧就是小程序的预览界面，另外在工具栏中选择预览或者真机调试会弹出二维码，用微信扫描二维码就可以在手机上预览小程序。</p>
+<p>工具栏中还有很多其它开发工具，譬如版本管理、清缓存等。  </p>
+<h1 id="小程序配置文件"><a href="#小程序配置文件" class="headerlink" title="小程序配置文件"></a>小程序配置文件</h1><p>app.json 是小程序的全局配置，包括了小程序的所有页面、界面表现、超时设置、底部 tab 等。 所有可用配置项以及配置项的含义可以在<a href="https://developers.weixin.qq.com/miniprogram/dev/reference/configuration/app.html" target="_blank" rel="noopener" 标题"">微信小程序全局配置</a>中找到。其中：</p>
+<pre><code>pages 是小程序的所有页面的路径，每个页面都必须要在这里注册；
+window 定义小程序所有页面顶部的背景颜色、文字颜色等；
+tabBar 小程序的底部 tab 栏；
+networkTimeout 网络超时；
+debug 是否开启 debug 模式；
+functionPages 是否启用插件模式；
+subpackage 分包结构配置；
+workers worker 代码；
+requireBackgroundModes 后台使用的功能；
+plugins 启用的插件；
+preloadRule 分包预下载规则；
+resizable iPad 的屏幕旋转支持；
+navigateToMiniProgramAppIdList 需要跳转的小程序列表；
+usingComponents 全局自定义组建；
+permission 小程序接口权限；
+sitemapLocation sitemap.json 的位置。</code></pre><p>itemap.json 是小程序收录配置，在 sitemap.json 中设置小程序页面是否可以被微信索引，没有该文件默认所有页面都允许被索引，下面是一个允许所有页面被索引的 sitemap.json 文件：  </p>
+<pre><code>{
+  &quot;rules&quot;: [{
+  &quot;action&quot;: &quot;allow&quot;,
+  &quot;page&quot;: &quot;*&quot;
+  }]
+}</code></pre><h1 id="小程序页面文件"><a href="#小程序页面文件" class="headerlink" title="小程序页面文件"></a>小程序页面文件</h1><p>每个小程序页面主要包括 wxml、wxss、js、json 四个文件，另外可以包含一些图片的页面素材文件：</p>
+<pre><code>wxml 页面文件是小程序页面结构的基础；
+wxss 文件是独立的样式表；
+js 文件是页面交互逻辑的实现；
+json 文件是页面的配置文件。</code></pre><p align="center">
+    <img src="/images/xiao1.png" alt="Sample" width="294" height="141">
+</p>
+
+<h1 id="页面文件的内容格式和语法-正在编辑……"><a href="#页面文件的内容格式和语法-正在编辑……" class="headerlink" title="页面文件的内容格式和语法 正在编辑……."></a>页面文件的内容格式和语法 正在编辑…….</h1>]]></content>
+      <categories>
+        <category>微信小程序教程</category>
+      </categories>
+      <tags>
+        <tag>小程序</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>小程序开发快速入门（一）</title>
+    <url>/2020/03/31/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89/</url>
+    <content><![CDATA[<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>微信小程序的技术栈和 Web 开发类似，页面展示使用微信自定制的类似 HTML 和 CSS 的标记语言，互动与数据存取使用 JavaScript。<a id="more"></a>从 Web 开发转向微信小程序开发非常容易。如果没有 WEB 基础，需要对 HTML 和 CSS 有基本认识，学会写 JavaScript 代码。</p>
+<p>另外要独立制作小程序，除了掌握小程序开发技术，最好还会使用一种原型设计工具，以便于呈现、打磨自己的想法。  </p>
+<h1 id="账号申请-开发者工具"><a href="#账号申请-开发者工具" class="headerlink" title="账号申请 开发者工具"></a>账号申请 开发者工具</h1><p>账号申请地址：<a href="https://mp.weixin.qq.com/" target="_blank" rel="noopener" title="注册">注册</a><br>开发者工具地址：<a href="https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html" target="_blank" rel="noopener" title="IDE">开发工具</a><br>具体申请过程不赘述了，开发者工具首次使用的时候需要用微信认证，并且项目要绑定到申请的小程序账号，在创建项目的时候按照提示填写相关内容即可。（APPID 在小程序账号里可以找到）  </p>
+]]></content>
+      <categories>
+        <category>微信小程序教程</category>
+      </categories>
+      <tags>
+        <tag>小程序</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>flask-session组件-Web框架</title>
     <url>/2020/03/30/flask-session%E7%BB%84%E4%BB%B6-Web%E6%A1%86%E6%9E%B6/</url>
     <content><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>flask-session是flask框架的session组件，<br>由于原来flask内置session使用签名cookie保存，该组件则将支持session保存到多个地方<br>如：</p>

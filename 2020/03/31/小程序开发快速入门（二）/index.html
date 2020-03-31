@@ -1,0 +1,94 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><meta name="baidu-site-verification"><title>小程序开发快速入门（二） | 艾利克斯工作室</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="艾利克斯工作室" type="application/atom+xml">
+</head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><body><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">LITREILY</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/profile.jpg" width="128" height="128"></a><h1 class="ttl"><a href="/">艾利克斯工作室</a></h1></div><p class="m-desc">路在脚下<br>The road is under your feet.</p><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">归档</a></li><li><span class="dot">●</span><a href="/categories/">分类</a></li><li><span class="dot">●</span><a href="/tags/">标签</a></li><li><span class="dot">●</span><a href="/about/">关于</a></li><li><span class="dot">●</span><a href="/atom.xml">RSS</a></li><li><span class="dot">●</span><a href="/Case/">案例</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">小程序开发快速入门（二）</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2020/03/31/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%8C%EF%BC%89/">2020-03-31</a></span><span class="p-category"><i class="fa fa-folder"></i><a href="/categories/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%95%99%E7%A8%8B/">微信小程序教程</a></span><span class="p-view" id="busuanzi_container_page_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></div><div class="p-content"><h1 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h1><p>在微信开发者工具中创建一个小程序项目，根据自己需要选择云开发，云开发是微信提供的后台功能，<a id="more"></a>譬如云数据库、云存储、云函数等，创建小程序项目的时候需要输入 appid，appid 在小程序后台的设置中可以找到  </p>
+<h1 id="小程序项目结构"><a href="#小程序项目结构" class="headerlink" title="小程序项目结构"></a>小程序项目结构</h1><pre><code>├── README.md
+├── cloudfunctions
+│   ├── login
+│   └── openapi
+├── miniprogram
+│   ├── app.js
+│   ├── app.json
+│   ├── app.wxss
+│   ├── images
+│   ├── pages
+│   ├── sitemap.json
+│   └── style
+└── project.config.json</code></pre><p>cloudfunctions：小程序的云开发代码（非必须），需要部署到云端；</p>
+<p>miniprogram：小程序的页面文件以及交互逻辑代码；</p>
+<p>project.config.json：项目的配置文件，是微信开发者工具使用的配置文件，可以使用的配置项见<a href="https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html" target="_blank" rel="noopener" title="项目配置文件">项目配置</a>  </p>
+<h1 id="部署云函数"><a href="#部署云函数" class="headerlink" title="部署云函数"></a>部署云函数</h1><p>第一次使用云开发功能的时候，创建项目时会提示你开通云开发功能，按提示开通即可。在 cloudfunctions 目录中实现了几个云函数，这些云函数是 node.js 项目。  </p>
+<p align="center">
+    <img src="/images/小程序.png" alt="Sample" width="1015" height="599">
+</p>
+在云函数目录上点击鼠标右键->选择上传并部署，然后预览中的小程序就可以调用云函数。如果调用没有部署的云函数，会提示云函数未部署。
+
+<p>云开发功能不是必须的，后台服务完全可以在自己的服务器上部署。云开发是腾讯提供的函数功能，另外还有云存储、云数据库等，使用云开发能够简化后端服务开发，减少维护工作。  </p>
+<h1 id="预览小程序"><a href="#预览小程序" class="headerlink" title="预览小程序"></a>预览小程序</h1><p>微信开发者界面左侧就是小程序的预览界面，另外在工具栏中选择预览或者真机调试会弹出二维码，用微信扫描二维码就可以在手机上预览小程序。</p>
+<p>工具栏中还有很多其它开发工具，譬如版本管理、清缓存等。  </p>
+<h1 id="小程序配置文件"><a href="#小程序配置文件" class="headerlink" title="小程序配置文件"></a>小程序配置文件</h1><p>app.json 是小程序的全局配置，包括了小程序的所有页面、界面表现、超时设置、底部 tab 等。 所有可用配置项以及配置项的含义可以在<a href="https://developers.weixin.qq.com/miniprogram/dev/reference/configuration/app.html" target="_blank" rel="noopener" 标题"">微信小程序全局配置</a>中找到。其中：</p>
+<pre><code>pages 是小程序的所有页面的路径，每个页面都必须要在这里注册；
+window 定义小程序所有页面顶部的背景颜色、文字颜色等；
+tabBar 小程序的底部 tab 栏；
+networkTimeout 网络超时；
+debug 是否开启 debug 模式；
+functionPages 是否启用插件模式；
+subpackage 分包结构配置；
+workers worker 代码；
+requireBackgroundModes 后台使用的功能；
+plugins 启用的插件；
+preloadRule 分包预下载规则；
+resizable iPad 的屏幕旋转支持；
+navigateToMiniProgramAppIdList 需要跳转的小程序列表；
+usingComponents 全局自定义组建；
+permission 小程序接口权限；
+sitemapLocation sitemap.json 的位置。</code></pre><p>itemap.json 是小程序收录配置，在 sitemap.json 中设置小程序页面是否可以被微信索引，没有该文件默认所有页面都允许被索引，下面是一个允许所有页面被索引的 sitemap.json 文件：  </p>
+<pre><code>{
+  &quot;rules&quot;: [{
+  &quot;action&quot;: &quot;allow&quot;,
+  &quot;page&quot;: &quot;*&quot;
+  }]
+}</code></pre><h1 id="小程序页面文件"><a href="#小程序页面文件" class="headerlink" title="小程序页面文件"></a>小程序页面文件</h1><p>每个小程序页面主要包括 wxml、wxss、js、json 四个文件，另外可以包含一些图片的页面素材文件：</p>
+<pre><code>wxml 页面文件是小程序页面结构的基础；
+wxss 文件是独立的样式表；
+js 文件是页面交互逻辑的实现；
+json 文件是页面的配置文件。</code></pre><p align="center">
+    <img src="/images/xiao1.png" alt="Sample" width="294" height="141">
+</p>
+
+<h1 id="页面文件的内容格式和语法-正在编辑……"><a href="#页面文件的内容格式和语法-正在编辑……" class="headerlink" title="页面文件的内容格式和语法 正在编辑……."></a>页面文件的内容格式和语法 正在编辑…….</h1></div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:Likj128@126.com">Alexis (KangJ)</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/03/31/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%8C%EF%BC%89/">http://likj128.github.io/2020/03/31/小程序开发快速入门（二）/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="http://likj128.github.io">Alexis (KangJ)的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/">小程序</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#创建项目"><span class="toc-number">1.</span> <span class="toc-text">创建项目</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#小程序项目结构"><span class="toc-number">2.</span> <span class="toc-text">小程序项目结构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#部署云函数"><span class="toc-number">3.</span> <span class="toc-text">部署云函数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#预览小程序"><span class="toc-number">4.</span> <span class="toc-text">预览小程序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#小程序配置文件"><span class="toc-number">5.</span> <span class="toc-text">小程序配置文件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#小程序页面文件"><span class="toc-number">6.</span> <span class="toc-text">小程序页面文件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#页面文件的内容格式和语法-正在编辑……"><span class="toc-number">7.</span> <span class="toc-text">页面文件的内容格式和语法 正在编辑…….</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="next" href="/2020/03/31/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89/">小程序开发快速入门（一） &gt;</a></div><div id="valine-comment"><style type="text/css">.v * { color: #CECECE; }
+.v a { color: #0F9FB4; }
+.v a:hover { color: #216C73; }
+.v li { list-style: inherit; }
+.v .vwrap { border: 1px solid #223441; border-radius: 0; }
+.v .vwrap:hover { box-shadow: 0 0 6px 1px #223441; }
+.v .vbtn { border-radius: 0; color: #cecece; background: none; }
+.v .vlist .vcard .vh { border-bottom-color: #293D4E; }
+.v .vwrap .vheader .vinput { border-bottom-color: #223441; }
+.v .vwrap .vheader .vinput:focus { border-bottom-color: #339EB4; }
+.v code, .v pre,.v .vlist .vcard .vhead .vsys { background: #203240; }
+.v code, .v pre { color: #F0F0F0; font-size: 95%; }
+.v .vlist .vcard .vcontent.expand:before { background: linear-gradient(180deg,hsla(206,33%,19%,0),hsla(206,33%,19%,.9)); }
+.v .vlist .vcard .vcontent.expand:after { background: hsla(206,33%,19%,.9); }</style><div id="vcomment"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+var verify = 'false' == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'99FfVECWi1xns2SAjWOtTNza-gzGzoHsz',
+  appKey:'6t7I76O3iToh6BGjc5rjWqDX',
+  lang: 'zh-cn',
+  placeholder:'ヾﾉ≧∀≦)o Come on, say something...',
+  avatar:'identicon',
+  guest_info:guest_info,
+  pageSize:'10'
+})</script></div></section><footer><p>Copyright © 2020 - 2020 <a href="/." rel="nofollow">艾利克斯工作室</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span></span> <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span></span> | Personal by<a rel="nofollow" target="_blank" href="https://alexisli.cn"> Alexis.</a>Powered by<a rel="nofollow" target="_blank" href="http://www.beianbeian.com/beianxinxi/f72222db0e8cf7f7b49ceee25f65c49e.html"> 晋ICP备19013202号.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+    search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css"></body></html>
