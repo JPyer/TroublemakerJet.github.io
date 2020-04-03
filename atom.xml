@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://likj128.github.io/"/>
-  <updated>2020-04-03T04:54:29.832Z</updated>
+  <updated>2020-04-03T07:25:59.676Z</updated>
   <id>http://likj128.github.io/</id>
   
   <author>
@@ -21,13 +21,19 @@
     <link href="http://likj128.github.io/2020/04/03/MySQL%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D/"/>
     <id>http://likj128.github.io/2020/04/03/MySQL%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D/</id>
     <published>2020-04-03T04:54:29.000Z</published>
-    <updated>2020-04-03T04:54:29.832Z</updated>
+    <updated>2020-04-03T07:25:59.676Z</updated>
     
     <summary type="html">
+    
+      &lt;p&gt;备份的主要目的是灾难恢复，备份还可以测试应用、回滚数据修改、查询历史数据、审计等。&lt;/p&gt;
     
     </summary>
     
     
+      <category term="技术试验" scheme="http://likj128.github.io/categories/%E6%8A%80%E6%9C%AF%E8%AF%95%E9%AA%8C/"/>
+    
+    
+      <category term="MySQL" scheme="http://likj128.github.io/tags/MySQL/"/>
     
   </entry>
   
