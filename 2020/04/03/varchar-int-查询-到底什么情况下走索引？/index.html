@@ -1,0 +1,122 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><meta name="baidu-site-verification"><title>varchar int 查询 到底什么情况下走索引？ | 艾利克斯工作室</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="艾利克斯工作室" type="application/atom+xml">
+</head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><body><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">LITREILY</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/profile.jpg" width="128" height="128"></a><h1 class="ttl"><a href="/">艾利克斯工作室</a></h1></div><p class="m-desc">路在脚下<br>The road is under your feet.</p><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">归档</a></li><li><span class="dot">●</span><a href="/categories/">分类</a></li><li><span class="dot">●</span><a href="/tags/">标签</a></li><li><span class="dot">●</span><a href="/about/">关于</a></li><li><span class="dot">●</span><a href="/Cooperation/">合作</a></li><li><span class="dot">●</span><a href="/atom.xml">RSS</a></li><li><span class="dot">●</span><a href="/Case/">案例</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">varchar int 查询 到底什么情况下走索引？</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2020/04/03/varchar-int-%E6%9F%A5%E8%AF%A2-%E5%88%B0%E5%BA%95%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E8%B5%B0%E7%B4%A2%E5%BC%95%EF%BC%9F/">2020-04-03</a></span><span class="p-category"><i class="fa fa-folder"></i><a href="/categories/%E6%8A%80%E6%9C%AF%E8%AF%95%E9%AA%8C/">技术试验</a></span><span class="p-view" id="busuanzi_container_page_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></div><div class="p-content"><p>一个字符类型的、一个int类型的，查询的时候到底会不会走索引，其实很多工作了几年的开发人员有时也会晕，下面就用具体事例来测试一下。</p>
+<a id="more"></a>
+<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><p>先准备2张表，以备后续测试使用。<br>两张表的差异是c_no的字段类型不同。<br>表1：创建表test1,总共3列，其中id 是主键（int）,c_no 为int型，且有索引，c_2为普通字段</p>
+<pre><code>/*创建表test1 */
+create table  test1(id int primary key,c_no  int ,c_2 varchar(1),key c_no(c_no));
+/* 插入一些测试数据 */
+insert  into test1 values(1,1,&#39;0&#39;),(2,2,&#39;1&#39;),(3,4,&#39;1&#39;),(4,6,&#39;0&#39;),(5,7,&#39;&#39;1),(6,11,&#39;2&#39;),(7,5,&#39;3&#39;),(8,100,&#39;0&#39;),(9,30,&#39;1&#39;),(10,50,&#39;0&#39;);</code></pre><p>表2： 创建表test1,总共3列，其中id 是主键（int）,c_no 为字符型，且有索引，c_2为普通字段</p>
+<pre><code>/* 创建test2 */
+create table  test2(id int primary key  auto_increment,c_no  varchar(11) ,c2 varchar(2),key c_no(c_no));
+/* 插入一些测试数据 */
+ insert  into test2 values(1,&#39;5&#39;,&#39;1&#39;),(4,&#39;100&#39;,&#39;0&#39;),(3,&#39;30&#39;,&#39;1&#39;),(10,&#39;500&#39;,&#39;0&#39;),(11,&#39;20&#39;,&#39;0&#39;),(12,&#39;20a&#39;,&#39;0&#39;),(15,&#39;020b&#39;,&#39;1&#39;);</code></pre><h1 id="等值查询测试"><a href="#等值查询测试" class="headerlink" title="等值查询测试"></a>等值查询测试</h1><p>测试test1<br>test1.c_no字段为int类型，下面分别用整型和字符串进行比较，查看是否走索引。对应的执行计划如下：</p>
+<pre><code>mysql&gt; explain  select *  from test1 where c_no=&#39;100&#39;;
++----+-------------+-------+------------+------+---------------+------+---------+-------+------+----------+-------+
+| id | select_type | table | partitions | type | possible_keys | key  | key_len | ref   | rows | filtered | Extra |
++----+-------------+-------+------------+------+---------------+------+---------+-------+------+----------+-------+
+|  1 | SIMPLE      | test1 | NULL       | ref  | c_no          | c_no | 5       | const |    1 |   100.00 | NULL  |
++----+-------------+-------+------------+------+---------------+------+---------+-------+------+----------+-------+
+1 row in set, 1 warning (0.00 sec)
+mysql&gt; explain  select *  from test1 where c_no=100;
++----+-------------+-------+------------+------+---------------+------+---------+-------+------+----------+-------+
+| id | select_type | table | partitions | type | possible_keys | key  | key_len | ref   | rows | filtered | Extra |
++----+-------------+-------+------------+------+---------------+------+---------+-------+------+----------+-------+
+|  1 | SIMPLE      | test1 | NULL       | ref  | c_no          | c_no | 5       | const |    1 |   100.00 | NULL  |
++----+-------------+-------+------------+------+---------------+------+---------+-------+------+----------+-------+
+1 row in set, 1 warning (0.00 sec)</code></pre><p>可见，两种方式均走索引了，且走的是c_no的索引，类型为ref为const（常量的等值查询），扫行数为1<br>也就是说当表中的字段类型为整型时，无论查询用字符串类型的数字还是int类型的数字均能走索引。其中用int类型的值查询能走索引可以容易理解，那么，字符型的为什么能走？ 其实这里的字符类型做了隐式转化，上例中就相当于</p>
+<pre><code>mysql&gt; explain  select *  from test1 where c_no=CAST(&#39;100&#39; as UNSIGNED);
++----+-------------+-------+------------+------+---------------+------+---------+-------+------+----------+-------+
+| id | select_type | table | partitions | type | possible_keys | key  | key_len | ref   | rows | filtered | Extra |
++----+-------------+-------+------------+------+---------------+------+---------+-------+------+----------+-------+
+|  1 | SIMPLE      | test1 | NULL       | ref  | c_no          | c_no | 5       | const |    1 |   100.00 | NULL  |
++----+-------------+-------+------------+------+---------------+------+---------+-------+------+----------+-------+
+1 row in set, 1 warning (0.00 sec)</code></pre><h1 id="测试test2表"><a href="#测试test2表" class="headerlink" title="测试test2表"></a>测试test2表</h1><p>以同样的方式测试一下test2的查询情况</p>
+<p>先测试正常情况下字符型与字符型比较，结果可想而知，可以走索引，如下：</p>
+<pre><code>mysql&gt; explain  select *  from test2 where c_no=&#39;100&#39;;
++----+-------------+-------+------------+------+---------------+------+---------+-------+------+----------+-------+
+| id | select_type | table | partitions | type | possible_keys | key  | key_len | ref   | rows | filtered | Extra |
++----+-------------+-------+------------+------+---------------+------+---------+-------+------+----------+-------+
+|  1 | SIMPLE      | test2 | NULL       | ref  | c_no          | c_no | 47      | const |    1 |   100.00 | NULL  |
++----+-------------+-------+------------+------+---------------+------+---------+-------+------+----------+-------+
+1 row in set, 1 warning (0.00 sec)</code></pre><p>如果是整型再查呢？结果如下（很遗憾，不能走索引了）</p>
+<pre><code>mysql&gt; explain  select *  from test2 where c_no=100;
++----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------------+
+| id | select_type | table | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra       |
++----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------------+
+|  1 | SIMPLE      | test2 | NULL       | ALL  | c_no          | NULL | NULL    | NULL |    7 |    14.29 | Using where |
++----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------------+
+1 row in set, 3 warnings (0.00 sec)</code></pre><p>也就是说，表中字段为字符类型的时候，查询的值为整型时，无法走索引了。</p>
+<p>那这句相当于如下情况：</p>
+<pre><code>mysql&gt; explain  select *  from test2 where cast(c_no  as  unsigned)=100;
++----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------------+
+| id | select_type | table | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra       |
++----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------------+
+|  1 | SIMPLE      | test2 | NULL       | ALL  | NULL          | NULL | NULL    | NULL |    7 |   100.00 | Using where |
++----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------------+
+1 row in set, 1 warning (0.00 sec)</code></pre><p>也就是c_no做了隐式转化。因为如果是100做了影视转化，那么结果应该是可以走索引，例如：</p>
+<pre><code>mysql&gt; explain  select *  from test2 where c_no=cast(100 as char);
++----+-------------+-------+------------+------+---------------+------+---------+-------+------+----------+-------+
+| id | select_type | table | partitions | type | possible_keys | key  | key_len | ref   | rows | filtered | Extra |
++----+-------------+-------+------------+------+---------------+------+---------+-------+------+----------+-------+
+|  1 | SIMPLE      | test2 | NULL       | ref  | c_no          | c_no | 47      | const |    1 |   100.00 | NULL  |
++----+-------------+-------+------------+------+---------------+------+---------+-------+------+----------+-------+
+1 row in set, 1 warning (0.00 sec)</code></pre><p>由此，我们也应证了如果字段做了函数计算后，该列上即使有索引也无法使用（MySQL8.0之前的版本）</p>
+<h1 id="进一步测试"><a href="#进一步测试" class="headerlink" title="进一步测试"></a>进一步测试</h1><p>其实针对test2表 还可以测试一点，进一步证明是c_no字段做了隐式转化，例如：</p>
+<pre><code>mysql&gt; select  * from test2 where c_no=20;
++----+------+------+
+| id | c_no | c2   |
++----+------+------+
+| 11 | 20   | 0    |
+| 12 | 20a  | 0    |
+| 15 | 020b | 1    |
++----+------+------+
+3 rows in set, 2 warnings (0.00 sec)</code></pre><p>另外，看到了2个警告，内容如下：</p>
+<pre><code>mysql&gt; show warnings;
++---------+------+------------------------------------------+
+| Level   | Code | Message                                  |
++---------+------+------------------------------------------+
+| Warning | 1292 | Truncated incorrect DOUBLE value: &#39;20a&#39;  |
+| Warning | 1292 | Truncated incorrect DOUBLE value: &#39;020b&#39; |
++---------+------+------------------------------------------+
+2 rows in set (0.00 sec)</code></pre><h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>更加证明了转化为数字型（预转为double）<br>通过上面的简单测试，即可发现如下结论：</p>
+<pre><code>当表中的字段类型为整型时，无论查询用字符串类型的数字还是int类型的数字均能走索引；
+表中字段为字符类型的时候，查询的值为整型时，无法走索引；
+如果字段做了函数计算后，该列上即使有索引也无法使用（MySQL8.0之前的版本）</code></pre><p>因此开发同学在写SQL的时候要注意SQL的写法，缺少一个单引号可能导致很大的性能差异。</p>
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:Likj128@126.com">Alexis (KangJ)</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/04/03/varchar-int-%E6%9F%A5%E8%AF%A2-%E5%88%B0%E5%BA%95%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E8%B5%B0%E7%B4%A2%E5%BC%95%EF%BC%9F/">http://likj128.github.io/2020/04/03/varchar-int-查询-到底什么情况下走索引？/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="http://likj128.github.io">Alexis (KangJ)的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/MySQL/">MySQL</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#准备工作"><span class="toc-number">1.</span> <span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#等值查询测试"><span class="toc-number">2.</span> <span class="toc-text">等值查询测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#测试test2表"><span class="toc-number">3.</span> <span class="toc-text">测试test2表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#进一步测试"><span class="toc-number">4.</span> <span class="toc-text">进一步测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#结论"><span class="toc-number">5.</span> <span class="toc-text">结论</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2020/04/03/MySQL%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D/">&lt; MySQL备份与恢复</a><a class="next" href="/2020/03/31/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%8C%EF%BC%89/">小程序开发快速入门（二） &gt;</a></div><div id="valine-comment"><style type="text/css">.v * { color: #CECECE; }
+.v a { color: #0F9FB4; }
+.v a:hover { color: #216C73; }
+.v li { list-style: inherit; }
+.v .vwrap { border: 1px solid #223441; border-radius: 0; }
+.v .vwrap:hover { box-shadow: 0 0 6px 1px #223441; }
+.v .vbtn { border-radius: 0; color: #cecece; background: none; }
+.v .vlist .vcard .vh { border-bottom-color: #293D4E; }
+.v .vwrap .vheader .vinput { border-bottom-color: #223441; }
+.v .vwrap .vheader .vinput:focus { border-bottom-color: #339EB4; }
+.v code, .v pre,.v .vlist .vcard .vhead .vsys { background: #203240; }
+.v code, .v pre { color: #F0F0F0; font-size: 95%; }
+.v .vlist .vcard .vcontent.expand:before { background: linear-gradient(180deg,hsla(206,33%,19%,0),hsla(206,33%,19%,.9)); }
+.v .vlist .vcard .vcontent.expand:after { background: hsla(206,33%,19%,.9); }</style><div id="vcomment"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+var verify = 'false' == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'99FfVECWi1xns2SAjWOtTNza-gzGzoHsz',
+  appKey:'6t7I76O3iToh6BGjc5rjWqDX',
+  lang: 'zh-cn',
+  placeholder:'ヾﾉ≧∀≦)o Come on, say something...',
+  avatar:'identicon',
+  guest_info:guest_info,
+  pageSize:'10'
+})</script></div></section><footer><p>Copyright © 2020 - 2020 <a href="/." rel="nofollow">艾利克斯工作室</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span></span> <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span></span> | Personal by<a rel="nofollow" target="_blank" href="https://alexisli.cn"> Alexis.</a>Powered by<a rel="nofollow" target="_blank" href="http://www.beianbeian.com/beianxinxi/f72222db0e8cf7f7b49ceee25f65c49e.html"> 晋ICP备19013202号.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+    search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css"></body></html>
