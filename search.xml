@@ -1,6 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>路线轨迹的3D动画展示</title>
+    <url>/2020/04/05/%E8%B7%AF%E7%BA%BF%E8%BD%A8%E8%BF%B9%E7%9A%843D%E5%8A%A8%E7%94%BB%E5%B1%95%E7%A4%BA/</url>
+    <content><![CDATA[<p>今天换换脑子，来一些可视化的小技巧。</p>
+<a id="more"></a>
+<p>百度地图很强大，也为开发者提供很好的开发接口。今天教大家一个3D地图上路线轨迹可视化的小功能。</p>
+<h1 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h1><p>申请 ak, 很简单，10秒搞定。</p>
+<p>ak 申请链接，根据提示3步搞定。<a href="http://lbsyun.baidu.com/index.php?title=jspopularGL/guide/getkey" target="_blank" rel="noopener" title="申请">申请</a>  </p>
+<h1 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h1><p>有了 ak 后，复制下面的 hellomap.html 文件到 templates 文件夹里</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+
+&lt;head&gt;
+    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;initial-scale=1.0, user-scalable=no&quot; /&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+    body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:&quot;微软雅黑&quot;;}
+    &lt;/style&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;//api.map.baidu.com/api?type=webgl&amp;v=1.0&amp;ak=BDHrafkP23kFkI8MPbGUWS1bREzCCAdI&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;//api.map.baidu.com/library/TrackAnimation/src/TrackAnimation_min.js&quot;&gt;&lt;/script&gt;
+
+    &lt;title&gt;绘制轨迹&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div id=&quot;allmap&quot;&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+    // GL版命名空间为BMapGL
+    // 按住鼠标右键，修改倾斜角和角度
+    var bmap = new BMapGL.Map(&quot;allmap&quot;);    // 创建Map实例
+    bmap.centerAndZoom(new BMapGL.Point(116.297611, 40.047363), 17);  // 初始化地图,设置中心点坐标和地图级别
+    bmap.enableScrollWheelZoom(true);     // 开启鼠标滚轮缩放
+    bmap.setTilt(50);      // 设置地图初始倾斜角
+
+    var path = [{
+        &#39;lng&#39;: 116.297611,
+        &#39;lat&#39;: 40.047363
+    }, {
+        &#39;lng&#39;: 116.302839,
+        &#39;lat&#39;: 40.048219
+    }, {
+        &#39;lng&#39;: 116.308301,
+        &#39;lat&#39;: 40.050566
+    }, {
+        &#39;lng&#39;: 116.305732,
+        &#39;lat&#39;: 40.054957
+    }, {
+        &#39;lng&#39;: 116.304754,
+        &#39;lat&#39;: 40.057953
+    }, {
+        &#39;lng&#39;: 116.306487,
+        &#39;lat&#39;: 40.058312
+    }, {
+        &#39;lng&#39;: 116.307223,
+        &#39;lat&#39;: 40.056379
+    }];
+
+    var point = [];
+    for (var i = 0; i &lt; path.length; i++) {
+        var poi = new BMapGL.Point(path[i].lng, path[i].lat);
+        point.push(poi);
+        var marker = new BMapGL.Marker(poi); //创建标注
+        bmap.addOverlay(marker); //将标注添加到地图中
+    }
+
+
+    var pl = new BMapGL.Polyline(point,{strokeColor:&quot;blue&quot;, strokeWeight:6, strokeOpacity:0.5});
+
+    var trackAni = new BMapGLLib.TrackAnimation(bmap, pl, {
+        overallView: true, // 动画完成后自动调整视野到总览
+        tilt: 30,          // 轨迹播放的角度，默认为55
+        duration: 20000,   // 动画持续时长，默认为10000，单位ms
+        delay: 3000        // 动画开始的延迟，默认0，单位ms
+    });
+
+    trackAni.start();
+&lt;/script&gt;</code></pre><h1 id="第三步"><a href="#第三步" class="headerlink" title="第三步"></a>第三步</h1><p>使用 Flask 部署，几行代码：</p>
+<pre><code>from flask import Flask
+from flask import render_template
+
+App = Flask(__name__)
+
+
+@App.route(&#39;/&#39;)
+def index():
+    return render_template(&#39;hellomap.html&#39;)
+
+
+if __name__ == &quot;__main__&quot;:
+    App.run(debug=True)</code></pre><p><video src="http://mpvideo.qpic.cn/0bf2v4aauaaa2aaeoxeiobpfbl6dbkxqacqa.f10002.mp4?dis_k=054040f951d8517e6e974943ea75bbd2&dis_t=1586055635" controls="controls" width="500" height="300">您的浏览器不支持播放该视频！</video></p>
+]]></content>
+      <categories>
+        <category>技术探讨</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MySQL备份与恢复</title>
     <url>/2020/04/03/MySQL%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D/</url>
     <content><![CDATA[<p>备份的主要目的是灾难恢复，备份还可以测试应用、回滚数据修改、查询历史数据、审计等。</p>

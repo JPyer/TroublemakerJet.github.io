@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://likj128.github.io/"/>
-  <updated>2020-04-03T07:25:59.676Z</updated>
+  <updated>2020-04-05T03:08:19.758Z</updated>
   <id>http://likj128.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>路线轨迹的3D动画展示</title>
+    <link href="http://likj128.github.io/2020/04/05/%E8%B7%AF%E7%BA%BF%E8%BD%A8%E8%BF%B9%E7%9A%843D%E5%8A%A8%E7%94%BB%E5%B1%95%E7%A4%BA/"/>
+    <id>http://likj128.github.io/2020/04/05/%E8%B7%AF%E7%BA%BF%E8%BD%A8%E8%BF%B9%E7%9A%843D%E5%8A%A8%E7%94%BB%E5%B1%95%E7%A4%BA/</id>
+    <published>2020-04-05T03:02:11.000Z</published>
+    <updated>2020-04-05T03:08:19.758Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;今天换换脑子，来一些可视化的小技巧。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术探讨" scheme="http://likj128.github.io/categories/%E6%8A%80%E6%9C%AF%E6%8E%A2%E8%AE%A8/"/>
+    
+    
+      <category term="前端" scheme="http://likj128.github.io/tags/%E5%89%8D%E7%AB%AF/"/>
+    
+  </entry>
   
   <entry>
     <title>MySQL备份与恢复</title>
@@ -418,27 +439,6 @@
     
     
       <category term="Python" scheme="http://likj128.github.io/tags/Python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>安装常用工具包-LINUX</title>
-    <link href="http://likj128.github.io/2020/03/19/%E5%AE%89%E8%A3%85%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%8C%85-LINUX/"/>
-    <id>http://likj128.github.io/2020/03/19/%E5%AE%89%E8%A3%85%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%8C%85-LINUX/</id>
-    <published>2020-03-19T02:36:01.000Z</published>
-    <updated>2020-03-19T13:01:23.240Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;全部操作都在root用户下执行&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="基础-Linux" scheme="http://likj128.github.io/categories/%E5%9F%BA%E7%A1%80-Linux/"/>
-    
-    
-      <category term="Linux" scheme="http://likj128.github.io/tags/Linux/"/>
     
   </entry>
   
