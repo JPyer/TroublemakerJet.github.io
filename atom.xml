@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://likj128.github.io/"/>
-  <updated>2020-04-05T03:08:19.758Z</updated>
+  <updated>2020-04-26T10:08:21.100Z</updated>
   <id>http://likj128.github.io/</id>
   
   <author>
@@ -15,6 +15,44 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>处理企业级电商业务中的秒杀系统方案-PYTHON</title>
+    <link href="http://likj128.github.io/2020/04/26/%E5%A4%84%E7%90%86%E4%BC%81%E4%B8%9A%E7%BA%A7%E7%94%B5%E5%95%86%E4%B8%9A%E5%8A%A1%E4%B8%AD%E7%9A%84%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E6%96%B9%E6%A1%88-PYTHON/"/>
+    <id>http://likj128.github.io/2020/04/26/%E5%A4%84%E7%90%86%E4%BC%81%E4%B8%9A%E7%BA%A7%E7%94%B5%E5%95%86%E4%B8%9A%E5%8A%A1%E4%B8%AD%E7%9A%84%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E6%96%B9%E6%A1%88-PYTHON/</id>
+    <published>2020-04-26T09:57:42.000Z</published>
+    <updated>2020-04-26T10:08:21.100Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;现在电商产业的多种多样，从最早的阿里巴巴、淘宝到现在的京东等等数不胜数，你还记得的京东的秒杀功能吗？我是这样理解的&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术分享" scheme="http://likj128.github.io/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/"/>
+    
+    
+      <category term="Python" scheme="http://likj128.github.io/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>redis----主从复制</title>
+    <link href="http://likj128.github.io/2020/04/06/redis-%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/"/>
+    <id>http://likj128.github.io/2020/04/06/redis-%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/</id>
+    <published>2020-04-06T04:10:07.000Z</published>
+    <updated>2020-04-07T11:56:11.513Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;为了避免单点故障，我们需要将数据复制多份部署在多台不同的服务器上，即使有一台服务器出现故障其他服务器依然可以继续提供服务&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+  </entry>
   
   <entry>
     <title>路线轨迹的3D动画展示</title>
@@ -389,48 +427,6 @@
     <summary type="html">
     
       &lt;p&gt;Python 迭代器与生成器&lt;br&gt;可以被next()函数调用并不断返回下一个值的对象称为迭代器：Iterator。&lt;br&gt;在Python中，这种一边循环一边计算的机制，称为生成器：generator&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="基础进阶" scheme="http://likj128.github.io/categories/%E5%9F%BA%E7%A1%80%E8%BF%9B%E9%98%B6/"/>
-    
-    
-      <category term="Python" scheme="http://likj128.github.io/tags/Python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>多线程-PYTHON</title>
-    <link href="http://likj128.github.io/2020/03/20/%E5%A4%9A%E7%BA%BF%E7%A8%8B-PYTHON/"/>
-    <id>http://likj128.github.io/2020/03/20/%E5%A4%9A%E7%BA%BF%E7%A8%8B-PYTHON/</id>
-    <published>2020-03-20T00:23:45.000Z</published>
-    <updated>2020-03-20T00:57:24.832Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Python 多线程Threading&lt;br&gt;任何进程默认就会启动一个线程，我们把该线程称为主线程，主线程又可以启动新的线程，Python的threading模块有个current_thread()函数，它永远返回当前线程的实例。主线程实例的名字叫MainThread，子线程的名字在创建时指定，我们用LoopThread命名子线程。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="基础进阶" scheme="http://likj128.github.io/categories/%E5%9F%BA%E7%A1%80%E8%BF%9B%E9%98%B6/"/>
-    
-    
-      <category term="Python" scheme="http://likj128.github.io/tags/Python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>错误和异常-PYTHON</title>
-    <link href="http://likj128.github.io/2020/03/19/%E9%94%99%E8%AF%AF%E5%92%8C%E5%BC%82%E5%B8%B8-PYTHON/"/>
-    <id>http://likj128.github.io/2020/03/19/%E9%94%99%E8%AF%AF%E5%92%8C%E5%BC%82%E5%B8%B8-PYTHON/</id>
-    <published>2020-03-19T12:49:58.000Z</published>
-    <updated>2020-03-20T00:25:19.306Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Python 错误和异常&lt;br&gt;Python内置了一套异常处理机制，来帮助我们进行错误处理。&lt;br&gt;代码运行前的语法或逻辑错误&lt;br&gt;语法错误在执行前修改，逻辑错误无法修改&lt;br&gt;异常分为两个步骤：&lt;br&gt;异常产生，检查到错误且解释器认为是异常，抛出异常&lt;br&gt;异常处理，截获异常，忽略或终止程序处理异常&lt;/p&gt;
     
     </summary>
     
