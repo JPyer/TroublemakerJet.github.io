@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://likj128.github.io/"/>
-  <updated>2020-04-26T10:08:21.100Z</updated>
+  <updated>2020-04-27T01:19:11.512Z</updated>
   <id>http://likj128.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>关于HTTP你了解多少？-面试</title>
+    <link href="http://likj128.github.io/2020/04/27/%E5%85%B3%E4%BA%8EHTTP%E4%BD%A0%E4%BA%86%E8%A7%A3%E5%A4%9A%E5%B0%91%EF%BC%9F-%E9%9D%A2%E8%AF%95/"/>
+    <id>http://likj128.github.io/2020/04/27/%E5%85%B3%E4%BA%8EHTTP%E4%BD%A0%E4%BA%86%E8%A7%A3%E5%A4%9A%E5%B0%91%EF%BC%9F-%E9%9D%A2%E8%AF%95/</id>
+    <published>2020-04-27T00:41:09.000Z</published>
+    <updated>2020-04-27T01:19:11.512Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;HTTP-和-HTTPS-的区别&quot;&gt;&lt;a href=&quot;#HTTP-和-HTTPS-的区别&quot; class=&quot;headerlink&quot; title=&quot;HTTP 和 HTTPS 的区别&quot;&gt;&lt;/a&gt;HTTP 和 HTTPS 的区别&lt;/h1&gt;&lt;p&gt;HTTP 是一种
+        
+      
+    
+    </summary>
+    
+    
+      <category term="面试分享" scheme="http://likj128.github.io/categories/%E9%9D%A2%E8%AF%95%E5%88%86%E4%BA%AB/"/>
+    
+    
+      <category term="技术" scheme="http://likj128.github.io/tags/%E6%8A%80%E6%9C%AF/"/>
+    
+  </entry>
   
   <entry>
     <title>处理企业级电商业务中的秒杀系统方案-PYTHON</title>
@@ -406,27 +433,6 @@
     <summary type="html">
     
       &lt;p&gt;Python 面向对象class&lt;br&gt;类就是一个模板，模板里可以包含多个函数，函数里实现一些功能&lt;br&gt;对象则是根据模板创建的实例，通过实例对象可以执行类中的函数&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="基础进阶" scheme="http://likj128.github.io/categories/%E5%9F%BA%E7%A1%80%E8%BF%9B%E9%98%B6/"/>
-    
-    
-      <category term="Python" scheme="http://likj128.github.io/tags/Python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>迭代器生成器-PYTHON</title>
-    <link href="http://likj128.github.io/2020/03/20/%E8%BF%AD%E4%BB%A3%E5%99%A8%E7%94%9F%E6%88%90%E5%99%A8-PYTHON/"/>
-    <id>http://likj128.github.io/2020/03/20/%E8%BF%AD%E4%BB%A3%E5%99%A8%E7%94%9F%E6%88%90%E5%99%A8-PYTHON/</id>
-    <published>2020-03-20T00:54:02.000Z</published>
-    <updated>2020-03-20T00:57:22.264Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Python 迭代器与生成器&lt;br&gt;可以被next()函数调用并不断返回下一个值的对象称为迭代器：Iterator。&lt;br&gt;在Python中，这种一边循环一边计算的机制，称为生成器：generator&lt;/p&gt;
     
     </summary>
     
