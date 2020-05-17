@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://likj128.github.io/"/>
-  <updated>2020-04-27T01:19:11.512Z</updated>
+  <updated>2020-05-17T11:06:41.944Z</updated>
   <id>http://likj128.github.io/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>面向对象的编程思想和Python的类 访问 属性和继承-PYTHON</title>
+    <link href="http://likj128.github.io/2020/05/17/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%BC%96%E7%A8%8B%E6%80%9D%E6%83%B3%E5%92%8CPython%E7%9A%84%E7%B1%BB-%E8%AE%BF%E9%97%AE-%E5%B1%9E%E6%80%A7%E5%92%8C%E7%BB%A7%E6%89%BF-PYTHON/"/>
+    <id>http://likj128.github.io/2020/05/17/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%BC%96%E7%A8%8B%E6%80%9D%E6%83%B3%E5%92%8CPython%E7%9A%84%E7%B1%BB-%E8%AE%BF%E9%97%AE-%E5%B1%9E%E6%80%A7%E5%92%8C%E7%BB%A7%E6%89%BF-PYTHON/</id>
+    <published>2020-05-17T10:54:40.000Z</published>
+    <updated>2020-05-17T11:06:41.944Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;面向对象的编程思想和Python的类，类的方法和属性，实例方法；这次我将从面向对象的角度介绍类的定义、属性和自定义方法。&lt;br&gt;&amp;lt;–!more–&amp;gt;&lt;/p&gt;
+&lt;h1 id=&quot;一、访问权限&quot;&gt;&lt;a href=&quot;#一、访问权限&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="技术分享" scheme="http://likj128.github.io/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/"/>
+    
+    
+      <category term="Python" scheme="http://likj128.github.io/tags/Python/"/>
+    
+  </entry>
   
   <entry>
     <title>关于HTTP你了解多少？-面试</title>
@@ -417,27 +445,6 @@
     
     
       <category term="基础常识" scheme="http://likj128.github.io/categories/%E5%9F%BA%E7%A1%80%E5%B8%B8%E8%AF%86/"/>
-    
-    
-      <category term="Python" scheme="http://likj128.github.io/tags/Python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>面向对象-PYTHON</title>
-    <link href="http://likj128.github.io/2020/03/20/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-PYTHON/"/>
-    <id>http://likj128.github.io/2020/03/20/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-PYTHON/</id>
-    <published>2020-03-20T01:04:32.000Z</published>
-    <updated>2020-03-20T01:09:29.218Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Python 面向对象class&lt;br&gt;类就是一个模板，模板里可以包含多个函数，函数里实现一些功能&lt;br&gt;对象则是根据模板创建的实例，通过实例对象可以执行类中的函数&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="基础进阶" scheme="http://likj128.github.io/categories/%E5%9F%BA%E7%A1%80%E8%BF%9B%E9%98%B6/"/>
     
     
       <category term="Python" scheme="http://likj128.github.io/tags/Python/"/>
