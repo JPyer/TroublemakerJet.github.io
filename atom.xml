@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://likj128.github.io/"/>
-  <updated>2020-05-20T01:04:33.794Z</updated>
+  <updated>2020-05-30T11:32:27.399Z</updated>
   <id>http://likj128.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>必须要懂的八大神经网络架构---机器学习</title>
+    <link href="http://likj128.github.io/2020/05/30/%E5%BF%85%E9%A1%BB%E8%A6%81%E6%87%82%E7%9A%84%E5%85%AB%E5%A4%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    <id>http://likj128.github.io/2020/05/30/%E5%BF%85%E9%A1%BB%E8%A6%81%E6%87%82%E7%9A%84%E5%85%AB%E5%A4%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</id>
+    <published>2020-05-30T11:24:56.000Z</published>
+    <updated>2020-05-30T11:32:27.399Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;机器学习你知道多少？&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="人工智能" scheme="http://likj128.github.io/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
+    
+    
+      <category term="Python" scheme="http://likj128.github.io/tags/Python/"/>
+    
+  </entry>
   
   <entry>
     <title>Ubuntu系统安装Python</title>
@@ -412,27 +433,6 @@
     <summary type="html">
     
       &lt;h1 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h1&gt;&lt;p&gt;Flask是一个基于Python开发并且依赖jinja2模板和Werkzeug WSGI服务的一个微型框架，&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Web 框架" scheme="http://likj128.github.io/categories/Web-%E6%A1%86%E6%9E%B6/"/>
-    
-    
-      <category term="Python" scheme="http://likj128.github.io/tags/Python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Django-PYTHON Web框架</title>
-    <link href="http://likj128.github.io/2020/03/21/Django-PYTHON-Web%E6%A1%86%E6%9E%B6/"/>
-    <id>http://likj128.github.io/2020/03/21/Django-PYTHON-Web%E6%A1%86%E6%9E%B6/</id>
-    <published>2020-03-20T23:39:08.000Z</published>
-    <updated>2020-03-21T00:04:04.637Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h1&gt;&lt;p&gt;本章开始不再介绍 Python 标准库，如有需求可编辑基础技术发送至邮箱或者添加好友回复即可。开始介绍一个著名的 Web 框架：Django。&lt;/p&gt;
     
     </summary>
     
