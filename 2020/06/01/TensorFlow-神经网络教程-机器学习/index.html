@@ -1,0 +1,102 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><meta name="baidu-site-verification"><title>TensorFlow 神经网络教程---机器学习 | 艾利克斯工作室</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="艾利克斯工作室" type="application/atom+xml">
+</head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><body><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">LITREILY</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/profile.jpg" width="128" height="128"></a><h1 class="ttl"><a href="/">艾利克斯工作室</a></h1></div><p class="m-desc">路在脚下<br>The road is under your feet.</p><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">归档</a></li><li><span class="dot">●</span><a href="/categories/">分类</a></li><li><span class="dot">●</span><a href="/tags/">标签</a></li><li><span class="dot">●</span><a href="/about/">关于</a></li><li><span class="dot">●</span><a href="/Cooperation/">合作</a></li><li><span class="dot">●</span><a href="/atom.xml">RSS</a></li><li><span class="dot">●</span><a href="/Case/">案例</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">TensorFlow 神经网络教程---机器学习</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2020/06/01/TensorFlow-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%95%99%E7%A8%8B-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">2020-06-01</a></span><span class="p-category"><i class="fa fa-folder"></i><a href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></span><span class="p-view" id="busuanzi_container_page_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></div><div class="p-content"><p>TensorFlow 是一个用于机器学习应用程序的开源库。<a id="more"></a>它是谷歌大脑的第二代系统，在取代了近源的 DistBelief 之后，被谷歌用于研究和生产应用。TensorFlow 提供了很多种语言接口，包括 Python、C++、Go、Java 和 C 等等。考虑到普遍性和易学性，本文将采用 Python 版本，并且会简单介绍下 TensorFlow 的安装和它的一些低阶 API，以及从头开始构建基于真实数据集的前馈神经网络。</p>
+<p>在更为复杂的应用场景下，神经网络的训练时长往往是一种特别需要克服的因素。由于神经网络以及其他机器学习算法主要在处理矩阵乘法，因此在 GPU 上运行要比在 CPU 上快得多（当然有个别情况除外）。<br>TensorFlow 支持 CPU 和 GPU，Google 甚至还研究出了 TensorFlow 专用的云计算硬件，叫做 Tensor Processing Unit（TPU），可在训练中达到更好的性能。</p>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>虽然 TPU 仅在云中可用，但 TensorFlow 在本地计算机上的安装可以安装 CPU 版或者 GPU 版的。要安装GPU 版本，你的电脑必须有 NVIDIA 显卡，并且还要满足更多要求。<br>基本上，安装至少有5种不同的选项，使用：virtualenv，pip，Docker，Anaconda，以及从源代码安装。这些安装方法请参考：安装 TensorFlow。<br>最常见和最简单的安装方式是通过 virtualenv 和 pip，因此它们将在本文中进行解释。<br>如果你已经使用了 Python 一段时间，你可能知道 pip 。以下是如何在 Ubuntu 上安装：</p>
+<pre><code># Install pip
+sudo apt-get install python-pip python-dev   # Python 2.7  
+sudo apt-get install python3-pip python3-dev # Python 3.x  
+在 Ubuntu 和 Mac OSX（不支持 GPU） 机器上安装 TensorFlow：
+
+# CPU support
+pip install tensorflow      # Python 2.7  
+pip3 install tensorflow     # Python 3.x
+
+# GPU support
+pip install tensorflow-gpu  # Python 2.7  
+pip3 install tensorflow-gpu # Python 3.x  </code></pre><p>上述命令也适用于 Windows 系统，但仅适用于 Python 3.5.x 和 3.6.x 版本。</p>
+<p>在单独的环境中安装 TensorFlow 可以通过 virtualenv 或 conda（Anaconda的一部分）来完成。同样的代码一样可以安装，不过使用前需要创建和激活虚拟环境：</p>
+<pre><code>virtualenv --system-site-packages ~/tensorflow  
+source ~/tensorflow/bin/activate</code></pre><p>这可以很好地把虚拟环境与系统上全局安装的软件包分离开来。</p>
+<h1 id="核心API组件"><a href="#核心API组件" class="headerlink" title="核心API组件"></a>核心API组件</h1><p>TensorFlow 提供了高阶 API 和低阶 API。最低级别的一级称为 Core，它与基本组件一起使用：Tensors、Graphs 和 Sessions。<br>更高级别的API，例如 tf.estimator，用于简化工作流程和自动化，包括数据集管理、学习、评估等过程。无论如何，了解库的核心功能才能更好地利用 TensorFlow 这个利器。<br>Core API 的重点是构建一个计算图，其中包含一系列排列在节点图中的操作。每个节点可以具有多个张量（基本数据结构）作为输入并对它们执行操作以计算输出，该输出随后可以表示对多层网络中的其他节点的输入。这种类型的架构适用于机器学习应用，比如神经网络。</p>
+<h1 id="张量"><a href="#张量" class="headerlink" title="张量"></a>张量</h1><p>张量是 TensorFlow 中的基本数据结构，它以任意数量的维度存储数据，类似于 NumPy 中的多维数组。张量有三种基本类型：常量，变量和占位符。<br>常量是不可变类型的张量。它们可以被视为没有输入的节点，输出它们在内部存储的单个值。<br>变量是可变类型的 tensors，其值可以在图形运行期间改变。在ML应用中，变量通常存储需要优化的参数（例如，神经网络中节点之间的权重）。在通过显式调用特殊操作运行图形之前，需要初始化变量。<br>占位符是存储来自外部源的数据的张量。它们代表了一个“承诺”，即在运行图形时将提供一个值。在机器学习应用程序中，占位符通常用于向学习模型输入数据。<br>以下几行给出了三种张量类型的示例：</p>
+<pre><code>import tensorflow as tf
+
+tf.reset_default_graph()
+
+# Define a placeholder
+a = tf.placeholder(&quot;float&quot;, name=&#39;pholdA&#39;)  
+print(&quot;a:&quot;, a)
+
+# Define a variable 
+b = tf.Variable(2.0, name=&#39;varB&#39;)  
+print(&quot;b:&quot;, b)
+
+# Define a constant
+c = tf.constant([1., 2., 3., 4.], name=&#39;consC&#39;)  
+print(&quot;c:&quot;, c)
+
+
+a: Tensor(&quot;pholdA:0&quot;, dtype=float32)  
+b: &lt;tf.Variable &#39;varB:0&#39; shape=() dtype=float32_ref&gt;  
+c: Tensor(&quot;consC:0&quot;, shape=(4,), dtype=float32)  </code></pre><p>请注意，此时张量不包含值，并且只有在会话中运行图形时，它们的值才可用。<br>下面我们将使用 Core API 构建一个神经网络，用于在真实数据上进行机器学习。  </p>
+<h1 id="神经网络模型"><a href="#神经网络模型" class="headerlink" title="神经网络模型"></a>神经网络模型</h1><p>我们来使用 TensorFlow 的核心组件从头开始构建前馈神经网络。<br>鸢尾花数据集<br>鸢尾花数据集 由150个植物实例组成，每个植物都有4个维度（用做输入特征）及其类型（需要预测的输出值）。这些植物可能属于三种类型中的一种（ setosa，virginica 和 versicolor ）。让我们首先从TensorFlow 的网站下载数据 - 它分为训练和测试子集，每个子​​集分别包含 120 和 30 个实例。  </p>
+<pre><code>import numpy as np
+import pandas as pd
+import tensorflow as tf
+import urllib.request as request
+import matplotlib.pyplot as plt
+
+# Download dataset
+IRIS_TRAIN_URL = &quot;http://download.tensorflow.org/data/iris_training.csv&quot;
+IRIS_TEST_URL = &quot;http://download.tensorflow.org/data/iris_test.csv&quot;
+
+names = [&#39;sepal-length&#39;, &#39;sepal-width&#39;, &#39;petal-length&#39;, &#39;petal-width&#39;, &#39;species&#39;]
+train = pd.read_csv(IRIS_TRAIN_URL, names=names, skiprows=1)
+test = pd.read_csv(IRIS_TEST_URL, names=names, skiprows=1)
+
+# Train and test input data
+Xtrain = train.drop(&quot;species&quot;, axis=1)  
+Xtest = test.drop(&quot;species&quot;, axis=1)
+
+# Encode target values into binary (&#39;one-hot&#39; style) representation
+ytrain = pd.get_dummies(train.species)
+ytest = pd.get_dummies(test.species)</code></pre><h1 id="模型和学习"><a href="#模型和学习" class="headerlink" title="模型和学习"></a>模型和学习</h1><p>神经网络的输入和输出层的形状将对应于数据的形状，即输入层将包含表示四个输入特征的四个神经元，而由于要给这三个物种编码，输出层将包含三个神经元。例如，’setosa’ 物种可以用向量 [1,0,0] 编码，’virginica’ 用 [0,1,0] 等编码。<br>我们为隐藏层中的神经元数量选择三个值：5、10 和 20，因此网络大小为（4-5-3），（4-10-3）和（4-20-3）。这意味着我们的第一个网络将拥有 4 个输入神经元，5 个“隐藏”神经元和 3 个输出神经元。  </p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a href="https://stackabuse.com/tensorflow-neural-network-tutorial/" target="_blank" rel="noopener">https://stackabuse.com/tensorflow-neural-network-tutorial/</a></p>
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:Likj128@126.com">Alexis (KangJ)</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/06/01/TensorFlow-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%95%99%E7%A8%8B-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">http://likj128.github.io/2020/06/01/TensorFlow-神经网络教程-机器学习/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="http://likj128.github.io">Alexis (KangJ)的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/Python/">Python</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#安装"><span class="toc-number">1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#核心API组件"><span class="toc-number">2.</span> <span class="toc-text">核心API组件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#张量"><span class="toc-number">3.</span> <span class="toc-text">张量</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#神经网络模型"><span class="toc-number">4.</span> <span class="toc-text">神经网络模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#模型和学习"><span class="toc-number">5.</span> <span class="toc-text">模型和学习</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考链接"><span class="toc-number">6.</span> <span class="toc-text">参考链接</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="next" href="/2020/05/30/%E5%BF%85%E9%A1%BB%E8%A6%81%E6%87%82%E7%9A%84%E5%85%AB%E5%A4%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">必须要懂的八大神经网络架构---机器学习 &gt;</a></div><div id="valine-comment"><style type="text/css">.v * { color: #CECECE; }
+.v a { color: #0F9FB4; }
+.v a:hover { color: #216C73; }
+.v li { list-style: inherit; }
+.v .vwrap { border: 1px solid #223441; border-radius: 0; }
+.v .vwrap:hover { box-shadow: 0 0 6px 1px #223441; }
+.v .vbtn { border-radius: 0; color: #cecece; background: none; }
+.v .vlist .vcard .vh { border-bottom-color: #293D4E; }
+.v .vwrap .vheader .vinput { border-bottom-color: #223441; }
+.v .vwrap .vheader .vinput:focus { border-bottom-color: #339EB4; }
+.v code, .v pre,.v .vlist .vcard .vhead .vsys { background: #203240; }
+.v code, .v pre { color: #F0F0F0; font-size: 95%; }
+.v .vlist .vcard .vcontent.expand:before { background: linear-gradient(180deg,hsla(206,33%,19%,0),hsla(206,33%,19%,.9)); }
+.v .vlist .vcard .vcontent.expand:after { background: hsla(206,33%,19%,.9); }</style><div id="vcomment"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+var verify = 'false' == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'99FfVECWi1xns2SAjWOtTNza-gzGzoHsz',
+  appKey:'6t7I76O3iToh6BGjc5rjWqDX',
+  lang: 'zh-cn',
+  placeholder:'ヾﾉ≧∀≦)o Come on, say something...',
+  avatar:'identicon',
+  guest_info:guest_info,
+  pageSize:'10'
+})</script></div></section><footer><p>Copyright © 2020 - 2020 <a href="/." rel="nofollow">艾利克斯工作室</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span></span> <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span></span> | Personal by<a rel="nofollow" target="_blank" href="https://alexisli.cn"> Alexis.</a>Powered by<a rel="nofollow" target="_blank" href="http://www.beianbeian.com/beianxinxi/f72222db0e8cf7f7b49ceee25f65c49e.html"> 晋ICP备19013202号.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+    search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css"></body></html>
