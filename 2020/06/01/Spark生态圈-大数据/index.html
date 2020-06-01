@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><meta name="baidu-site-verification"><title>Spark生态圈---大数据 | 艾利克斯工作室</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="艾利克斯工作室" type="application/atom+xml">
+</head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><body><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">LITREILY</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/profile.jpg" width="128" height="128"></a><h1 class="ttl"><a href="/">艾利克斯工作室</a></h1></div><p class="m-desc">路在脚下<br>The road is under your feet.</p><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">归档</a></li><li><span class="dot">●</span><a href="/categories/">分类</a></li><li><span class="dot">●</span><a href="/tags/">标签</a></li><li><span class="dot">●</span><a href="/about/">关于</a></li><li><span class="dot">●</span><a href="/Cooperation/">合作</a></li><li><span class="dot">●</span><a href="/atom.xml">RSS</a></li><li><span class="dot">●</span><a href="/Case/">案例</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">Spark生态圈---大数据</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2020/06/01/Spark%E7%94%9F%E6%80%81%E5%9C%88-%E5%A4%A7%E6%95%B0%E6%8D%AE/">2020-06-01</a></span><span class="p-category"><i class="fa fa-folder"></i><a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a></span><span class="p-view" id="busuanzi_container_page_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></div><div class="p-content"><p>Spark 生态圈是加州大学伯克利分校的 AMP 实验室打造的<a id="more"></a>，是一个力图在算法（Algorithms）、机器（Machines）、人（People）之间通过大规模集成来展现大数据应用的平台。  </p>
+<p>AMP 实验室运用大数据、云计算、通信等各种资源及各种灵活的技术方案，对海量不透明的数据进行甄别并转化为有用的信息，以供人们更好地理解世界。该生态圈已经涉及机器学习、数据挖掘、数据库、信息检索、自然语言处理和语音识别等多个领域。  </p>
+<p>Spark 生态圈以 Spark Core 为核心，从 HDFS、Amazon S3 和 HBase 等持久层读取数据，以 Mesos、YARN 和自身携带的 Standalone 为 Cluster Manager 调度 Job 完成 Spark 应用程序的计算，这些应用程序可以来自于不同的组件。  </p>
+<p>如 Spark Shell/Spark Submit 的批处理，Spark Streaming 的实时处理应用，Spark SQL 的即席查询，MLlib 的机器学习，GraphX 的图处理和 SparkR 的数学计算等。  </p>
+<h1 id="Spark-内核架构"><a href="#Spark-内核架构" class="headerlink" title="Spark 内核架构"></a>Spark 内核架构</h1><pre><code>
+1）提供了有向无环图（DAG）的分布式并行计算框架，并提供 cache 机制来支持多次迭代计算或者数据共享，大大减少了迭代计算之间读取数据的开销，这对于需要进行多次迭代的数据挖掘和分析的性能有很大提升。
+
+2）在 Spark 中引入了 RDD 的抽象，它是分布在一组结点中的只读对象集合，这些集合是弹性的，如果数据集的一部分丢失，则可以根据血缘关系对它们进行重建，保证了数据的高容错性。
+
+3）移动计算而非移动数据，RDD 分区可以就近读取 HDFS 中的数据块到各个结点内存中进行计算。
+
+4）使用多线程池模型来减少 Task 启动开销。
+
+5）采用容错的、高可伸缩性的 Akka 作为通信框架。
+</code></pre><h1 id="Spark-Streaming"><a href="#Spark-Streaming" class="headerlink" title="Spark Streaming"></a>Spark Streaming</h1><pre><code>Spark Streaming 是一个对实时数据流进行高通量、容错处理的流式处理系统，可以对多种数据源（如 Kafka、Flume、Twitter、Zero 和 TCP 套接字）进行类似 map、reduce 和 join 的复杂操作，并将结果保存到外部文件系统、数据库中，或应用到实时仪表盘上。
+
+Spark Streaming 的核心思想是将流式计算分解成一系列短小的批处理作业，这里的批处理引擎是 Spark Core。也就是把 Spark Streaming 的输入数据按照设定的时间片（如 1 秒）分成一段一段的数据，每一段数据都转换成 Spark 中的 RDD，然后将 Spark Streaming 中对 DStream 的转换操作变为对 Spark 中的 RDD 的转换操作，将 RDD 经过操作变成的中间结果保存在内存中。
+
+根据业务的需求，整个流式计算可以对中间结果进行叠加，或者将中间结果存储到外部设备。本教程会在后边对 Spark Streaming 做详细介绍。</code></pre><h1 id="Spark-SQL"><a href="#Spark-SQL" class="headerlink" title="Spark SQL"></a>Spark SQL</h1><pre><code>Spark SQL 允许开发人员直接处理 RDD，以及查询存储在 Hive、HBase 上的外部数据。Spark SQL 的一个重要特点是其能够统一处理关系表和 RDD，使得开发人员可以轻松地使用 SQL 命令进行外部查询，同时进行更复杂的数据分析。</code></pre><h1 id="Spark-MLlib"><a href="#Spark-MLlib" class="headerlink" title="Spark MLlib"></a>Spark MLlib</h1><pre><code>Spark MLlib 实现了一些常见的机器学习算法和实用程序，包括分类、回归、聚类、协同过滤、降维及底层优化，并且该算法可以进行扩充。Spark MLlib 降低了机器学习的门槛，开发人员只要具备一定的理论知识就能进行机器学习的工作。有时间的话将在后面对 Spark MLlib 做进一步介绍。</code></pre><h1 id="Spark-GraphX"><a href="#Spark-GraphX" class="headerlink" title="Spark GraphX"></a>Spark GraphX</h1><pre><code>Spark GraphX 是 Spark 中用于图并行计算的 API，可以认为是 GraphLab 和 Pregel 在 Spark 上的重写及优化。与其他分布式图计算框架相比，Spark GraphX 最大的贡献是在 Spark 之上提供了一站式数据解决方案，可以方便且高效地完成图计算的一整套流水作业。
+
+Spark GraphX 的核心抽象是 Resilient Distributed Property Graph，即一种点和边都带属性的有向多重图。它扩展了 Spark RDD 的抽象，有 Table 和 Graph 两种视图，而只需要一份物理存储。两种视图都有自己独有的操作符，从而使得操作灵活，并提高了执行效率。
+
+需要说明的是，无论是 Spark Streaming、Spark SQL、Spark MLlib，还是 Spark GraphX，都可以使用 Spark Core 的 API 处理问题，它们的方法几乎是通用的，处理的数据也可以共享，从而可以完成不同应用之间数据的无缝集成。</code></pre></div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:Likj128@126.com">Alexis (KangJ)</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/06/01/Spark%E7%94%9F%E6%80%81%E5%9C%88-%E5%A4%A7%E6%95%B0%E6%8D%AE/">http://likj128.github.io/2020/06/01/Spark生态圈-大数据/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="http://likj128.github.io">Alexis (KangJ)的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/Java%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%80%E5%8F%91/">Java大数据开发</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Spark-内核架构"><span class="toc-number">1.</span> <span class="toc-text">Spark 内核架构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spark-Streaming"><span class="toc-number">2.</span> <span class="toc-text">Spark Streaming</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spark-SQL"><span class="toc-number">3.</span> <span class="toc-text">Spark SQL</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spark-MLlib"><span class="toc-number">4.</span> <span class="toc-text">Spark MLlib</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spark-GraphX"><span class="toc-number">5.</span> <span class="toc-text">Spark GraphX</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2020/06/01/%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86%E3%80%81%E6%B8%85%E6%B4%97%E3%80%81%E5%A4%84%E7%90%86%EF%BC%9A%E4%BD%BF%E7%94%A8MapReduce%E8%BF%9B%E8%A1%8C%E7%A6%BB%E7%BA%BF%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90-%E5%A4%A7%E6%95%B0%E6%8D%AE/">&lt; 大数据采集、清洗、处理：使用MapReduce进行离线数据分析---大数据</a><a class="next" href="/2020/06/01/TensorFlow-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%95%99%E7%A8%8B-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">TensorFlow 神经网络教程---机器学习 &gt;</a></div><div id="valine-comment"><style type="text/css">.v * { color: #CECECE; }
+.v a { color: #0F9FB4; }
+.v a:hover { color: #216C73; }
+.v li { list-style: inherit; }
+.v .vwrap { border: 1px solid #223441; border-radius: 0; }
+.v .vwrap:hover { box-shadow: 0 0 6px 1px #223441; }
+.v .vbtn { border-radius: 0; color: #cecece; background: none; }
+.v .vlist .vcard .vh { border-bottom-color: #293D4E; }
+.v .vwrap .vheader .vinput { border-bottom-color: #223441; }
+.v .vwrap .vheader .vinput:focus { border-bottom-color: #339EB4; }
+.v code, .v pre,.v .vlist .vcard .vhead .vsys { background: #203240; }
+.v code, .v pre { color: #F0F0F0; font-size: 95%; }
+.v .vlist .vcard .vcontent.expand:before { background: linear-gradient(180deg,hsla(206,33%,19%,0),hsla(206,33%,19%,.9)); }
+.v .vlist .vcard .vcontent.expand:after { background: hsla(206,33%,19%,.9); }</style><div id="vcomment"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+var verify = 'false' == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'99FfVECWi1xns2SAjWOtTNza-gzGzoHsz',
+  appKey:'6t7I76O3iToh6BGjc5rjWqDX',
+  lang: 'zh-cn',
+  placeholder:'ヾﾉ≧∀≦)o Come on, say something...',
+  avatar:'identicon',
+  guest_info:guest_info,
+  pageSize:'10'
+})</script></div></section><footer><p>Copyright © 2020 - 2020 <a href="/." rel="nofollow">艾利克斯工作室</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span></span> <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span></span> | Personal by<a rel="nofollow" target="_blank" href="https://alexisli.cn"> Alexis.</a>Powered by<a rel="nofollow" target="_blank" href="http://www.beianbeian.com/beianxinxi/f72222db0e8cf7f7b49ceee25f65c49e.html"> 晋ICP备19013202号.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+    search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css"></body></html>
