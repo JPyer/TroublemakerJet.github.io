@@ -1,5 +1,104 @@
-<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><meta name="baidu-site-verification"><title>Django-PYTHON Web框架 | 艾利克斯工作室</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="艾利克斯工作室" type="application/atom+xml">
-</head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><body><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">LITREILY</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/profile.jpg" width="128" height="128"></a><h1 class="ttl"><a href="/">艾利克斯工作室</a></h1></div><p class="m-desc">路在脚下<br>The road is under your feet.<br>目前专注于深度学习 声学算法等AI领域</p><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">归档</a></li><li><span class="dot">●</span><a href="/categories/">分类</a></li><li><span class="dot">●</span><a href="/tags/">标签</a></li><li><span class="dot">●</span><a href="/about/">关于</a></li><li><span class="dot">●</span><a href="/Cooperation/">合作</a></li><li><span class="dot">●</span><a href="/Case/">案例</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">Django-PYTHON Web框架</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2020/03/21/Django-PYTHON-Web%E6%A1%86%E6%9E%B6/">2020-03-21</a></span><span class="p-category"><i class="fa fa-folder"></i><a href="/categories/Web-%E6%A1%86%E6%9E%B6/">Web 框架</a></span><span class="p-view" id="busuanzi_container_page_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></div><div class="p-content"><h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>本章开始不再介绍 Python 标准库，如有需求可编辑基础技术发送至邮箱或者添加好友回复即可。开始介绍一个著名的 Web 框架：Django。</p>
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Django-PYTHON Web框架 | 艾利克斯工作室</title><meta name="description" content="简介本章开始不再介绍 Python 标准库，如有需求可编辑基础技术发送至邮箱或者添加好友回复即可。开始介绍一个著名的 Web 框架：Django。  首先简要介绍什么是 Web 框架，接着介绍使用 Django 开发应用。从基础开始介绍 Django，并开发一个“Hello World”应用。接着逐步深入，介绍开发实际应用时所要了解的内容。这个路线图也组成了本章的架构： 首先夯实基础；然后介绍中级"><meta name="keywords" content="Python"><meta name="author" content="Alexis (KangJ)"><meta name="copyright" content="Alexis (KangJ)"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://programmer996.club/2020/03/21/Django-PYTHON-Web%E6%A1%86%E6%9E%B6/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta property="og:type" content="article"><meta property="og:title" content="Django-PYTHON Web框架"><meta property="og:url" content="https://programmer996.club/2020/03/21/Django-PYTHON-Web%E6%A1%86%E6%9E%B6/"><meta property="og:site_name" content="艾利克斯工作室"><meta property="og:description" content="简介本章开始不再介绍 Python 标准库，如有需求可编辑基础技术发送至邮箱或者添加好友回复即可。开始介绍一个著名的 Web 框架：Django。  首先简要介绍什么是 Web 框架，接着介绍使用 Django 开发应用。从基础开始介绍 Django，并开发一个“Hello World”应用。接着逐步深入，介绍开发实际应用时所要了解的内容。这个路线图也组成了本章的架构： 首先夯实基础；然后介绍中级"><meta property="og:image" content="https://programmer996.club/img/avatar.png"><meta property="article:published_time" content="2020-03-20T23:39:08.000Z"><meta property="article:modified_time" content="2020-03-21T00:04:04.637Z"><meta name="twitter:card" content="summary"><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#fff')
+  }
+}
+
+var getCookies = function (name) {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop().split(';').shift()
+}
+
+var autoChangeMode = 'false'
+var t = getCookies('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (Cookies.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css"><link rel="prev" title="Flask-PYTHON Web框架" href="https://programmer996.club/2020/03/21/Flask-PYTHON-Web%E6%A1%86%E6%9E%B6/"><link rel="next" title="标准库-PYTHON" href="https://programmer996.club/2020/03/20/%E6%A0%87%E5%87%86%E5%BA%93-PYTHON/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  bookmark: {
+    message_prev: 'Press',
+    message_next: 'to bookmark this page'
+  },
+  runtime_unit: 'days',
+  runtime: false,
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: {"bookmark":{"message_prev":"Press","message_next":"to bookmark this page"},"chs_to_cht":"Traditional Chinese Activated Manually","cht_to_chs":"Simplified Chinese Activated Manually","day_to_night":"Dark Mode Activated Manually","night_to_day":"Light Mode Activated Manually","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  highlightCopy: true,
+  highlightLang: true,
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false    
+}</script><script>var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isSidebar: true,
+  postUpdate: '2020-03-21 08:04:04'
+}</script><noscript><style>
+#nav {
+  opacity: 1
+}
+.justified-gallery img{
+  opacity: 1
+}
+</style></noscript><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="艾利克斯工作室" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">Articles</div><div class="length_num">38</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">Tags</div><div class="length_num">8</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">Categories</div><div class="length_num">15</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down menus-expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li><li><a class="site-page" href="/Case/"><i class="fa-fw fas fa-case"></i><span> Case</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Web-框架"><span class="toc-number">2.</span> <span class="toc-text">Web 框架</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Django-简介"><span class="toc-number">3.</span> <span class="toc-text">Django 简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#安装"><span class="toc-number">4.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#安装-Django"><span class="toc-number">5.</span> <span class="toc-text">安装 Django</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#项目和应用"><span class="toc-number">6.</span> <span class="toc-text">项目和应用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#在-Django-中创建项目"><span class="toc-number">7.</span> <span class="toc-text">在 Django 中创建项目</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#运行开发服务器"><span class="toc-number">8.</span> <span class="toc-text">运行开发服务器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#创建应用（App）"><span class="toc-number">9.</span> <span class="toc-text">创建应用（App）</span></a></li></ol></div></div></div><div class="code-close" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://i.loli.net/2020/05/01/IuWi8QbHvzjlOPw.jpg)"><nav id="nav"><span class="pull-left" id="blog_name"><a class="blog_title" id="site-name" href="/">艾利克斯工作室</a></span><span class="pull-right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down menus-expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li><li><a class="site-page" href="/Case/"><i class="fa-fw fas fa-case"></i><span> Case</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">Django-PYTHON Web框架</div></div><div id="post-meta"><div class="meta-firstline"><time class="post-meta__date"><span class="post-meta__date-created" title="Created 2020-03-21 07:39:08"><i class="far fa-calendar-alt fa-fw"></i> Created 2020-03-21</span><span class="post-meta__separator">|</span><span class="post-meta__date-updated" title="Updated 2020-03-21 08:04:04"><i class="fas fa-history fa-fw"></i> Updated 2020-03-21</span></time><span class="post-meta__categories"><span class="post-meta__separator">|</span><i class="fas fa-inbox fa-fw post-meta__icon"></i><a class="post-meta__categories" href="/categories/Web-%E6%A1%86%E6%9E%B6/">Web 框架</a></span></div><div class="meta-secondline"> <span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta__icon"></i><span>Word count:</span><span class="word-count">5.3k</span><span class="post-meta__separator">|</span><i class="far fa-clock fa-fw post-meta__icon"></i><span>Reading time: 17 min</span></span></div><div class="meta-thirdline"><span class="post-meta-pv-cv"><span class="post-meta__separator">|</span><i class="far fa-eye fa-fw post-meta__icon"></i><span>Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>本章开始不再介绍 Python 标准库，如有需求可编辑基础技术发送至邮箱或者添加好友回复即可。开始介绍一个著名的 Web 框架：Django。</p>
 <a id="more"></a>
 <p>首先简要介绍什么是 Web 框架，接着介绍使用 Django 开发应用。从基础开始介绍 Django，并开发一个“Hello World”应用。接着逐步深入，介绍开发实际应用时所要了解的内容。这个路线图也组成了本章的架构： 首先夯实基础；然后介绍中级应用，这个应用会涉及Twitter、电子邮件和 OAuth（OAuth 是一个开放的授权协议，用于通过应用编程接口[API]访问数据）。<br>本章旨在介绍一款工具，Python 开发者每天都会用这款工具解决实际问题。通过本章， 读者会学到一些技能和足够的知识，来通过 Django 构建更复杂的工具。读者可以带着这些技能去学习任何其他Python Web 框架。首先，了解什么是 Web 框架。</p>
 <h1 id="Web-框架"><a href="#Web-框架" class="headerlink" title="Web 框架"></a>Web 框架</h1><p>Django 是由一个开发团队作为单个突出创建的，但并不是所有框架都遵循这种哲学。以TurboGears 为例，这是一个非常优秀的全栈系统，由分散在全世界的开发者开发，其作为胶水代码，将栈中其他独立的组件组合起来，如ToscaWidgets（高级 Web 部件，它可利用多种JavaScript 框架，如 Ex1tJs、jQuery 等）、SQLAlchemy（ORM）、Pylons（Web 服务器），还有Genshi（模板化）。遵循这种架构样式的框架能提供很好的灵活性，用户可以选择不同的模板系统、JS 库、生成原始 SQL 语句的工具，以及不同的 Web 服务器。只须牺牲一点一致性和放弃单一工具的追求。但对框架的使用也许与之前的方式没什么区别。<br>Pyramid 是另外一个非常著名的 Web 框架，这是 repoze.bfg（或简称 BFG）和 Pylons 的继承者。Pyramid 的方式更加简单，它只提供一些基础功能，如URL 分派、模板化、安全和一些资源。如果需要其他功能，必须手动添加。这种极简的方式带来的好处就是 Pyramid 拥有完整的测试和文档，以及从Pylons 和BFG 社区继承的用户，让Pyramid 成为今日Python Web 框架中有力的竞争者。<br>如果读者刚接触到 Python，可能会了解 Rails 或 PHP，这两者原先只想将语言嵌入到HTML 中，后来扩展成一个庞大框架。Python 的好处就是不必局限于“一种语言，一种框架” 的形式。从 Python 中可以选择许多框架，就如同本章起始处的引用所说的那样。Web 服务器网关接口（WSGI）标准的建立加速了 Web 框架的发展。Python WSGI 由PEP 333 定义，参见：[<a href="http://python.org/dev/peps/pep-0333]。" target="_blank" rel="noopener">http://python.org/dev/peps/pep-0333]。</a><br>如果读者还不了解 WSGI，这里有必要简要说明一下。WSGI 不是实际的代码或 API，而定义了一系列接口，让 Web 框架的开发者无须为框架创建自定义 Web 服务器，也让应用程序开发者可以自行选择 Web 服务器。有了WSGI，应用开发者就可以方便地切换（或开发新的）WSGI 兼容的服务器，而无须担心需要改变应用代码。<br>当热情的 Python 开发者不满足已有的框架时，他们就会创建一个新框架。Python 中 Web 框架的数目比关键字的数目还多。其他框架还包括 web2py、web.py、Tornado、Diesel 和 Zope。可以在 Python 官网的维基页面[<a href="http://wiki.python.org/moin/WebFrameworks]" target="_blank" rel="noopener">http://wiki.python.org/moin/WebFrameworks]</a> 来了解这些框架。<br>回到正文，现在在这些 Web 开发的相关知识的基础上来学习Django。</p>
@@ -67,41 +166,33 @@ tests.py         单元测试</code></pre><p>与项目类似，应用也是一�
    . . .
    &#39;blog&#39;,
 )</code></pre><p>虽然结尾的逗号不是必需的，但如果今后向该元组中添加其他项，就无须添加逗号。Django 使用INSTALLED_APPS 来配置系统的不同部分，包括自动管理应用程序和测试框架。</p>
-</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:Likj128@126.com">Alexis (KangJ)</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/03/21/Django-PYTHON-Web%E6%A1%86%E6%9E%B6/">https://programmer996.club/2020/03/21/Django-PYTHON-Web框架/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="https://programmer996.club">Alexis (KangJ)的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/Python/">Python</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Web-框架"><span class="toc-number">2.</span> <span class="toc-text">Web 框架</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Django-简介"><span class="toc-number">3.</span> <span class="toc-text">Django 简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#安装"><span class="toc-number">4.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#安装-Django"><span class="toc-number">5.</span> <span class="toc-text">安装 Django</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#项目和应用"><span class="toc-number">6.</span> <span class="toc-text">项目和应用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#在-Django-中创建项目"><span class="toc-number">7.</span> <span class="toc-text">在 Django 中创建项目</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#运行开发服务器"><span class="toc-number">8.</span> <span class="toc-text">运行开发服务器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#创建应用（App）"><span class="toc-number">9.</span> <span class="toc-text">创建应用（App）</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2020/03/21/Flask-PYTHON-Web%E6%A1%86%E6%9E%B6/">&lt; Flask-PYTHON Web框架</a><a class="next" href="/2020/03/20/%E6%A0%87%E5%87%86%E5%BA%93-PYTHON/">标准库-PYTHON &gt;</a></div><div id="valine-comment"><style type="text/css">.v * { color: #CECECE; }
-.v a { color: #0F9FB4; }
-.v a:hover { color: #216C73; }
-.v li { list-style: inherit; }
-.v .vwrap { border: 1px solid #223441; border-radius: 0; }
-.v .vwrap:hover { box-shadow: 0 0 6px 1px #223441; }
-.v .vbtn { border-radius: 0; color: #cecece; background: none; }
-.v .vlist .vcard .vh { border-bottom-color: #293D4E; }
-.v .vwrap .vheader .vinput { border-bottom-color: #223441; }
-.v .vwrap .vheader .vinput:focus { border-bottom-color: #339EB4; }
-.v code, .v pre,.v .vlist .vcard .vhead .vsys { background: #203240; }
-.v code, .v pre { color: #F0F0F0; font-size: 95%; }
-.v .vlist .vcard .vcontent.expand:before { background: linear-gradient(180deg,hsla(206,33%,19%,0),hsla(206,33%,19%,.9)); }
-.v .vlist .vcard .vcontent.expand:after { background: hsla(206,33%,19%,.9); }</style><div id="vcomment"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
-var verify = 'false' == true ? true : false;
-var GUEST_INFO = ['nick','mail','link'];
-var guest_info = 'nick,mail,link'.split(',').filter(function(item){
-  return GUEST_INFO.indexOf(item) > -1
-});
-guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
-window.valine = new Valine({
-  el:'#vcomment',
-  notify:notify,
-  verify:verify,
-  appId:'99FfVECWi1xns2SAjWOtTNza-gzGzoHsz',
-  appKey:'6t7I76O3iToh6BGjc5rjWqDX',
-  lang: 'zh-cn',
-  placeholder:'ヾﾉ≧∀≦)o Come on, say something...',
-  avatar:'identicon',
-  guest_info:guest_info,
-  pageSize:'10'
-})</script></div></section><footer><p>Copyright © 2020 - 2020 <a href="/." rel="nofollow">艾利克斯工作室</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span></span> <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span></span> | Personal by<a rel="nofollow" target="_blank" href="https://programmer996.club"> Alexis.</a>Powered by<a rel="nofollow" target="_blank" href="http://www.beianbeian.com/beianxinxi/f72222db0e8cf7f7b49ceee25f65c49e.html"> 晋ICP备19013202号.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script>var search_path = 'search.xml';
-if (search_path.length == 0) {
-    search_path = 'search.xml';
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Alexis (KangJ)</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://programmer996.club/2020/03/21/Django-PYTHON-Web%E6%A1%86%E6%9E%B6/">https://programmer996.club/2020/03/21/Django-PYTHON-Web%E6%A1%86%E6%9E%B6/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Python/">Python</a></div><div class="post_share"><div class="social-share" data-image="/img/avatar.png" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"/><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><button class="reward-button" type="button"><i class="fas fa-qrcode"></i> Donate<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="post-qr-code__img" src="/img/wechat.jpg" alt="wechat" onclick="window.open('/img/wechat.jpg')"/><div class="post-qr-code__desc">wechat</div></li><li class="reward-item"><img class="post-qr-code__img" src="/img/alipay.jpg" alt="alipay" onclick="window.open('/img/alipay.jpg')"/><div class="post-qr-code__desc">alipay</div></li></ul></div></button></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/03/21/Flask-PYTHON-Web%E6%A1%86%E6%9E%B6/"><img class="prev-cover" data-src="/" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">Flask-PYTHON Web框架</div></div></a></div><div class="next-post pull-right"><a href="/2020/03/20/%E6%A0%87%E5%87%86%E5%BA%93-PYTHON/"><img class="next-cover" data-src="/" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">标准库-PYTHON</div></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fas fa-thumbs-up fa-fw"></i><span> Related Articles</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/03/18/垃圾回收gc/" title="垃圾回收gc"><img class="relatedPosts_cover" data-src="undefined"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-03-18</div><div class="relatedPosts_title">垃圾回收gc</div></div></a></div><div class="relatedPosts_item"><a href="/2020/03/18/HTTP-模块/" title="HTTP 模块"><img class="relatedPosts_cover" data-src="undefined"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-03-18</div><div class="relatedPosts_title">HTTP 模块</div></div></a></div><div class="relatedPosts_item"><a href="/2020/03/18/内置模块-PYTHON/" title="内置模块---PYTHON"><img class="relatedPosts_cover" data-src="undefined"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-03-18</div><div class="relatedPosts_title">内置模块---PYTHON</div></div></a></div></div></div></article></main><footer id="footer" style="background-image: url(https://i.loli.net/2020/05/01/IuWi8QbHvzjlOPw.jpg)" data-type="photo"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2020 By Alexis (KangJ)</div><div class="framework-info"><span>Driven </span><a href="https://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div><div class="icp"><a href="http://www.beian.miit.gov.cn/state/outPortal/loginPortal.action" target="_blank" rel="noopener"><img class="icp-icon" src="/img/icp.png"/><span>晋ICP备19013202号</span></a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="font_plus" type="button" title="Increase Font Size"><i class="fas fa-plus"></i></button><button id="font_minus" type="button" title="Decrease Font Size"><i class="fas fa-minus"></i></button><button id="translateLink" type="button" title="Switch Between Traditional Chinese And Simplified Chinese">繁</button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="rightside.chat_btn"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><script>var endLoading = function () {
+  document.body.style.overflow = 'auto';
+  document.getElementById('loading-box').classList.add("loaded")
 }
-var path = '/' + search_path;
-searchFunc(path, 'local-search-input', 'local-search-result');
-</script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css"></body></html>
+window.addEventListener('load',endLoading)</script><script>(function(d, w, c) {
+    w.ChatraID = 'KNGoAf4sGNJs6n5zG';
+    var s = d.createElement('script');
+    w[c] = w[c] || function() {
+        (w[c].q = w[c].q || []).push(arguments);
+    };
+    s.async = true;
+    s.src = 'https://call.chatra.io/chatra.js';
+    if (d.head) d.head.appendChild(s);
+})(document, window, 'Chatra');
+
+if (true) {
+  var chatBtn = document.getElementById("chat_btn")
+    chatBtn.addEventListener("click", function(){
+      Chatra('openChat')
+    });
+} else {
+  if (true) {
+    function chatBtnHide () {
+      Chatra('hide')
+    }
+    function chatBtnShow () {
+      Chatra('show')
+    }
+  }
+}</script></body></html>
