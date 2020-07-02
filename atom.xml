@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://programmer996.club/"/>
-  <updated>2020-06-01T15:12:20.000Z</updated>
+  <updated>2020-07-02T01:01:16.594Z</updated>
   <id>https://programmer996.club/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>PyTorch专栏开篇</title>
+    <link href="https://programmer996.club/2020/07/02/Pytorch%E4%B8%93%E6%A0%8F%E5%BC%80%E7%AF%87/"/>
+    <id>https://programmer996.club/2020/07/02/Pytorch%E4%B8%93%E6%A0%8F%E5%BC%80%E7%AF%87/</id>
+    <published>2020-07-02T00:31:46.000Z</published>
+    <updated>2020-07-02T01:01:16.594Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;目前研究人员正在使用的深度学习框架不尽相同，有TensorFlow、PyTorch、Keras等，这些深度学习框架被应用于计算机视觉、语音识别、自然语言处理与生物信息学等领域，并获得了极好的效果。其中PyTorch是当前难得的简洁优雅且高效快速的框架，当前开源的框架中，没有哪一个框架能够在灵活性、易用性、速度这三个方面有两个能够同时超过PyTorch。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="PyTorch专栏" scheme="https://programmer996.club/categories/PyTorch%E4%B8%93%E6%A0%8F/"/>
+    
+    
+      <category term="Python深度学习" scheme="https://programmer996.club/tags/Python%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
   
   <entry>
     <title>大数据采集、清洗、处理：使用MapReduce进行离线数据分析---大数据</title>
@@ -417,27 +438,6 @@
     
     
       <category term="技术资讯" scheme="https://programmer996.club/categories/%E6%8A%80%E6%9C%AF%E8%B5%84%E8%AE%AF/"/>
-    
-    
-      <category term="Python" scheme="https://programmer996.club/tags/Python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>面向对象Demo-PYTHON</title>
-    <link href="https://programmer996.club/2020/03/27/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1Demo-PYTHON/"/>
-    <id>https://programmer996.club/2020/03/27/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1Demo-PYTHON/</id>
-    <published>2020-03-27T03:01:54.000Z</published>
-    <updated>2020-03-27T03:07:54.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;属性&quot;&gt;&lt;a href=&quot;#属性&quot; class=&quot;headerlink&quot; title=&quot;属性&quot;&gt;&lt;/a&gt;属性&lt;/h1&gt;&lt;p&gt;小游戏案例。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="代码案例" scheme="https://programmer996.club/categories/%E4%BB%A3%E7%A0%81%E6%A1%88%E4%BE%8B/"/>
     
     
       <category term="Python" scheme="https://programmer996.club/tags/Python/"/>
