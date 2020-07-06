@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://programmer996.club/"/>
-  <updated>2020-07-02T01:01:16.594Z</updated>
+  <updated>2020-07-06T01:23:58.192Z</updated>
   <id>https://programmer996.club/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Pytorch专栏（一）</title>
+    <link href="https://programmer996.club/2020/07/03/Pytorch%E4%B8%93%E6%A0%8F%EF%BC%88%E4%B8%80%EF%BC%89/"/>
+    <id>https://programmer996.club/2020/07/03/Pytorch%E4%B8%93%E6%A0%8F%EF%BC%88%E4%B8%80%EF%BC%89/</id>
+    <published>2020-07-03T03:48:09.000Z</published>
+    <updated>2020-07-06T01:23:58.192Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;本片将文章讲解了专栏的第一章简单介绍了PyTorch的环境搭建，希望对大家有所帮助。想要学习更多深度学习机器学习的朋友们可以扫上一篇文章落脚的二维码进群探讨学习。欢迎大家推广此链接至需要的朋友们！&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="PyTorch专栏" scheme="https://programmer996.club/categories/PyTorch%E4%B8%93%E6%A0%8F/"/>
+    
+    
+      <category term="Python深度学习" scheme="https://programmer996.club/tags/Python%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
   
   <entry>
     <title>PyTorch专栏开篇</title>
@@ -412,27 +433,6 @@
     <summary type="html">
     
       &lt;h1 id=&quot;为什么要有global&quot;&gt;&lt;a href=&quot;#为什么要有global&quot; class=&quot;headerlink&quot; title=&quot;为什么要有global.&quot;&gt;&lt;/a&gt;为什么要有global.&lt;/h1&gt;
-    
-    </summary>
-    
-    
-      <category term="技术资讯" scheme="https://programmer996.club/categories/%E6%8A%80%E6%9C%AF%E8%B5%84%E8%AE%AF/"/>
-    
-    
-      <category term="Python" scheme="https://programmer996.club/tags/Python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>让Python搞定MySQL数据库-PYTHON</title>
-    <link href="https://programmer996.club/2020/03/28/%E8%AE%A9Python%E6%90%9E%E5%AE%9AMySQL%E6%95%B0%E6%8D%AE%E5%BA%93-PYTHON/"/>
-    <id>https://programmer996.club/2020/03/28/%E8%AE%A9Python%E6%90%9E%E5%AE%9AMySQL%E6%95%B0%E6%8D%AE%E5%BA%93-PYTHON/</id>
-    <published>2020-03-28T03:09:30.000Z</published>
-    <updated>2020-03-28T03:36:52.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;MySQL是常用的数据库之一，也是面试必备技能之一。&lt;/p&gt;
     
     </summary>
     

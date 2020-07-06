@@ -4926,4 +4926,25 @@ if __name__ == &#39;__main__&#39;:
         <tag>Python深度学习</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Pytorch专栏（一）</title>
+    <url>/2020/07/03/Pytorch%E4%B8%93%E6%A0%8F%EF%BC%88%E4%B8%80%EF%BC%89/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本片将文章讲解了专栏的第一章简单介绍了PyTorch的环境搭建，希望对大家有所帮助。想要学习更多深度学习机器学习的朋友们可以扫上一篇文章落脚的二维码进群探讨学习。欢迎大家推广此链接至需要的朋友们！<a id="more"></a>  </p>
+<h1 id="PyTorch简介"><a href="#PyTorch简介" class="headerlink" title="PyTorch简介"></a>PyTorch简介</h1><p>PyTorch是一个基于Torch的Python开源机器学习库，用于自然语言处理等应用程序。它主要由Facebookd的人工智能小组开发，不仅能够实现强大的GPU加速，同时还支持动态神经网络，这一点是现在很多主流框架如TensorFlow都不支持的。PyTorch提供了两个高级功能：<br>1、具有强大的GPU加速的张量计算（如Numpy）<br>2、包含自动求导系统的深度神经网络<br>除了Facebook之外，Twitter、GMU和Salesforce等机构都采用了PyTorch。<br>TensorFlow和Caffe都是命令式的编程语言，而且是静态的，首先必须构建一个神经网络，然后一次又一次使用相同的结构，如果想要改变网络的结构，就必须从头开始。但是对于PyTorch，通过反向求导技术，可以让你零延迟地任意改变神经网络的行为，而且其实现速度快。正是这一灵活性是PyTorch对比TensorFlow的最大优势。<br>另外，PyTorch的代码对比TensorFlow而言，更加简洁直观，底层代码也更容易看懂，这对于使用它的人来说理解底层肯定是一件令人激动的事。</p>
+<h1 id="PyTorch的优点："><a href="#PyTorch的优点：" class="headerlink" title="PyTorch的优点："></a>PyTorch的优点：</h1><p>1、支持GPU<br>2、灵活，支持动态神经网络<br>3、底层代码易于理解<br>4、命令式体验<br>5、自定义扩展<br>当然，现今任何一个深度学习框架都有其缺点，PyTorch也不例外，对比TensorFlow，其全面性处于劣势，目前PyTorch还不支持快速傅里叶、沿维翻转张量和检查无穷与非数值张量；针对移动端、嵌入式部署以及高性能服务器端的部署其性能表现有待提升；其次因为这个框架较新，使得他的社区没有那么强大，在文档方面其C库大多数没有文档。</p>
+<h1 id="安装Anaconda-3-5"><a href="#安装Anaconda-3-5" class="headerlink" title="安装Anaconda 3.5"></a>安装Anaconda 3.5</h1><p>Anaconda是一个用于科学计算的Python发行版，支持Linux、Mac和Window系统，提供了包管理与环境管理的功能，可以很方便地解决Python并存、切换，以及各种第三方包安装的问题。</p>
+<h1 id="下载："><a href="#下载：" class="headerlink" title="下载："></a>下载：</h1><p>直接从 Anaconda官网下载，但因为Anaconda的服务器在国外，所以下载速度会很慢，这里推荐使用清华的镜像来下载。选择合适你的版本下载，我这里选择Anaconda3-5.1.0-Windows-x86_64.exe</p>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>下载之后，点击安装即可，步骤依次如下：<br><img src= "/img/loading.gif" data-src="/images/p1.jpg"><br><img src= "/img/loading.gif" data-src="/images/p2.jpg"><br><img src= "/img/loading.gif" data-src="/images/p3.jpg"><br><img src= "/img/loading.gif" data-src="/images/p4.jpg"><br><img src= "/img/loading.gif" data-src="/images/p5.jpg"><br><img src= "/img/loading.gif" data-src="/images/p6.jpg"><br><img src= "/img/loading.gif" data-src="/images/p7.jpg"><br><img src= "/img/loading.gif" data-src="/images/p8.jpg"><br>安装完成后，进行Anaconda的环境变量配置，打开控制面板-&gt;高级系统设置-&gt;环境变量-&gt;系统变量找到Path，点击编辑，加入三个文件夹的存储路径（注意三个路径之间需用分号隔开）</p>
+<h1 id="安装PyTorch-amp-torchvision"><a href="#安装PyTorch-amp-torchvision" class="headerlink" title="安装PyTorch &amp; torchvision"></a>安装PyTorch &amp; torchvision</h1><p>命令获取<br>进入 PyTorch官网，依次选择你电脑的配置（我这里已经下载了python3.7），这里提供使用pip和conda两种环境下安装的步骤截图<br>(1)使用pip：windows+pip+python3.7+None<br><img src= "/img/loading.gif" data-src="/images/p9.jpg"><br>拷贝给出的命令在cmd下运行<br><img src= "/img/loading.gif" data-src="/images/p10.jpg"><br>(2)使用conda：windows+conda+python3.7+None<br><img src= "/img/loading.gif" data-src="/images/p11.jpg"><br>拷贝给出的命令在cmd下运行<br><img src= "/img/loading.gif" data-src="/images/p12.jpg"></p>
+<h1 id="安装成功"><a href="#安装成功" class="headerlink" title="安装成功"></a>安装成功</h1><pre><code>import torch
+torch.__version__
+显示版本号、不报错就说明安装成功了</code></pre><p>至此PyTorch1.0 &amp; Anaconda3.5已经安装成功。</p>
+]]></content>
+      <categories>
+        <category>PyTorch专栏</category>
+      </categories>
+      <tags>
+        <tag>Python深度学习</tag>
+      </tags>
+  </entry>
 </search>
