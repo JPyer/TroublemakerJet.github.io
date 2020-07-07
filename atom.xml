@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://programmer996.club/"/>
-  <updated>2020-07-06T01:23:58.192Z</updated>
+  <updated>2020-07-07T01:20:02.867Z</updated>
   <id>https://programmer996.club/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Pytorch专栏（二）</title>
+    <link href="https://programmer996.club/2020/07/06/Pytorch%E4%B8%93%E6%A0%8F%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
+    <id>https://programmer996.club/2020/07/06/Pytorch%E4%B8%93%E6%A0%8F%EF%BC%88%E4%BA%8C%EF%BC%89/</id>
+    <published>2020-07-06T01:32:11.000Z</published>
+    <updated>2020-07-07T01:20:02.867Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;PyTorch之60min入门&quot;&gt;&lt;a href=&quot;#PyTorch之60min入门&quot; class=&quot;headerlink&quot; title=&quot;PyTorch之60min入门&quot;&gt;&lt;/a&gt;PyTorch之60min入门&lt;/h1&gt;&lt;h1
+        
+      
+    
+    </summary>
+    
+    
+      <category term="PyTorch专栏" scheme="https://programmer996.club/categories/PyTorch%E4%B8%93%E6%A0%8F/"/>
+    
+    
+      <category term="Python深度学习" scheme="https://programmer996.club/tags/Python%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
   
   <entry>
     <title>Pytorch专栏（一）</title>
@@ -412,27 +439,6 @@
           &lt;h1 id=&quot;本文概述&quot;&gt;&lt;a href=&quot;#本文概述&quot; class=&quot;headerlink&quot; title=&quot;本文概述&quot;&gt;&lt;/a&gt;本文概述&lt;/h1&gt;&lt;p&gt;mysql-connector 是 MySQL
         
       
-    
-    </summary>
-    
-    
-      <category term="技术资讯" scheme="https://programmer996.club/categories/%E6%8A%80%E6%9C%AF%E8%B5%84%E8%AE%AF/"/>
-    
-    
-      <category term="Python" scheme="https://programmer996.club/tags/Python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Python的 global 到底干嘛的？-PYTHON</title>
-    <link href="https://programmer996.club/2020/03/29/Python%E7%9A%84-global-%E5%88%B0%E5%BA%95%E5%B9%B2%E5%98%9B%E7%9A%84%EF%BC%9F-PYTHON/"/>
-    <id>https://programmer996.club/2020/03/29/Python%E7%9A%84-global-%E5%88%B0%E5%BA%95%E5%B9%B2%E5%98%9B%E7%9A%84%EF%BC%9F-PYTHON/</id>
-    <published>2020-03-29T03:50:16.000Z</published>
-    <updated>2020-03-29T03:54:48.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;为什么要有global&quot;&gt;&lt;a href=&quot;#为什么要有global&quot; class=&quot;headerlink&quot; title=&quot;为什么要有global.&quot;&gt;&lt;/a&gt;为什么要有global.&lt;/h1&gt;
     
     </summary>
     

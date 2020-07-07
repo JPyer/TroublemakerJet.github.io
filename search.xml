@@ -4947,4 +4947,216 @@ torch.__version__
         <tag>Python深度学习</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Pytorch专栏（二）</title>
+    <url>/2020/07/06/Pytorch%E4%B8%93%E6%A0%8F%EF%BC%88%E4%BA%8C%EF%BC%89/</url>
+    <content><![CDATA[<h1 id="PyTorch之60min入门"><a href="#PyTorch之60min入门" class="headerlink" title="PyTorch之60min入门"></a>PyTorch之60min入门</h1><h1 id="PyTorch-自动微分"><a href="#PyTorch-自动微分" class="headerlink" title="PyTorch 自动微分"></a>PyTorch 自动微分</h1><p>autograd 包是 PyTorch 中所有神经网络的核心。首先让我们简要地介绍它，然后我们将会去训练我们的第一个神经网络。该 autograd 软件包为 Tensors 上的所有操作提供自动微分。它是一个由运行定义的框架，这意味着以代码运行方式定义你的后向传播，并且每次迭代都可以不同。我们从 tensor 和 gradients 来举一些例子。</p>
+<h1 id="1、TENSOR"><a href="#1、TENSOR" class="headerlink" title="1、TENSOR"></a>1、TENSOR</h1><p>torch.Tensor 是包的核心类。如果将其属性 .requires_grad 设置为 True，则会开始跟踪针对 tensor 的所有操作。完成计算后，您可以调用 .backward() 来自动计算所有梯度。该张量的梯度将累积到 .grad 属性中。</p>
+<p>要停止 tensor 历史记录的跟踪，您可以调用 .detach()，它将其与计算历史记录分离，并防止将来的计算被跟踪。</p>
+<p>要停止跟踪历史记录（和使用内存），您还可以将代码块使用 with torch.no_grad(): 包装起来。在评估模型时，这是特别有用，因为模型在训练阶段具有 requires_grad = True 的可训练参数有利于调参，但在评估阶段我们不需要梯度。</p>
+<p>还有一个类对于 autograd 实现非常重要那就是 Function。Tensor 和 Function 互相连接并构建一个非循环图，它保存整个完整的计算过程的历史信息。每个张量都有一个 .grad_fn 属性保存着创建了张量的 Function 的引用，（如果用户自己创建张量，则g rad_fn 是 None ）。</p>
+<p>如果你想计算导数，你可以调用 Tensor.backward()。如果 Tensor 是标量（即它包含一个元素数据），则不需要指定任何参数backward()，但是如果它有更多元素，则需要指定一个gradient 参数来指定张量的形状。</p>
+<pre><code>import torch</code></pre><p>创建一个张量，设置 requires_grad=True 来跟踪与它相关的计算</p>
+<pre><code>x = torch.ones(2, 2, requires_grad=True)
+print(x)</code></pre><p>输出：</p>
+<pre><code>tensor([[1., 1.],
+        [1., 1.]], requires_grad=True)</code></pre><p>针对张量做一个操作</p>
+<pre><code>y = x + 2
+print(y)</code></pre><p>输出：</p>
+<pre><code>tensor([[3., 3.],
+        [3., 3.]], grad_fn=&lt;AddBackward0&gt;)</code></pre><p>y 作为操作的结果被创建，所以它有 grad_fn</p>
+<pre><code>print(y.grad_fn)</code></pre><p>输出：</p>
+<pre><code>&lt;AddBackward0 object at 0x7fe1db427470&gt;</code></pre><p>针对 y 做更多的操作：</p>
+<pre><code>z = y * y * 3
+out = z.mean()
+
+print(z, out)</code></pre><p>输出：</p>
+<pre><code>tensor([[27., 27.],
+        [27., 27.]], grad_fn=&lt;MulBackward0&gt;) tensor(27., grad_fn=&lt;MeanBackward0&gt;)</code></pre><p>.requires_grad_(…) 会改变张量的requires_gra 标记。输入的标记默认为False ，如果没有提供相应的参数。</p>
+<pre><code>a = torch.randn(2, 2)
+a = ((a * 3) / (a - 1))
+print(a.requires_grad)
+a.requires_grad_(True)
+print(a.requires_grad)
+b = (a * a).sum()
+print(b.grad_fn)</code></pre><p>输出：</p>
+<pre><code>False
+True
+&lt;SumBackward0 object at 0x7fe1db427dd8&gt;</code></pre><p>梯度：</p>
+<p>我们现在后向传播，因为输出包含了一个标量，out.backward() 等同于out.backward(torch.tensor(1.))。</p>
+<pre><code>out.backward()</code></pre><p>打印梯度  d(out)/dx</p>
+<pre><code>print(x.grad)</code></pre><p>输出：</p>
+<pre><code>tensor([[4.5000, 4.5000],
+        [4.5000, 4.5000]])</code></pre><p>原理解释：<br><img src= "/img/loading.gif" data-src="/images/p13.jpg"></p>
+<p>现在让我们看一个雅可比向量积的例子：</p>
+<pre><code>x = torch.randn(3, requires_grad=True)
+
+y = x * 2
+while y.data.norm() &lt; 1000:
+    y = y * 2
+
+print(y)</code></pre><p>输出：</p>
+<pre><code>tensor([ -444.6791,   762.9810, -1690.0941], grad_fn=&lt;MulBackward0&gt;)</code></pre><p>现在在这种情况下，y 不再是一个标量。torch.autograd 不能够直接计算整个雅可比，但是如果我们只想要雅可比向量积，只需要简单的传递向量给 backward 作为参数。</p>
+<pre><code>v = torch.tensor([0.1, 1.0, 0.0001], dtype=torch.float)
+y.backward(v)
+
+print(x.grad)</code></pre><p>输出：</p>
+<pre><code>tensor([1.0240e+02, 1.0240e+03, 1.0240e-01])</code></pre><p>你可以通过将代码包裹在 with torch.no_grad()，来停止对从跟踪历史中 的 .requires_grad=True 的张量自动求导。</p>
+<pre><code>print(x.requires_grad)
+print((x ** 2).requires_grad)
+
+with torch.no_grad():
+    print((x ** 2).requires_grad)</code></pre><p>输出：</p>
+<pre><code>True
+True
+False</code></pre><p>下载 Python 源代码：</p>
+<pre><code>autograd_tutorial.py</code></pre><p>下载 Jupyter 源代码：</p>
+<pre><code>autograd_tutorial.ipynb</code></pre><h1 id="PyTorch神经网络"><a href="#PyTorch神经网络" class="headerlink" title="PyTorch神经网络"></a>PyTorch神经网络</h1><p>神经网络可以通过 torch.nn 包来构建。</p>
+<p>现在对于自动梯度(autograd)有一些了解，神经网络是基于自动梯度 (autograd)来定义一些模型。一个 nn.Module 包括层和一个方法 forward(input) 它会返回输出(output)。</p>
+<p>例如，看一下数字图片识别的网络:<br><img src= "/img/loading.gif" data-src="/images/p14.jpg"><br>这是一个简单的前馈神经网络，它接收输入，让输入一个接着一个的通过一些层，最后给出输出。</p>
+<p>一个典型的神经网络训练过程包括以下几点：</p>
+<p>1.定义一个包含可训练参数的神经网络</p>
+<p>2.迭代整个输入</p>
+<p>3.通过神经网络处理输入</p>
+<p>4.计算损失(loss)</p>
+<p>5.反向传播梯度到神经网络的参数</p>
+<p>6.更新网络的参数，典型的用一个简单的更新方法：weight = weight - learning_rate *gradient</p>
+<p>定义神经网络</p>
+<pre><code>import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+
+class Net(nn.Module):
+
+    def __init__(self):
+        super(Net, self).__init__()
+        # 1 input image channel, 6 output channels, 5x5 square convolution
+        # kernel
+        self.conv1 = nn.Conv2d(1, 6, 5)
+        self.conv2 = nn.Conv2d(6, 16, 5)
+        # an affine operation: y = Wx + b
+        self.fc1 = nn.Linear(16 * 5 * 5, 120)
+        self.fc2 = nn.Linear(120, 84)
+        self.fc3 = nn.Linear(84, 10)
+
+    def forward(self, x):
+        # Max pooling over a (2, 2) window
+        x = F.max_pool2d(F.relu(self.conv1(x)), (2, 2))
+        # If the size is a square you can only specify a single number
+        x = F.max_pool2d(F.relu(self.conv2(x)), 2)
+        x = x.view(-1, self.num_flat_features(x))
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        x = self.fc3(x)
+        return x
+
+    def num_flat_features(self, x):
+        size = x.size()[1:]  # all dimensions except the batch dimension
+        num_features = 1
+        for s in size:
+            num_features *= s
+        return num_features
+
+
+net = Net()
+print(net)</code></pre><p>输出:</p>
+<pre><code>Net(
+  (conv1): Conv2d(1, 6, kernel_size=(5, 5), stride=(1, 1))
+  (conv2): Conv2d(6, 16, kernel_size=(5, 5), stride=(1, 1))
+  (fc1): Linear(in_features=400, out_features=120, bias=True)
+  (fc2): Linear(in_features=120, out_features=84, bias=True)
+  (fc3): Linear(in_features=84, out_features=10, bias=True)
+)</code></pre><p>你刚定义了一个前馈函数，然后反向传播函数被自动通过 autograd 定义了。你可以使用任何张量操作在前馈函数上。</p>
+<p>一个模型可训练的参数可以通过调用 net.parameters() 返回：</p>
+<pre><code>params = list(net.parameters())
+print(len(params))
+print(params[0].size())  # conv1&#39;s .weight</code></pre><p>输出：</p>
+<pre><code>10
+torch.Size([6, 1, 5, 5])</code></pre><p>让我们尝试随机生成一个 32x32 的输入。注意：期望的输入维度是 32x32 。为了使用这个网络在 MNIST 数据及上，你需要把数据集中的图片维度修改为 32x32。</p>
+<pre><code>input = torch.randn(1, 1, 32, 32)
+out = net(input)
+print(out)</code></pre><p>输出：</p>
+<pre><code>tensor([[-0.0233,  0.0159, -0.0249,  0.1413,  0.0663,  0.0297, -0.0940, -0.0135,
+          0.1003, -0.0559]], grad_fn=&lt;AddmmBackward&gt;)</code></pre><p>把所有参数梯度缓存器置零，用随机的梯度来反向传播</p>
+<pre><code>net.zero_grad()
+out.backward(torch.randn(1, 10))</code></pre><p>在继续之前，让我们复习一下所有见过的类。</p>
+<pre><code>torch.Tensor - A multi-dimensional array with support for autograd operations like backward(). Also holds the gradient w.r.t. the tensor.
+nn.Module - Neural network module. Convenient way of encapsulating parameters, with helpers for moving them to GPU, exporting, loading, etc.
+nn.Parameter - A kind of Tensor, that is automatically registered as a parameter when assigned as an attribute to a Module.
+autograd.Function - Implements forward and backward definitions of an autograd operation. Every Tensor operation, creates at least a single Function node, that connects to functions that created a Tensor and encodes its history.</code></pre><p>在此，我们完成了：</p>
+<p>1.定义一个神经网络</p>
+<p>2.处理输入以及调用反向传播</p>
+<p>还剩下：</p>
+<p>1.计算损失值</p>
+<p>2.更新网络中的权重</p>
+<p>损失函数</p>
+<p>一个损失函数需要一对输入：模型输出和目标，然后计算一个值来评估输出距离目标有多远。</p>
+<p>有一些不同的损失函数在 nn 包中。一个简单的损失函数就是 nn.MSELoss ，这计算了均方误差。</p>
+<p>例如：</p>
+<pre><code>output = net(input)
+target = torch.randn(10)  # a dummy target, for example
+target = target.view(1, -1)  # make it the same shape as output
+criterion = nn.MSELoss()
+
+loss = criterion(output, target)
+print(loss)</code></pre><p>输出：</p>
+<pre><code>tensor(1.3389, grad_fn=&lt;MseLossBackward&gt;)</code></pre><p>现在，如果你跟随损失到反向传播路径，可以使用它的 .grad_fn 属性，你将会看到一个这样的计算图：</p>
+<pre><code>input -&gt; conv2d -&gt; relu -&gt; maxpool2d -&gt; conv2d -&gt; relu -&gt; maxpool2d
+      -&gt; view -&gt; linear -&gt; relu -&gt; linear -&gt; relu -&gt; linear
+      -&gt; MSELoss
+      -&gt; loss</code></pre><p>所以，当我们调用 loss.backward()，整个图都会微分，而且所有的在图中的requires_grad=True 的张量将会让他们的 grad 张量累计梯度。</p>
+<p>为了演示，我们将跟随以下步骤来反向传播。</p>
+<pre><code>print(loss.grad_fn)  # MSELoss
+print(loss.grad_fn.next_functions[0][0])  # Linear
+print(loss.grad_fn.next_functions[0][0].next_functions[0][0])  # ReLU</code></pre><p>输出：</p>
+<pre><code>&lt;MseLossBackward object at 0x7fab77615278&gt;
+&lt;AddmmBackward object at 0x7fab77615940&gt;
+&lt;AccumulateGrad object at 0x7fab77615940&gt;</code></pre><p>反向传播</p>
+<p>为了实现反向传播损失，我们所有需要做的事情仅仅是使用 loss.backward()。你需要清空现存的梯度，要不然帝都将会和现存的梯度累计到一起。</p>
+<p>现在我们调用 loss.backward() ，然后看一下 con1 的偏置项在反向传播之前和之后的变化。</p>
+<pre><code>net.zero_grad()     # zeroes the gradient buffers of all parameters
+
+print(&#39;conv1.bias.grad before backward&#39;)
+print(net.conv1.bias.grad)
+
+loss.backward()
+
+print(&#39;conv1.bias.grad after backward&#39;)
+print(net.conv1.bias.grad)</code></pre><p>输出：</p>
+<pre><code>conv1.bias.grad before backward
+tensor([0., 0., 0., 0., 0., 0.])
+conv1.bias.grad after backward
+tensor([-0.0054,  0.0011,  0.0012,  0.0148, -0.0186,  0.0087])</code></pre><p>现在我们看到了，如何使用损失函数。</p>
+<p>唯一剩下的事情就是更新神经网络的参数。</p>
+<p>更新神经网络参数：</p>
+<p>最简单的更新规则就是随机梯度下降。</p>
+<pre><code>weight = weight - learning_rate * gradient</code></pre><p>我们可以使用 python 来实现这个规则：</p>
+<pre><code>learning_rate = 0.01
+for f in net.parameters():
+    f.data.sub_(f.grad.data * learning_rate)</code></pre><p>尽管如此，如果你是用神经网络，你想使用不同的更新规则，类似于 SGD, Nesterov-SGD, Adam, RMSProp, 等。为了让这可行，我们建立了一个小包：torch.optim 实现了所有的方法。使用它非常的简单。</p>
+<pre><code>import torch.optim as optim
+
+# create your optimizer
+optimizer = optim.SGD(net.parameters(), lr=0.01)
+
+# in your training loop:
+optimizer.zero_grad()   # zero the gradient buffers
+output = net(input)
+loss = criterion(output, target)
+loss.backward()
+optimizer.step()    # Does the update</code></pre><p>下载 Python 源代码：</p>
+<pre><code>neural_networks_tutorial.py</code></pre><p>下载 Jupyter 源代码：</p>
+<pre><code>neural_networks_tutorial.ipynb</code></pre><h1 id="学习交流"><a href="#学习交流" class="headerlink" title="学习交流"></a>学习交流</h1><p>为了方便大家更好地与作者进行沟通交流，为此针对这个专栏成立了QQ读者交流群，大家想近距离与我沟通，都可以来加入。<br>扫描二维码进群可获得 自动微分 章节的Python 源代码和Jupyter 源代码链接<br>扫描二维码进群可获得 神经网络 章节的Python 源代码和Jupyter 源代码链接<br>加入方式：扫描下方QQ群二维码，即可加入交流群&lt;群满可在右下方在线与我沟通&gt;。</p>
+<p align="left">
+    <img src= "/img/loading.gif" data-src="/images/qun.jpg" alt="Sample" width="300" height="350">
+    <!-- <img src= "/img/loading.gif" data-src="/images/TIM.jpg" alt="Sample"  width="300" height="250"> -->
+</p>]]></content>
+      <categories>
+        <category>PyTorch专栏</category>
+      </categories>
+      <tags>
+        <tag>Python深度学习</tag>
+      </tags>
+  </entry>
 </search>
