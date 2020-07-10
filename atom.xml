@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://programmer996.club/"/>
-  <updated>2020-07-07T01:20:02.867Z</updated>
+  <updated>2020-07-10T01:18:57.088Z</updated>
   <id>https://programmer996.club/</id>
   
   <author>
@@ -17,21 +17,36 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>PyTorch专栏（三）</title>
+    <link href="https://programmer996.club/2020/07/10/PyTorch%E4%B8%93%E6%A0%8F%EF%BC%88%E4%B8%89%EF%BC%89/"/>
+    <id>https://programmer996.club/2020/07/10/PyTorch%E4%B8%93%E6%A0%8F%EF%BC%88%E4%B8%89%EF%BC%89/</id>
+    <published>2020-07-10T00:51:47.000Z</published>
+    <updated>2020-07-10T01:18:57.088Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;本篇文章讲解了PyTorch专栏的第三章中的数据加载与预处理。查看专栏历史文章，请点击下方推荐链接进入相应链接阅读。查看关于本专栏的介绍：PyTorch专栏开篇。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="PyTorch专栏" scheme="https://programmer996.club/categories/PyTorch%E4%B8%93%E6%A0%8F/"/>
+    
+    
+      <category term="Python深度学习" scheme="https://programmer996.club/tags/Python%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Pytorch专栏（二）</title>
     <link href="https://programmer996.club/2020/07/06/Pytorch%E4%B8%93%E6%A0%8F%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
     <id>https://programmer996.club/2020/07/06/Pytorch%E4%B8%93%E6%A0%8F%EF%BC%88%E4%BA%8C%EF%BC%89/</id>
     <published>2020-07-06T01:32:11.000Z</published>
-    <updated>2020-07-07T01:20:02.867Z</updated>
+    <updated>2020-07-10T00:55:21.885Z</updated>
     
     <summary type="html">
     
-      
-      
-        
-        
-          &lt;h1 id=&quot;PyTorch之60min入门&quot;&gt;&lt;a href=&quot;#PyTorch之60min入门&quot; class=&quot;headerlink&quot; title=&quot;PyTorch之60min入门&quot;&gt;&lt;/a&gt;PyTorch之60min入门&lt;/h1&gt;&lt;h1
-        
-      
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;本篇文章讲解了PyTorch专栏的第二章中的PyTorch 自动微分和PyTorch 神经网络，查看第二章中的其他内容，请点击查看专栏目录里相应的内容，希望对大家有所帮助。查看关于本专栏的介绍：PyTorch专栏开篇。&lt;/p&gt;
     
     </summary>
     
@@ -48,7 +63,7 @@
     <link href="https://programmer996.club/2020/07/03/Pytorch%E4%B8%93%E6%A0%8F%EF%BC%88%E4%B8%80%EF%BC%89/"/>
     <id>https://programmer996.club/2020/07/03/Pytorch%E4%B8%93%E6%A0%8F%EF%BC%88%E4%B8%80%EF%BC%89/</id>
     <published>2020-07-03T03:48:09.000Z</published>
-    <updated>2020-07-06T01:23:58.192Z</updated>
+    <updated>2020-07-07T01:20:05.616Z</updated>
     
     <summary type="html">
     
@@ -412,33 +427,6 @@
     <summary type="html">
     
       &lt;h1 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h1&gt;&lt;p&gt;SQLAlchemy是一个基于Python实现的ORM框架。该框架建立在 DB API之上，使用关系对象映射进行数据库操作，简言之便是：将类和对象转换成SQL，然后使用数据API执行SQL并获取执行结果。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="技术资讯" scheme="https://programmer996.club/categories/%E6%8A%80%E6%9C%AF%E8%B5%84%E8%AE%AF/"/>
-    
-    
-      <category term="Python" scheme="https://programmer996.club/tags/Python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用mysql-connector操作MySQL-PYTHON</title>
-    <link href="https://programmer996.club/2020/03/29/%E4%BD%BF%E7%94%A8mysql-connector%E6%93%8D%E4%BD%9CMySQL-PYTHON/"/>
-    <id>https://programmer996.club/2020/03/29/%E4%BD%BF%E7%94%A8mysql-connector%E6%93%8D%E4%BD%9CMySQL-PYTHON/</id>
-    <published>2020-03-29T03:59:57.000Z</published>
-    <updated>2020-03-29T04:22:58.000Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;本文概述&quot;&gt;&lt;a href=&quot;#本文概述&quot; class=&quot;headerlink&quot; title=&quot;本文概述&quot;&gt;&lt;/a&gt;本文概述&lt;/h1&gt;&lt;p&gt;mysql-connector 是 MySQL
-        
-      
     
     </summary>
     
