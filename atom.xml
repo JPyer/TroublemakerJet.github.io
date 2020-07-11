@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://programmer996.club/"/>
-  <updated>2020-07-10T01:18:57.088Z</updated>
+  <updated>2020-07-11T00:40:04.251Z</updated>
   <id>https://programmer996.club/</id>
   
   <author>
@@ -15,6 +15,54 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>PyTorch专栏（五）</title>
+    <link href="https://programmer996.club/2020/07/11/PyTorch%E4%B8%93%E6%A0%8F%EF%BC%88%E4%BA%94%EF%BC%89/"/>
+    <id>https://programmer996.club/2020/07/11/PyTorch%E4%B8%93%E6%A0%8F%EF%BC%88%E4%BA%94%EF%BC%89/</id>
+    <published>2020-07-10T23:43:49.000Z</published>
+    <updated>2020-07-11T00:40:04.251Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="PyTorch专栏" scheme="https://programmer996.club/categories/PyTorch%E4%B8%93%E6%A0%8F/"/>
+    
+    
+      <category term="Python深度学习" scheme="https://programmer996.club/tags/Python%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>PyTorch专栏（四）</title>
+    <link href="https://programmer996.club/2020/07/10/PyTorch%E4%B8%93%E6%A0%8F%EF%BC%88%E5%9B%9B%EF%BC%89/"/>
+    <id>https://programmer996.club/2020/07/10/PyTorch%E4%B8%93%E6%A0%8F%EF%BC%88%E5%9B%9B%EF%BC%89/</id>
+    <published>2020-07-10T13:36:29.000Z</published>
+    <updated>2020-07-11T00:39:46.493Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;本篇文章讲解了PyTorch专栏的第三章中的PyTorch小试牛刀。查看专栏历史文章，请点击下方推荐链接进入相应链接阅读。查看关于本专栏的介绍：PyTorch专栏开篇。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="PyTorch专栏" scheme="https://programmer996.club/categories/PyTorch%E4%B8%93%E6%A0%8F/"/>
+    
+    
+      <category term="Python深度学习" scheme="https://programmer996.club/tags/Python%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
   
   <entry>
     <title>PyTorch专栏（三）</title>
@@ -393,48 +441,6 @@
     
     
       <category term="小程序" scheme="https://programmer996.club/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>flask-session组件-Web框架</title>
-    <link href="https://programmer996.club/2020/03/30/flask-session%E7%BB%84%E4%BB%B6-Web%E6%A1%86%E6%9E%B6/"/>
-    <id>https://programmer996.club/2020/03/30/flask-session%E7%BB%84%E4%BB%B6-Web%E6%A1%86%E6%9E%B6/</id>
-    <published>2020-03-30T07:16:14.000Z</published>
-    <updated>2020-03-30T07:21:32.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h1&gt;&lt;p&gt;flask-session是flask框架的session组件，&lt;br&gt;由于原来flask内置session使用签名cookie保存，该组件则将支持session保存到多个地方&lt;br&gt;如：&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Web 框架" scheme="https://programmer996.club/categories/Web-%E6%A1%86%E6%9E%B6/"/>
-    
-    
-      <category term="Python" scheme="https://programmer996.club/tags/Python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>SQLAlchemy--基本增删改查-PYTHON</title>
-    <link href="https://programmer996.club/2020/03/30/SQLAlchemy-%E5%9F%BA%E6%9C%AC%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5-PYTHON/"/>
-    <id>https://programmer996.club/2020/03/30/SQLAlchemy-%E5%9F%BA%E6%9C%AC%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5-PYTHON/</id>
-    <published>2020-03-30T06:56:51.000Z</published>
-    <updated>2020-03-30T07:15:08.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h1&gt;&lt;p&gt;SQLAlchemy是一个基于Python实现的ORM框架。该框架建立在 DB API之上，使用关系对象映射进行数据库操作，简言之便是：将类和对象转换成SQL，然后使用数据API执行SQL并获取执行结果。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="技术资讯" scheme="https://programmer996.club/categories/%E6%8A%80%E6%9C%AF%E8%B5%84%E8%AE%AF/"/>
-    
-    
-      <category term="Python" scheme="https://programmer996.club/tags/Python/"/>
     
   </entry>
   

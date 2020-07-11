@@ -5478,4 +5478,740 @@ dataset_loader = torch.utils.data.DataLoader(hymenoptera_dataset,
         <tag>Python深度学习</tag>
       </tags>
   </entry>
+  <entry>
+    <title>PyTorch专栏（四）</title>
+    <url>/2020/07/10/PyTorch%E4%B8%93%E6%A0%8F%EF%BC%88%E5%9B%9B%EF%BC%89/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本篇文章讲解了PyTorch专栏的第三章中的PyTorch小试牛刀。查看专栏历史文章，请点击下方推荐链接进入相应链接阅读。查看关于本专栏的介绍：PyTorch专栏开篇。<a id="more"></a>  </p>
+<h1 id="PyTorch之小试牛刀"><a href="#PyTorch之小试牛刀" class="headerlink" title="PyTorch之小试牛刀"></a>PyTorch之小试牛刀</h1><h1 id="PyTorch的核心是两个主要特征："><a href="#PyTorch的核心是两个主要特征：" class="headerlink" title="PyTorch的核心是两个主要特征："></a>PyTorch的核心是两个主要特征：</h1><ul>
+<li>一个n维张量，类似于numpy，但可以在GPU上运行</li>
+<li>搭建和训练神经网络时的自动微分/求导机制</li>
+</ul>
+<p>本章节我们将使用全连接的ReLU网络作为运行示例。该网络将有一个单一的隐藏层，并将使用梯度下降训练，通过最小化网络输出和真正<br>结果的欧几里得距离，来拟合随机生成的数据。</p>
+<h1 id="张量"><a href="#张量" class="headerlink" title="张量"></a>张量</h1><h2 id="热身-Numpy"><a href="#热身-Numpy" class="headerlink" title="热身: Numpy"></a>热身: Numpy</h2><p>在介绍PyTorch之前，本章节将首先使用numpy实现网络。<br>Numpy提供了一个n维数组对象，以及许多用于操作这些数组的<br>函数。Numpy是用于科学计算的通用框架;它对计算图、深度学习和梯度一无所知。然而，我们可以很容易地使用NumPy，手动实现网络的<br>前向和反向传播，来拟合随机数据：</p>
+<pre><code># -*- coding: utf-8 -*-
+import numpy as np
+
+# N是批量大小; D_in是输入维度;
+# 49/5000 H是隐藏的维度; D_out是输出维度。
+N, D_in, H, D_out = 64, 1000, 100, 10
+
+# 创建随机输入和输出数据
+x = np.random.randn(N, D_in)
+y = np.random.randn(N, D_out)
+
+# 随机初始化权重
+w1 = np.random.randn(D_in, H)
+w2 = np.random.randn(H, D_out)
+
+learning_rate = 1e-6
+for t in range(500):
+    # 前向传递：计算预测值y
+    h = x.dot(w1)
+    h_relu = np.maximum(h, 0)
+    y_pred = h_relu.dot(w2)
+
+    # 计算和打印损失loss
+    loss = np.square(y_pred - y).sum()
+    print(t, loss)
+
+    # 反向传播，计算w1和w2对loss的梯度
+    grad_y_pred = 2.0 * (y_pred - y)
+    grad_w2 = h_relu.T.dot(grad_y_pred)
+    grad_h_relu = grad_y_pred.dot(w2.T)
+    grad_h = grad_h_relu.copy()
+    grad_h[h &lt; 0] = 0
+    grad_w1 = x.T.dot(grad_h)
+
+    # 更新权重
+    w1 -= learning_rate * grad_w1
+    w2 -= learning_rate * grad_w2</code></pre><h2 id="PyTorch：张量"><a href="#PyTorch：张量" class="headerlink" title="PyTorch：张量"></a>PyTorch：张量</h2><p>Numpy是一个很棒的框架，但它不能利用GPU来加速其数值计算。<br>对于现代深度神经网络，GPU通常提供50倍或更高的加速，所以，numpy不能满足当代深度学习的需求。 </p>
+<p>在这里，先介绍最基本的PyTorch概念：</p>
+<p><strong>张量（Tensor）</strong>：PyTorch的tensor在概念上与numpy的array相同：<br>tensor是一个n维数组，PyTorch提供了许多函数用于操作这些张量。任何希望使用NumPy执行的计算也可以使用PyTorch的tensor来完成，可以认为它们是科学计算的通用工具。</p>
+<p>与Numpy不同，PyTorch可以利用GPU加速其数值计算。要在GPU上运行Tensor,在构造张量使用<code>device</code>参数把tensor建立在GPU上。  </p>
+<p>在这里，本章使用tensors将随机数据上训练一个两层的网络。和前面NumPy的例子类似，我们使用PyTorch的tensor，手动在网络中实现前向传播和反向传播：</p>
+<pre><code># -*- coding: utf-8 -*-
+
+import torch
+
+
+dtype = torch.float
+device = torch.device(&quot;cpu&quot;)
+# device = torch.device（“cuda：0”）＃取消注释以在GPU上运行
+
+# N是批量大小; D_in是输入维度;
+# H是隐藏的维度; D_out是输出维度。
+N, D_in, H, D_out = 64, 1000, 100, 10
+
+#创建随机输入和输出数据
+x = torch.randn(N, D_in, device=device, dtype=dtype)
+y = torch.randn(N, D_out, device=device, dtype=dtype)
+
+# 随机初始化权重
+w1 = torch.randn(D_in, H, device=device, dtype=dtype)
+w2 = torch.randn(H, D_out, device=device, dtype=dtype)
+
+learning_rate = 1e-6
+for t in range(500):
+    # 前向传递：计算预测y
+    h = x.mm(w1)
+    h_relu = h.clamp(min=0)
+    y_pred = h_relu.mm(w2)
+
+    # 计算和打印损失
+    loss = (y_pred - y).pow(2).sum().item()
+    print(t, loss)
+
+    # Backprop计算w1和w2相对于损耗的梯度
+    grad_y_pred = 2.0 * (y_pred - y)
+    grad_w2 = h_relu.t().mm(grad_y_pred)
+    grad_h_relu = grad_y_pred.mm(w2.t())
+    grad_h = grad_h_relu.clone()
+    grad_h[h &lt; 0] = 0
+    grad_w1 = x.t().mm(grad_h)
+
+    # 使用梯度下降更新权重
+    w1 -= learning_rate * grad_w1
+    w2 -= learning_rate * grad_w2</code></pre><h1 id="自动求导"><a href="#自动求导" class="headerlink" title="自动求导"></a>自动求导</h1><h2 id="PyTorch：张量和自动求导"><a href="#PyTorch：张量和自动求导" class="headerlink" title="PyTorch：张量和自动求导"></a>PyTorch：张量和自动求导</h2><p>在上面的例子中，需要手动实现神经网络的前向和后向<br>传递。手动实现反向传递对于小型双层网络来说并不是什么大问<br>题，但对于大型复杂网络来说很快就会变得非常繁琐。  </p>
+<p>但是可以使用自动微分来自动计算神经网络中的后向传递。<br>PyTorch中的 <code>autograd</code>包提供了这个功能。当使用autograd时，网络前向传播将定义一个计算图；图中的节点是tensor，边是函数，<br>这些函数是输出tensor到输入tensor的映射。这张计算图使得在网络中反向传播时梯度的计算十分简单。</p>
+<p>这听起来很复杂，在实践中使用起来非常简单。<br>如果我们想计算某些的tensor的梯度，我们只需要在建立这个tensor时加入这么一句：<code>requires_grad=True</code>。这个tensor上的任何PyTorch的操作都将构造一个计算图，从而允许我们稍后在图中执行反向传播。如果这个<code>tensor x</code>的<code>requires_grad=True</code>，那么反向传播之后<code>x.grad</code>将会是另一个张量，其为x关于某个标量值的梯度。</p>
+<p>有时可能希望防止PyTorch在<code>requires_grad=True</code>的张量执行某些操作时构建计算图；例如，在训练神经网络时，我们通常不希望通过权重更新步骤进行反向传播。在这种情况下，我们可以使用<code>torch.no_grad()</code>上下文管理器来防止构造计算图。</p>
+<p>下面我们使用PyTorch的Tensors和autograd来实现我们的两层的神经网络；我们不再需要手动执行网络的反向传播：</p>
+<pre><code># -*- coding: utf-8 -*-
+import torch
+
+dtype = torch.float
+device = torch.device(&quot;cpu&quot;)
+# device = torch.device（“cuda：0”）＃取消注释以在GPU上运行
+
+# N是批量大小; D_in是输入维度;
+# H是隐藏的维度; D_out是输出维度。
+N, D_in, H, D_out = 64, 1000, 100, 10
+
+# 创建随机Tensors以保持输入和输出。
+# 设置requires_grad = False表示我们不需要计算渐变
+# 在向后传球期间对于这些Tensors。
+x = torch.randn(N, D_in, device=device, dtype=dtype)
+y = torch.randn(N, D_out, device=device, dtype=dtype)
+
+# 为权重创建随机Tensors。
+# 设置requires_grad = True表示我们想要计算渐变
+# 在向后传球期间尊重这些张贴。
+w1 = torch.randn(D_in, H, device=device, dtype=dtype, requires_grad=True)
+w2 = torch.randn(H, D_out, device=device, dtype=dtype, requires_grad=True)
+
+learning_rate = 1e-6
+for t in range(500):
+    # 前向传播：使用tensors上的操作计算预测值y; 
+      # 由于w1和w2有requires_grad=True，涉及这些张量的操作将让PyTorch构建计算图，
+    # 从而允许自动计算梯度。由于我们不再手工实现反向传播，所以不需要保留中间值的引用。
+    y_pred = x.mm(w1).clamp(min=0).mm(w2)
+
+    # 使用Tensors上的操作计算和打印丢失。
+    # loss是一个形状为()的张量
+    # loss.item() 得到这个张量对应的python数值
+    loss = (y_pred - y).pow(2).sum()
+    print(t, loss.item())
+
+    # 使用autograd计算反向传播。这个调用将计算loss对所有requires_grad=True的tensor的梯度。
+    # 这次调用后，w1.grad和w2.grad将分别是loss对w1和w2的梯度张量。
+    loss.backward()
+
+    # 使用梯度下降更新权重。对于这一步，我们只想对w1和w2的值进行原地改变；不想为更新阶段构建计算图，
+    # 所以我们使用torch.no_grad()上下文管理器防止PyTorch为更新构建计算图
+    with torch.no_grad():
+        w1 -= learning_rate * w1.grad
+        w2 -= learning_rate * w2.grad
+
+        # 反向传播后手动将梯度设置为零
+        w1.grad.zero_()
+        w2.grad.zero_()</code></pre><h2 id="PyTorch：定义新的自动求导函数"><a href="#PyTorch：定义新的自动求导函数" class="headerlink" title="PyTorch：定义新的自动求导函数"></a>PyTorch：定义新的自动求导函数</h2><p>在底层，每一个原始的自动求导运算实际上是两个在Tensor上运行的函数。其中，<code>forward</code>函数计算从输入Tensors获得的输出Tensors。而<code>backward</code>函数接收输出Tensors对于某个标量值的梯度，并且计算输入Tensors相对于该相同标量值的梯度。</p>
+<p>在PyTorch中，我们可以很容易地通过定义<code>torch.autograd.Function</code>的子类并实现<code>forward</code>和backward函数，来定义自己的自动求导运算。之后我们就可以使用这个新的自动梯度运算符了。然后，我们可以通过构造一个实例并像调用函数一样，传入包含输入数据的tensor调用它，这样来使用新的自动求导运算。</p>
+<p>这个例子中，我们自定义一个自动求导函数来展示ReLU的非线性。并用它实现我们的两层网络：</p>
+<pre><code class="buildoutcfg">import torch
+
+class MyReLU(torch.autograd.Function):
+    &quot;&quot;&quot;
+    我们可以通过建立torch.autograd的子类来实现我们自定义的autograd函数，
+    并完成张量的正向和反向传播。
+    &quot;&quot;&quot;
+    @staticmethod
+    def forward(ctx, x):
+        &quot;&quot;&quot;
+        在正向传播中，我们接收到一个上下文对象和一个包含输入的张量；
+        我们必须返回一个包含输出的张量，
+        并且我们可以使用上下文对象来缓存对象，以便在反向传播中使用。
+        &quot;&quot;&quot;
+        ctx.save_for_backward(x)
+        return x.clamp(min=0)
+
+    @staticmethod
+    def backward(ctx, grad_output):
+        &quot;&quot;&quot;
+        在反向传播中，我们接收到上下文对象和一个张量，
+        其包含了相对于正向传播过程中产生的输出的损失的梯度。
+        我们可以从上下文对象中检索缓存的数据，
+        并且必须计算并返回与正向传播的输入相关的损失的梯度。
+        &quot;&quot;&quot;
+        x, = ctx.saved_tensors
+        grad_x = grad_output.clone()
+        grad_x[x &lt; 0] = 0
+        return grad_x
+
+
+device = torch.device(&#39;cuda&#39; if torch.cuda.is_available() else &#39;cpu&#39;)
+
+# N是批大小； D_in 是输入维度；
+# H 是隐藏层维度； D_out 是输出维度
+N, D_in, H, D_out = 64, 1000, 100, 10
+
+# 产生输入和输出的随机张量
+x = torch.randn(N, D_in, device=device)
+y = torch.randn(N, D_out, device=device)
+
+# 产生随机权重的张量
+w1 = torch.randn(D_in, H, device=device, requires_grad=True)
+w2 = torch.randn(H, D_out, device=device, requires_grad=True)
+
+learning_rate = 1e-6
+for t in range(500):
+    # 正向传播：使用张量上的操作来计算输出值y；
+    # 我们通过调用 MyReLU.apply 函数来使用自定义的ReLU
+    y_pred = MyReLU.apply(x.mm(w1)).mm(w2)
+
+    # 计算并输出loss
+    loss = (y_pred - y).pow(2).sum()
+    print(t, loss.item())
+
+    # 使用autograd计算反向传播过程。
+    loss.backward()
+
+    with torch.no_grad():
+        # 用梯度下降更新权重
+        w1 -= learning_rate * w1.grad
+        w2 -= learning_rate * w2.grad
+
+        # 在反向传播之后手动清零梯度
+        w1.grad.zero_()
+        w2.grad.zero_()</code></pre>
+<h2 id="TensorFlow：静态图"><a href="#TensorFlow：静态图" class="headerlink" title="TensorFlow：静态图"></a>TensorFlow：静态图</h2><p>PyTorch自动求导看起来非常像TensorFlow：这两个框架中，我们都定义计算图，使用自动微分来计算梯度。两者最大的不同就是TensorFlow的计算图是静态的，而PyTorch使用动态的计算图。</p>
+<p>在TensorFlow中，我们定义计算图一次，然后重复执行这个相同的图，可能会提供不同的输入数据。而在PyTorch中，每一个前向通道定义一个新的计算图。</p>
+<p>静态图的好处在于你可以预先对图进行优化。例如，一个框架可能要融合一些图的运算来提升效率，或者产生一个策略来将图分布到多个GPU或机器上。如果重复使用相同的图，那么在重复运行同一个图时，，前期潜在的代价高昂的预先优化的消耗就会被分摊开。</p>
+<p>静态图和动态图的一个区别是控制流。对于一些模型，我们希望对每个数据点执行不同的计算。例如，一个递归神经网络可能对于每个数据点执行不同的时间步数，这个展开（unrolling）可以作为一个循环来实现。对于一个静态图，循环结构要作为图的一部分。因此，TensorFlow提供了运算符（例如<code>tf.scan</code>）来把循环嵌入到图当中。对于动态图来说，情况更加简单：既然我们为每个例子即时创建图，我们可以使用普通的命令式控制流来为每个输入执行不同的计算。</p>
+<p>为了与上面的PyTorch自动梯度实例做对比，我们使用TensorFlow来拟合一个简单的2层网络：</p>
+<pre><code class="buildoutcfg">import tensorflow as tf
+import numpy as np
+
+# 首先我们建立计算图（computational graph）
+
+# N是批大小；D是输入维度；
+# H是隐藏层维度；D_out是输出维度。
+N, D_in, H, D_out = 64, 1000, 100, 10
+
+# 为输入和目标数据创建placeholder；
+# 当执行计算图时，他们将会被真实的数据填充
+x = tf.placeholder(tf.float32, shape=(None, D_in))
+y = tf.placeholder(tf.float32, shape=(None, D_out))
+
+# 为权重创建Variable并用随机数据初始化
+# TensorFlow的Variable在执行计算图时不会改变
+w1 = tf.Variable(tf.random_normal((D_in, H)))
+w2 = tf.Variable(tf.random_normal((H, D_out)))
+
+# 前向传播：使用TensorFlow的张量运算计算预测值y。
+# 注意这段代码实际上不执行任何数值运算；
+# 它只是建立了我们稍后将执行的计算图。
+h = tf.matmul(x, w1)
+h_relu = tf.maximum(h, tf.zeros(1))
+y_pred = tf.matmul(h_relu, w2)
+
+# 使用TensorFlow的张量运算损失（loss）
+loss = tf.reduce_sum((y - y_pred) ** 2.0)
+
+# 计算loss对于w1和w2的导数
+grad_w1, grad_w2 = tf.gradients(loss, [w1, w2])
+
+# 使用梯度下降更新权重。为了实际更新权重，我们需要在执行计算图时计算new_w1和new_w2。
+# 注意，在TensorFlow中，更新权重值的行为是计算图的一部分;
+# 但在PyTorch中，这发生在计算图形之外。
+learning_rate = 1e-6
+new_w1 = w1.assign(w1 - learning_rate * grad_w1)
+new_w2 = w2.assign(w2 - learning_rate * grad_w2)
+
+# 现在我们搭建好了计算图，所以我们开始一个TensorFlow的会话（session）来实际执行计算图。
+with tf.Session() as sess:
+
+    # 运行一次计算图来初始化Variable w1和w2
+    sess.run(tf.global_variables_initializer())
+
+    # 创建numpy数组来存储输入x和目标y的实际数据
+    x_value = np.random.randn(N, D_in)
+    y_value = np.random.randn(N, D_out)
+
+    for _ in range(500):
+        # 多次运行计算图。每次执行时，我们都用feed_dict参数，
+        # 将x_value绑定到x，将y_value绑定到y，
+        # 每次执行图形时我们都要计算损失、new_w1和new_w2；
+        # 这些张量的值以numpy数组的形式返回。
+        loss_value, _, _ = sess.run([loss, new_w1, new_w2], 
+                                    feed_dict={x: x_value, y: y_value})
+        print(loss_value)</code></pre>
+<h1 id="nn模块"><a href="#nn模块" class="headerlink" title="nn模块"></a>nn模块</h1><h2 id="PyTorch：nn"><a href="#PyTorch：nn" class="headerlink" title="PyTorch：nn"></a>PyTorch：<code>nn</code></h2><p>计算图和autograd是十分强大的工具，可以定义复杂的操作并自动求导；然而对于大规模的网络，autograd太过于底层。<br>在构建神经网络时，我们经常考虑将计算安排成层，其中一些具有可学习的参数，它们将在学习过程中进行优化。</p>
+<p>TensorFlow里，有类似Keras，TensorFlow-Slim和TFLearn这种封装了底层计算图的高度抽象的接口，这使得构建网络十分方便。</p>
+<p>在PyTorch中，包<code>nn</code>完成了同样的功能。nn包中定义一组大致等价于层的模块。一个模块接受输入的tesnor，计算输出的tensor，而且<br>还保存了一些内部状态比如需要学习的tensor的参数等。nn包中也定义了一组损失函数（loss functions），用来训练神经网络。</p>
+<p>这个例子中，我们用nn包实现两层的网络：</p>
+<pre><code class="buildoutcfg"># -*- coding: utf-8 -*-
+import torch
+
+# N是批大小；D是输入维度
+# H是隐藏层维度；D_out是输出维度
+N, D_in, H, D_out = 64, 1000, 100, 10
+
+#创建输入和输出随机张量
+x = torch.randn(N, D_in)
+y = torch.randn(N, D_out)
+
+# 使用nn包将我们的模型定义为一系列的层。
+# nn.Sequential是包含其他模块的模块，并按顺序应用这些模块来产生其输出。
+# 每个线性模块使用线性函数从输入计算输出，并保存其内部的权重和偏差张量。
+# 在构造模型之后，我们使用.to()方法将其移动到所需的设备。
+model = torch.nn.Sequential(
+    torch.nn.Linear(D_in, H),
+    torch.nn.ReLU(),
+    torch.nn.Linear(H, D_out),
+)
+
+# nn包还包含常用的损失函数的定义；
+# 在这种情况下，我们将使用平均平方误差(MSE)作为我们的损失函数。
+# 设置reduction=&#39;sum&#39;，表示我们计算的是平方误差的“和”，而不是平均值;
+# 这是为了与前面我们手工计算损失的例子保持一致，
+# 但是在实践中，通过设置reduction=&#39;elementwise_mean&#39;来使用均方误差作为损失更为常见。
+loss_fn = torch.nn.MSELoss(reduction=&#39;sum&#39;)
+
+learning_rate = 1e-4
+for t in range(500):
+    # 前向传播：通过向模型传入x计算预测的y。
+    # 模块对象重载了__call__运算符，所以可以像函数那样调用它们。
+    # 这么做相当于向模块传入了一个张量，然后它返回了一个输出张量。
+    y_pred = model(x)
+
+     # 计算并打印损失。
+     # 传递包含y的预测值和真实值的张量，损失函数返回包含损失的张量。
+    loss = loss_fn(y_pred, y)
+    print(t, loss.item())
+
+    # 反向传播之前清零梯度
+    model.zero_grad()
+
+    # 反向传播：计算模型的损失对所有可学习参数的导数（梯度）。
+    # 在内部，每个模块的参数存储在requires_grad=True的张量中，
+    # 因此这个调用将计算模型中所有可学习参数的梯度。
+    loss.backward()
+
+    # 使用梯度下降更新权重。
+    # 每个参数都是张量，所以我们可以像我们以前那样可以得到它的数值和梯度
+    with torch.no_grad():
+        for param in model.parameters():
+            param -= learning_rate * param.grad</code></pre>
+<h2 id="PyTorch：optim"><a href="#PyTorch：optim" class="headerlink" title="PyTorch：optim"></a>PyTorch：<code>optim</code></h2><p>到目前为止，我们已经通过手动改变包含可学习参数的张量来更新模型的权重。对于随机梯度下降(SGD/stochastic gradient descent)等简单的优化算法来说，这不是一个很大的负担，但在实践中，我们经常使用AdaGrad、RMSProp、Adam等更复杂的优化器来训练神经网络。</p>
+<pre><code class="buildoutcfg">import torch
+
+# N是批大小；D是输入维度
+# H是隐藏层维度；D_out是输出维度
+N, D_in, H, D_out = 64, 1000, 100, 10
+
+# 产生随机输入和输出张量
+x = torch.randn(N, D_in)
+y = torch.randn(N, D_out)
+
+# 使用nn包定义模型和损失函数
+model = torch.nn.Sequential(
+          torch.nn.Linear(D_in, H),
+          torch.nn.ReLU(),
+          torch.nn.Linear(H, D_out),
+        )
+loss_fn = torch.nn.MSELoss(reduction=&#39;sum&#39;)
+
+# 使用optim包定义优化器（Optimizer）。Optimizer将会为我们更新模型的权重。
+# 这里我们使用Adam优化方法；optim包还包含了许多别的优化算法。
+# Adam构造函数的第一个参数告诉优化器应该更新哪些张量。
+learning_rate = 1e-4
+optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+
+for t in range(500):
+
+    # 前向传播：通过像模型输入x计算预测的y
+    y_pred = model(x)
+
+    # 计算并打印loss
+    loss = loss_fn(y_pred, y)
+    print(t, loss.item())
+
+    # 在反向传播之前，使用optimizer将它要更新的所有张量的梯度清零(这些张量是模型可学习的权重)
+    optimizer.zero_grad()
+
+    # 反向传播：根据模型的参数计算loss的梯度
+    loss.backward()
+
+    # 调用Optimizer的step函数使它所有参数更新
+    optimizer.step()</code></pre>
+<h2 id="PyTorch：自定义nn模块"><a href="#PyTorch：自定义nn模块" class="headerlink" title="PyTorch：自定义nn模块"></a>PyTorch：自定义<code>nn</code>模块</h2><p>有时候需要指定比现有模块序列更复杂的模型；对于这些情况，可以通过继承<code>nn.Module</code>并定义<code>forward</code>函数，这个<code>forward</code>函数可以<br>使用其他模块或者其他的自动求导运算来接收输入tensor，产生输出tensor。</p>
+<p>在这个例子中，我们用自定义Module的子类构建两层网络：</p>
+<pre><code class="buildoutcfg">import torch
+
+class TwoLayerNet(torch.nn.Module):
+    def __init__(self, D_in, H, D_out):
+        &quot;&quot;&quot;
+        在构造函数中，我们实例化了两个nn.Linear模块，并将它们作为成员变量。
+        &quot;&quot;&quot;
+        super(TwoLayerNet, self).__init__()
+        self.linear1 = torch.nn.Linear(D_in, H)
+        self.linear2 = torch.nn.Linear(H, D_out)
+
+    def forward(self, x):
+        &quot;&quot;&quot;
+        在前向传播的函数中，我们接收一个输入的张量，也必须返回一个输出张量。
+        我们可以使用构造函数中定义的模块以及张量上的任意的（可微分的）操作。
+        &quot;&quot;&quot;
+        h_relu = self.linear1(x).clamp(min=0)
+        y_pred = self.linear2(h_relu)
+        return y_pred
+
+# N是批大小； D_in 是输入维度；
+# H 是隐藏层维度； D_out 是输出维度
+N, D_in, H, D_out = 64, 1000, 100, 10
+
+# 产生输入和输出的随机张量
+x = torch.randn(N, D_in)
+y = torch.randn(N, D_out)
+
+# 通过实例化上面定义的类来构建我们的模型。
+model = TwoLayerNet(D_in, H, D_out)
+
+# 构造损失函数和优化器。
+# SGD构造函数中对model.parameters()的调用，
+# 将包含模型的一部分，即两个nn.Linear模块的可学习参数。
+loss_fn = torch.nn.MSELoss(reduction=&#39;sum&#39;)
+optimizer = torch.optim.SGD(model.parameters(), lr=1e-4)
+for t in range(500):
+    # 前向传播：通过向模型传递x计算预测值y
+    y_pred = model(x)
+
+    #计算并输出loss
+    loss = loss_fn(y_pred, y)
+    print(t, loss.item())
+
+    # 清零梯度，反向传播，更新权重
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()</code></pre>
+<h2 id="PyTorch：控制流和权重共享"><a href="#PyTorch：控制流和权重共享" class="headerlink" title="PyTorch：控制流和权重共享"></a>PyTorch：控制流和权重共享</h2><p>作为动态图和权重共享的一个例子，我们实现了一个非常奇怪的模型：一个全连接的ReLU网络，在每一次前向传播时，它的隐藏层的层数为随机1到4之间的数，这样可以多次重用相同的权重来计算。</p>
+<p>因为这个模型可以使用普通的Python流控制来实现循环，并且我们可以通过在定义转发时多次重用同一个模块来实现最内层之间的权重共享。</p>
+<p>我们利用Mudule的子类很容易实现这个模型：</p>
+<pre><code class="buildoutcfg">import random
+import torch
+
+class DynamicNet(torch.nn.Module):
+    def __init__(self, D_in, H, D_out):
+        &quot;&quot;&quot;
+        在构造函数中，我们构造了三个nn.Linear实例，它们将在前向传播时被使用。
+        &quot;&quot;&quot;
+        super(DynamicNet, self).__init__()
+        self.input_linear = torch.nn.Linear(D_in, H)
+        self.middle_linear = torch.nn.Linear(H, H)
+        self.output_linear = torch.nn.Linear(H, D_out)
+
+    def forward(self, x):
+        &quot;&quot;&quot;
+        对于模型的前向传播，我们随机选择0、1、2、3，
+        并重用了多次计算隐藏层的middle_linear模块。
+        由于每个前向传播构建一个动态计算图，
+        我们可以在定义模型的前向传播时使用常规Python控制流运算符，如循环或条件语句。
+        在这里，我们还看到，在定义计算图形时多次重用同一个模块是完全安全的。
+        这是Lua Torch的一大改进，因为Lua Torch中每个模块只能使用一次。
+        &quot;&quot;&quot;
+        h_relu = self.input_linear(x).clamp(min=0)
+        for _ in range(random.randint(0, 3)):
+            h_relu = self.middle_linear(h_relu).clamp(min=0)
+        y_pred = self.output_linear(h_relu)
+        return y_pred
+
+
+# N是批大小；D是输入维度
+# H是隐藏层维度；D_out是输出维度
+N, D_in, H, D_out = 64, 1000, 100, 10
+
+# 产生输入和输出随机张量
+x = torch.randn(N, D_in)
+y = torch.randn(N, D_out)
+
+# 实例化上面定义的类来构造我们的模型
+model = DynamicNet(D_in, H, D_out)
+
+# 构造我们的损失函数（loss function）和优化器（Optimizer）。
+# 用平凡的随机梯度下降训练这个奇怪的模型是困难的，所以我们使用了momentum方法。
+criterion = torch.nn.MSELoss(reduction=&#39;sum&#39;)
+optimizer = torch.optim.SGD(model.parameters(), lr=1e-4, momentum=0.9)
+for t in range(500):
+
+    # 前向传播：通过向模型传入x计算预测的y。
+    y_pred = model(x)
+
+    # 计算并打印损失
+    loss = criterion(y_pred, y)
+    print(t, loss.item())
+
+    # 清零梯度，反向传播，更新权重 
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()</code></pre>
+<h1 id="学习交流"><a href="#学习交流" class="headerlink" title="学习交流"></a>学习交流</h1><p>为了方便大家更好地与作者进行沟通交流，为此针对这个专栏成立了QQ读者交流群，大家想近距离与我沟通，都可以来加入。<br>扫描二维码进群可获得 自动微分 章节的Python 源代码和Jupyter 源代码链接<br>扫描二维码进群可获得 神经网络 章节的Python 源代码和Jupyter 源代码链接<br>加入方式：扫描下方QQ群二维码，即可加入交流群&lt;群满可在右下方在线与我沟通&gt;。</p>
+<p align="left">
+    <img src= "/img/loading.gif" data-src="/images/qun.jpg" alt="Sample" width="300" height="350">
+    <!-- <img src= "/img/loading.gif" data-src="/images/TIM.jpg" alt="Sample"  width="300" height="250"> -->
+</p>
+]]></content>
+      <categories>
+        <category>PyTorch专栏</category>
+      </categories>
+      <tags>
+        <tag>Python深度学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>PyTorch专栏（五）</title>
+    <url>/2020/07/11/PyTorch%E4%B8%93%E6%A0%8F%EF%BC%88%E4%BA%94%EF%BC%89/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本篇文章讲解了PyTorch专栏的第四章中的迁移学习。查看专栏历史文章，请点击下方推荐链接进入相应链接阅读。查看关于本专栏的介绍：PyTorch专栏开篇。</p>
+<h1 id="PyTorch之迁移学习"><a href="#PyTorch之迁移学习" class="headerlink" title="PyTorch之迁移学习"></a>PyTorch之迁移学习</h1><p>实际中，基本没有人会从零开始（随机初始化）训练一个完整的卷积网络，因为相对于网络，很难得到一个足够大的数据集[网络很深, 需要足够大数据集]。通常的做法是在一个很大的数据集上进行预训练得到卷积网络ConvNet, 然后将这个ConvNet的参数作为目标任务的初始化参数或者固定这些参数。</p>
+<h1 id="转移学习的两个主要场景："><a href="#转移学习的两个主要场景：" class="headerlink" title="转移学习的两个主要场景："></a>转移学习的两个主要场景：</h1><ul>
+<li>微调<strong>Convnet</strong>：使用预训练的网络(如在<code>imagenet 1000</code>上训练而来的网络)来初始化自己的网络，而不是随机初始化。其他的训练步骤不变。</li>
+<li>将<strong>Convnet</strong>看成固定的特征提取器:首先固定ConvNet除了最后的全连接层外的其他所有层。最后的全连接层被替换成一个新的随机<br>初始化的层，只有这个新的层会被训练[只有这层参数会在反向传播时更新]</li>
+</ul>
+<p>下面是利用PyTorch进行迁移学习步骤，要解决的问题是训练一个模型来对蚂蚁和蜜蜂进行分类。</p>
+<h1 id="导入相关的包"><a href="#导入相关的包" class="headerlink" title="导入相关的包"></a>导入相关的包</h1><pre><code># License: BSD
+# Author: Sasank Chilamkurthy
+
+from __future__ import print_function, division
+
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.optim import lr_scheduler
+import numpy as np
+import torchvision
+from torchvision import datasets, models, transforms
+import matplotlib.pyplot as plt
+import time
+import os
+import copy
+
+plt.ion()   # interactive mode</code></pre><h1 id="加载数据"><a href="#加载数据" class="headerlink" title="加载数据"></a>加载数据</h1><p>今天要解决的问题是训练一个模型来分类蚂蚁ants和蜜蜂bees。ants和bees各有约120张训练图片。每个类有75张验证图片。从零开始在<br>如此小的数据集上进行训练通常是很难泛化的。由于我们使用迁移学习，模型的泛化能力会相当好。<br>该数据集是imagenet的一个非常小的子集。从<a href="https://download.pytorch.org/tutorial/hymenoptera_data.zip" target="_blank" rel="noopener">此处</a>下载数据，并将其解压缩到当前目录。</p>
+<pre><code>＃训练集数据扩充和归一化
+＃在验证集上仅需要归一化
+data_transforms = {
+    &#39;train&#39;: transforms.Compose([
+        transforms.RandomResizedCrop(224), #随机裁剪一个area然后再resize
+        transforms.RandomHorizontalFlip(), #随机水平翻转
+        transforms.ToTensor(),
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    ]),
+    &#39;val&#39;: transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    ]),
+}
+
+data_dir = &#39;data/hymenoptera_data&#39;
+image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x),
+                                          data_transforms[x])
+                  for x in [&#39;train&#39;, &#39;val&#39;]}
+dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=4,
+                                             shuffle=True, num_workers=4)
+              for x in [&#39;train&#39;, &#39;val&#39;]}
+dataset_sizes = {x: len(image_datasets[x]) for x in [&#39;train&#39;, &#39;val&#39;]}
+class_names = image_datasets[&#39;train&#39;].classes
+
+device = torch.device(&quot;cuda:0&quot; if torch.cuda.is_available() else &quot;cpu&quot;)</code></pre><h1 id="可视化部分图像数据"><a href="#可视化部分图像数据" class="headerlink" title="可视化部分图像数据"></a>可视化部分图像数据</h1><p>可视化部分训练图像，以便了解数据扩充。</p>
+<pre><code>def imshow(inp, title=None):
+    &quot;&quot;&quot;Imshow for Tensor.&quot;&quot;&quot;
+    inp = inp.numpy().transpose((1, 2, 0))
+    mean = np.array([0.485, 0.456, 0.406])
+    std = np.array([0.229, 0.224, 0.225])
+    inp = std * inp + mean
+    inp = np.clip(inp, 0, 1)
+    plt.imshow(inp)
+    if title is not None:
+        plt.title(title)
+    plt.pause(0.001)  # pause a bit so that plots are updated
+
+
+# 获取一批训练数据
+inputs, classes = next(iter(dataloaders[&#39;train&#39;]))
+
+# 批量制作网格
+out = torchvision.utils.make_grid(inputs)
+
+imshow(out, title=[class_names[x] for x in classes])</code></pre><img src= "/img/loading.gif" data-src="/images/p20.jpg">
+
+<h1 id="训练模型"><a href="#训练模型" class="headerlink" title="训练模型"></a>训练模型</h1><p>编写一个通用函数来训练模型。下面将说明：</p>
+<ul>
+<li>调整学习速率</li>
+<li>保存最好的模型</li>
+</ul>
+<p>下面的参数scheduler是一个来自 <code>torch.optim.lr_scheduler</code>的学习速率调整类的对象(LR scheduler object)。</p>
+<pre><code>def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
+    since = time.time()
+
+    best_model_wts = copy.deepcopy(model.state_dict())
+    best_acc = 0.0
+
+    for epoch in range(num_epochs):
+        print(&#39;Epoch {}/{}&#39;.format(epoch, num_epochs - 1))
+        print(&#39;-&#39; * 10)
+
+        # 每个epoch都有一个训练和验证阶段
+        for phase in [&#39;train&#39;, &#39;val&#39;]:
+            if phase == &#39;train&#39;:
+                scheduler.step()
+                model.train()  # Set model to training mode
+            else:
+                model.eval()   # Set model to evaluate mode
+
+            running_loss = 0.0
+            running_corrects = 0
+
+            # 迭代数据.
+            for inputs, labels in dataloaders[phase]:
+                inputs = inputs.to(device)
+                labels = labels.to(device)
+
+                # 零参数梯度
+                optimizer.zero_grad()
+
+                # 前向
+                # track history if only in train
+                with torch.set_grad_enabled(phase == &#39;train&#39;):
+                    outputs = model(inputs)
+                    _, preds = torch.max(outputs, 1)
+                    loss = criterion(outputs, labels)
+
+                    # 后向+仅在训练阶段进行优化
+                    if phase == &#39;train&#39;:
+                        loss.backward()
+                        optimizer.step()
+
+                # 统计
+                running_loss += loss.item() * inputs.size(0)
+                running_corrects += torch.sum(preds == labels.data)
+
+            epoch_loss = running_loss / dataset_sizes[phase]
+            epoch_acc = running_corrects.double() / dataset_sizes[phase]
+
+            print(&#39;{} Loss: {:.4f} Acc: {:.4f}&#39;.format(
+                phase, epoch_loss, epoch_acc))
+
+            # 深度复制mo
+            if phase == &#39;val&#39; and epoch_acc &gt; best_acc:
+                best_acc = epoch_acc
+                best_model_wts = copy.deepcopy(model.state_dict())
+
+        print()
+
+    time_elapsed = time.time() - since
+    print(&#39;Training complete in {:.0f}m {:.0f}s&#39;.format(
+        time_elapsed // 60, time_elapsed % 60))
+    print(&#39;Best val Acc: {:4f}&#39;.format(best_acc))
+
+    # 加载最佳模型权重
+    model.load_state_dict(best_model_wts)
+    return model</code></pre><h1 id="可视化模型的预测结果"><a href="#可视化模型的预测结果" class="headerlink" title="可视化模型的预测结果"></a>可视化模型的预测结果</h1><pre><code>#一个通用的展示少量预测图片的函数
+def visualize_model(model, num_images=6):
+    was_training = model.training
+    model.eval()
+    images_so_far = 0
+    fig = plt.figure()
+
+    with torch.no_grad():
+        for i, (inputs, labels) in enumerate(dataloaders[&#39;val&#39;]):
+            inputs = inputs.to(device)
+            labels = labels.to(device)
+
+            outputs = model(inputs)
+            _, preds = torch.max(outputs, 1)
+
+            for j in range(inputs.size()[0]):
+                images_so_far += 1
+                ax = plt.subplot(num_images//2, 2, images_so_far)
+                ax.axis(&#39;off&#39;)
+                ax.set_title(&#39;predicted: {}&#39;.format(class_names[preds[j]]))
+                imshow(inputs.cpu().data[j])
+
+                if images_so_far == num_images:
+                    model.train(mode=was_training)
+                    return
+        model.train(mode=was_training)</code></pre><h1 id="场景1：微调ConvNet"><a href="#场景1：微调ConvNet" class="headerlink" title="场景1：微调ConvNet"></a>场景1：微调ConvNet</h1><p>加载预训练模型并重置最终完全连接的图层。</p>
+<pre><code>model_ft = models.resnet18(pretrained=True)
+num_ftrs = model_ft.fc.in_features
+model_ft.fc = nn.Linear(num_ftrs, 2)
+
+model_ft = model_ft.to(device)
+
+criterion = nn.CrossEntropyLoss()
+
+# 观察所有参数都正在优化
+optimizer_ft = optim.SGD(model_ft.parameters(), lr=0.001, momentum=0.9)
+
+# 每7个epochs衰减LR通过设置gamma=0.1
+exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)</code></pre><h1 id="训练和评估模型"><a href="#训练和评估模型" class="headerlink" title="训练和评估模型"></a>训练和评估模型</h1><p>（1）训练模型<br>该过程在CPU上需要大约15-25分钟，但是在GPU上，它只需不到一分钟。</p>
+<pre><code>model_ft = train_model(model_ft, criterion, optimizer_ft, exp_lr_scheduler,
+                       num_epochs=25)</code></pre><ul>
+<li>输出<pre><code>Epoch 0/24</code></pre></li>
+</ul>
+<hr>
+<p>train Loss: 0.7032 Acc: 0.6025<br>val Loss: 0.1698 Acc: 0.9412</p>
+<h2 id="Epoch-1-24"><a href="#Epoch-1-24" class="headerlink" title="Epoch 1/24"></a>Epoch 1/24</h2><p>train Loss: 0.6411 Acc: 0.7787<br>val Loss: 0.1981 Acc: 0.9281<br>·<br>·<br>·<br>Epoch 24/24</p>
+<hr>
+<p>train Loss: 0.2812 Acc: 0.8730<br>val Loss: 0.2647 Acc: 0.9150</p>
+<p>Training complete in 1m 7s<br>Best val Acc: 0.941176</p>
+<pre><code>（2）模型评估效果可视化</code></pre><p>visualize_model(model_ft)</p>
+<pre><code>* 输出
+&lt;img src=&quot;/images/p21.jpg&quot;&gt;
+
+# 场景2：ConvNet作为固定特征提取器
+在这里需要冻结除最后一层之外的所有网络。通过设置`requires_grad == Falsebackward()`来冻结参数，这样在反向传播backward()的时候他们的梯度就不会被计算。</code></pre><p>model_conv = torchvision.models.resnet18(pretrained=True)<br>for param in model_conv.parameters():<br>    param.requires_grad = False</p>
+<h1 id="Parameters-of-newly-constructed-modules-have-requires-grad-True-by-default"><a href="#Parameters-of-newly-constructed-modules-have-requires-grad-True-by-default" class="headerlink" title="Parameters of newly constructed modules have requires_grad=True by default"></a>Parameters of newly constructed modules have requires_grad=True by default</h1><p>num_ftrs = model_conv.fc.in_features<br>model_conv.fc = nn.Linear(num_ftrs, 2)</p>
+<p>model_conv = model_conv.to(device)</p>
+<p>criterion = nn.CrossEntropyLoss()</p>
+<h1 id="Observe-that-only-parameters-of-final-layer-are-being-optimized-as"><a href="#Observe-that-only-parameters-of-final-layer-are-being-optimized-as" class="headerlink" title="Observe that only parameters of final layer are being optimized as"></a>Observe that only parameters of final layer are being optimized as</h1><h1 id="opposed-to-before"><a href="#opposed-to-before" class="headerlink" title="opposed to before."></a>opposed to before.</h1><p>optimizer_conv = optim.SGD(model_conv.fc.parameters(), lr=0.001, momentum=0.9)</p>
+<h1 id="Decay-LR-by-a-factor-of-0-1-every-7-epochs"><a href="#Decay-LR-by-a-factor-of-0-1-every-7-epochs" class="headerlink" title="Decay LR by a factor of 0.1 every 7 epochs"></a>Decay LR by a factor of 0.1 every 7 epochs</h1><p>exp_lr_scheduler = lr_scheduler.StepLR(optimizer_conv, step_size=7, gamma=0.1)</p>
+<pre><code>## 训练和评估
+（1）训练模型
+在CPU上，与前一个场景相比，这将花费大约一半的时间，因为不需要为大多数网络计算梯度。但需要计算转发。</code></pre><p>model_conv = train_model(model_conv, criterion, optimizer_conv,<br>                         exp_lr_scheduler, num_epochs=25)</p>
+<pre><code>* 输出</code></pre><h2 id="Epoch-0-24"><a href="#Epoch-0-24" class="headerlink" title="Epoch 0/24"></a>Epoch 0/24</h2><p>train Loss: 0.6400 Acc: 0.6434<br>val Loss: 0.2539 Acc: 0.9085<br>·<br>·<br>·<br>Epoch 23/24</p>
+<hr>
+<p>train Loss: 0.2988 Acc: 0.8607<br>val Loss: 0.2151 Acc: 0.9412</p>
+<h2 id="Epoch-24-24"><a href="#Epoch-24-24" class="headerlink" title="Epoch 24/24"></a>Epoch 24/24</h2><p>train Loss: 0.3519 Acc: 0.8484<br>val Loss: 0.2045 Acc: 0.9412</p>
+<p>Training complete in 0m 35s<br>Best val Acc: 0.954248</p>
+<pre><code>（2）模型评估效果可视化</code></pre><p>visualize_model(model_conv)</p>
+<p>plt.ioff()<br>plt.show()</p>
+<p>```</p>
+<ul>
+<li>输出<img src= "/img/loading.gif" data-src="/images/p22.jpg">
+
+
+</li>
+</ul>
+<h1 id="学习交流"><a href="#学习交流" class="headerlink" title="学习交流"></a>学习交流</h1><p>为了方便大家更好地与作者进行沟通交流，为此针对这个专栏成立了QQ读者交流群，大家想近距离与我沟通，都可以来加入。<br>扫描二维码进群可获得 自动微分 章节的Python 源代码和Jupyter 源代码链接<br>扫描二维码进群可获得 神经网络 章节的Python 源代码和Jupyter 源代码链接<br>加入方式：扫描下方QQ群二维码，即可加入交流群&lt;群满可在右下方在线与我沟通&gt;。</p>
+<p align="left">
+    <img src= "/img/loading.gif" data-src="/images/qun.jpg" alt="Sample" width="300" height="350">
+    <!-- <img src= "/img/loading.gif" data-src="/images/TIM.jpg" alt="Sample"  width="300" height="250"> -->
+</p>]]></content>
+      <categories>
+        <category>PyTorch专栏</category>
+      </categories>
+      <tags>
+        <tag>Python深度学习</tag>
+      </tags>
+  </entry>
 </search>
