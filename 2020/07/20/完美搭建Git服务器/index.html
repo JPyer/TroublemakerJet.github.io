@@ -1,0 +1,191 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>完美搭建Git服务器 | 艾利克斯工作室</title><meta name="description" content="最近公司项目需要用到Git来管理项目，正好逢周末花了点时间在虚拟机的Ubuntu系统中搭建了下git的服务器，由于搭建过程中多多少少遇到了一些小问题，再因为个人记性不太好，所以在这里记录下来，以备不时之需。开始我已经在虚拟机的Ubuntu 12.04系统下已经装过一次，忘了记录，这次重新再在虚拟机的Ubuntu 13.10系统下一步一步的来搭建，后面介绍包括了在客户端机器（宿主机器Win7）安装g"><meta name="author" content="Alexis (KangJ)"><meta name="copyright" content="Alexis (KangJ)"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://programmer996.club/2020/07/20/%E5%AE%8C%E7%BE%8E%E6%90%AD%E5%BB%BAGit%E6%9C%8D%E5%8A%A1%E5%99%A8/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta property="og:type" content="article"><meta property="og:title" content="完美搭建Git服务器"><meta property="og:url" content="https://programmer996.club/2020/07/20/%E5%AE%8C%E7%BE%8E%E6%90%AD%E5%BB%BAGit%E6%9C%8D%E5%8A%A1%E5%99%A8/"><meta property="og:site_name" content="艾利克斯工作室"><meta property="og:description" content="最近公司项目需要用到Git来管理项目，正好逢周末花了点时间在虚拟机的Ubuntu系统中搭建了下git的服务器，由于搭建过程中多多少少遇到了一些小问题，再因为个人记性不太好，所以在这里记录下来，以备不时之需。开始我已经在虚拟机的Ubuntu 12.04系统下已经装过一次，忘了记录，这次重新再在虚拟机的Ubuntu 13.10系统下一步一步的来搭建，后面介绍包括了在客户端机器（宿主机器Win7）安装g"><meta property="og:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg"><meta property="article:published_time" content="2020-07-20T06:25:48.000Z"><meta property="article:modified_time" content="2020-07-20T06:34:51.964Z"><meta name="twitter:card" content="summary"><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#fff')
+  }
+}
+
+var getCookies = function (name) {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop().split(';').shift()
+}
+
+var autoChangeMode = 'false'
+var t = getCookies('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (Cookies.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css"><link rel="next" title="PyTorch专栏（五）" href="https://programmer996.club/2020/07/11/PyTorch%E4%B8%93%E6%A0%8F%EF%BC%88%E4%BA%94%EF%BC%89/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  bookmark: {
+    message_prev: 'Press',
+    message_next: 'to bookmark this page'
+  },
+  runtime_unit: 'days',
+  runtime: false,
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: {"bookmark":{"message_prev":"Press","message_next":"to bookmark this page"},"chs_to_cht":"Traditional Chinese Activated Manually","cht_to_chs":"Simplified Chinese Activated Manually","day_to_night":"Dark Mode Activated Manually","night_to_day":"Light Mode Activated Manually","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  highlightCopy: true,
+  highlightLang: true,
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false    
+}</script><script>var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isSidebar: true,
+  postUpdate: '2020-07-20 14:34:51'
+}</script><noscript><style>
+#nav {
+  opacity: 1
+}
+.justified-gallery img{
+  opacity: 1
+}
+</style></noscript><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="艾利克斯工作室" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">Articles</div><div class="length_num">45</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">Tags</div><div class="length_num">9</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">Categories</div><div class="length_num">16</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/book/"><i class="fa-fw fas fa-gift"></i><span> book</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down menus-expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/welfare/"><i class="fa-fw fas fa-gift"></i><span> Welfare</span></a></li><li><a class="site-page" href="/Case/"><i class="fa-fw fas fa-briefcase"></i><span> Case</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/Cooperation/"><i class="fa-fw fas fa-briefcase"></i><span> Cooperation</span></a></div><div class="menus_item"><a class="site-page" href="/handshake/"><i class="fa-fw fas fa-eye"></i><span> handshake</span></a></div></div></div></div><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#安装git服务器所需软件"><span class="toc-number">1.</span> <span class="toc-text">安装git服务器所需软件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#创建git管理员账户、配置git"><span class="toc-number">2.</span> <span class="toc-text">创建git管理员账户、配置git</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#服务器上创建项目仓库"><span class="toc-number">3.</span> <span class="toc-text">服务器上创建项目仓库</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用gitosis管理用户操作项目的权限"><span class="toc-number">4.</span> <span class="toc-text">使用gitosis管理用户操作项目的权限</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#客户端（windows）使用git"><span class="toc-number">5.</span> <span class="toc-text">客户端（windows）使用git</span></a></li></ol></div></div></div><div class="code-close" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg)"><nav id="nav"><span class="pull-left" id="blog_name"><a class="blog_title" id="site-name" href="/">艾利克斯工作室</a></span><span class="pull-right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/book/"><i class="fa-fw fas fa-gift"></i><span> book</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down menus-expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/welfare/"><i class="fa-fw fas fa-gift"></i><span> Welfare</span></a></li><li><a class="site-page" href="/Case/"><i class="fa-fw fas fa-briefcase"></i><span> Case</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/Cooperation/"><i class="fa-fw fas fa-briefcase"></i><span> Cooperation</span></a></div><div class="menus_item"><a class="site-page" href="/handshake/"><i class="fa-fw fas fa-eye"></i><span> handshake</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">完美搭建Git服务器</div></div><div id="post-meta"><div class="meta-firstline"><time class="post-meta__date"><span class="post-meta__date-created" title="Created 2020-07-20 14:25:48"><i class="far fa-calendar-alt fa-fw"></i> Created 2020-07-20</span><span class="post-meta__separator">|</span><span class="post-meta__date-updated" title="Updated 2020-07-20 14:34:51"><i class="fas fa-history fa-fw"></i> Updated 2020-07-20</span></time></div><div class="meta-secondline"> <span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta__icon"></i><span>Word count:</span><span class="word-count">2k</span><span class="post-meta__separator">|</span><i class="far fa-clock fa-fw post-meta__icon"></i><span>Reading time: 7 min</span></span></div><div class="meta-thirdline"><span class="post-meta-pv-cv"><span class="post-meta__separator">|</span><i class="far fa-eye fa-fw post-meta__icon"></i><span>Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><p>最近公司项目需要用到Git来管理项目，正好逢周末花了点时间在虚拟机的Ubuntu系统中搭建了下git的服务器，由于搭建过程中多多少少遇到了一些小问题，再因为个人记性不太好，所以在这里记录下来，以备不时之需。开始我已经在虚拟机的Ubuntu 12.04系统下已经装过一次，忘了记录，这次重新再在虚拟机的Ubuntu 13.10系统下一步一步的来搭建，后面介绍包括了在客户端机器（宿主机器Win7）安装git客户端，及客户端git bash的简单使用。</p>
+<h1 id="安装git服务器所需软件"><a href="#安装git服务器所需软件" class="headerlink" title="安装git服务器所需软件"></a>安装git服务器所需软件</h1><p>打开终端输入以下命令：</p>
+<pre><code>ubuntu:~$ sudo apt-get install git-core openssh-server openssh-client</code></pre><p>git-core是git版本控制核心软件</p>
+<p>安装openssh-server和openssh-client是由于git需要通过ssh协议来在服务器与客户端之间传输文件然后中间有个确认操作，输入Y后等待系统自动从镜像服务器中下载软件安装，安装完后会回到用户当前目录。如果安装提示失败，可能是因为系统软件库的索引文件太旧了，先更新一下就可以了，更新命令如下：</p>
+<pre><code>ubuntu:~$ sudo apt-get update </code></pre><p>更新完软件库索引后继续执行上面的安装命令即可。<br>安装Python的setuptools和gitosis，由于gitosis的安装需要依赖于python的一些工具，所以我们需要先安装python的setuptools。<br>执行下面的命令：</p>
+<pre><code>ubuntu:~$ sudo apt-get install python-setuptools</code></pre><p>这个工具比较小，安装也比较快，接下来准备安装gitosis，安装gitosis之前需要初始化一下服务器的git用户信息,这个随便填。</p>
+<pre><code>ubuntu:~$ git config --global user.name &quot;myname&quot;
+ubuntu:~$ git config --global user.email &quot;******@gmail.com&quot;</code></pre><p>初始化服务器用户信息后，就可以安装gitosis了，gitosis主要是用于给用户授权，设置权限也算是很方便的。</p>
+<p>可以通过以下命令获取gitosis版本文件</p>
+<pre><code>ubuntu:~$ git clone https://github.com/res0nat0r/gitosis.git</code></pre><p>注意：中间有两个是数字零</p>
+<p>获取gitosis文件后，进入到文件目录下面</p>
+<pre><code>ubuntu:/tmp$ cd gitosis/</code></pre><p>接着使用python命令安装目录下的setup.py的python脚本进行安装</p>
+<pre><code>ubuntu:/tmp/gitosis$ sudo python setup.py install</code></pre><p>到这里，整个安装步骤就完成了，下面就开始对git进行一些基本的配置。</p>
+<h1 id="创建git管理员账户、配置git"><a href="#创建git管理员账户、配置git" class="headerlink" title="创建git管理员账户、配置git"></a>创建git管理员账户、配置git</h1><p>创建一个账户（git）作为git服务器的管理员，可以管理其他用户的项目权限。</p>
+<pre><code>ubuntu:/tmp/gitosis$ sudo useradd -m git
+ubuntu:/tmp/gitosis$ sudo passwd git</code></pre><p>然后再/home目录下创建一个项目仓库存储点，并设置只有git用户拥有所有权限，其他用户没有任何权限。</p>
+<pre><code>ubuntu:/tmp/gitosis$ sudo mkdir /home/gitrepository
+ubuntu:/tmp/gitosis$ sudo chown git:git /home/gitrepository/
+ubuntu:/tmp/gitosis$ sudo chmod 700 /home/gitrepository/</code></pre><p>由于gitosis默认状态下会将仓库放在用户的repositories目录下，例如git用户的仓库地址默认在/home/git/repositories/目录下，这里我们需要创建一个链接映射。让他指向我们前面创建的专门用于存放项目的仓库目录/home/gitrepository。</p>
+<pre><code>ubuntu:/tmp/gitosis$ sudo ln -s /home/gitrepository /home/git/repositories</code></pre><p>这里我将在服务器端生成ssh公钥，如果想在其他机器上管理也可以在其他机器上生成一个ssh的公钥。</p>
+<pre><code>ubuntu:/home/git$ ssh-keygen -t rsa</code></pre><p>这里会提示输入密码，我们不输入直接回车即可。<br>然后用刚生成公钥id_rsa.pub来对gitosis进行初始化。<br>gitosis主要是通过gitosis-admin.git仓库来管理一些配置文件的，如用户权限的管理。这里我们需要对其中的一个post-update文件添加可执行的权限。</p>
+<pre><code>ubuntu:/home/git$ sudo chmod 755 /home/gitrepository/gitosis-admin.git/hooks/post-update</code></pre><h1 id="服务器上创建项目仓库"><a href="#服务器上创建项目仓库" class="headerlink" title="服务器上创建项目仓库"></a>服务器上创建项目仓库</h1><p>使用git账户在服务器上创建一个目录（mytestproject.git）并初始化成git项目仓库。</p>
+<pre><code>ubuntu:/home/git$ su git
+$ cd /home/gitrepository
+$ mkdir mytestproject.git
+$ git init --bare
+$ exit</code></pre><p>如果出现以下信息就说明已经成功创建了一个名为mytestproject.git的项目仓库了，新建的这个仓库暂时还是空的，不能被客户端clone，还需要对gitosis进行一些配置操作。</p>
+<h1 id="使用gitosis管理用户操作项目的权限"><a href="#使用gitosis管理用户操作项目的权限" class="headerlink" title="使用gitosis管理用户操作项目的权限"></a>使用gitosis管理用户操作项目的权限</h1><p>首先需要在前面生成ssh公钥（用来初始化gitosis）的机器上将gitosis-admin.git的仓库clone下来。</p>
+<p>在客户端机器上新建一个目录用于存放gitosis-admin.git仓库</p>
+<pre><code>ubuntu:~$ mkdir gitadmin
+ubuntu:~$ cd gitadmin/
+ubuntu:~/gitadmin$ git clone git@192.168.1.106:gitosis-admin.git</code></pre><p>clone正确会显示如下信息<br><img src= "/img/loading.gif" data-src="/images/g1.jpg"></p>
+<p>clone下来会有一个gitosis.conf的配置文件和一个keydir的目录。gitosis.conf用于配置用户的权限信息，keydir主要用户存放ssh公钥文件（一般以“用户名.pub”命名，gitosis.conf配置文件中需使用相同用户名），用于认证请求的客户端机器。</p>
+<p>现在让需要授权的用户使用前面的方式各自在其自己的机器上生成相应的ssh公钥文件，管理员把他们分别按用户名命名好，复制到keydir目录下。<br>···<br>ubuntu:~$ cp /home/aaaaa/Desktop/zhangsan.pub /home/aaaaa/gitadmin/gitosis-admin/keydir/</p>
+<p>ubuntu:~$ cp /home/aaaaa/Desktop/lisi.pub /home/aaaaa/gitadmin/gitosis-admin/keydir/<br>···<br>继续编辑gitosis.conf文件<br>···<br>[gitosis]</p>
+<p>[group gitosis-admin]<br>####管理员组<br>members = charn@ubuntu<br>####管理员用户名，需要在keydir目录下找到相应的.pub文件，多个可用空格隔开（下同）<br>writable = gitosis-admin####可写的项目仓库名，多个可用空格隔开（下同）</p>
+<p>[group testwrite]<br>####可写权限组<br>members = zhangsan####组用户<br>writable = mytestproject####可写的项目仓库名</p>
+<p>[group<br> testread] ####只读权限组<br>members =lisi####组用户<br>readonly= mytestproject####只读项目仓库名<br>···<br>因为这些配置的修改只是在本地修改的，还需要推送到服务器中才能生效。<br>···<br>ubuntu:<del>/gitadmin/gitosis-admin$ git add .<br>ubuntu:</del>/gitadmin/gitosis-admin$ git commit -am “add a user permission”<br>ubuntu:~/gitadmin/gitosis-admin$ git push origin master<br>···<br>推送成功会显示下面提示信息<br><img src= "/img/loading.gif" data-src="/images/g2.jpg"></p>
+<p>又是后新增的用户不能立即生效，这时候需要重新启动一下sshd服务</p>
+<pre><code>ubuntu:~/gitadmin/gitosis-admin$ sudo /etc/init.d/ssh restart</code></pre><p>现在，服务端的git就已经安装和配置完成了，接下来就需要有权限的组成员在各自的机器上clone服务器上的相应</p>
+<p>项目仓库进行相应的工作了。</p>
+<h1 id="客户端（windows）使用git"><a href="#客户端（windows）使用git" class="headerlink" title="客户端（windows）使用git"></a>客户端（windows）使用git</h1><p>下载安装windows版本的git客户端软件，下载地址：<a href="http://msysgit.github.io/" target="_blank" rel="noopener">http://msysgit.github.io/</a></p>
+<p>安装完成后右键菜单会出现几个git相关的菜单选项，我们主要使用其中的git<br> bash通过命令行来进行操作。</p>
+<p>在本地新建一个目录，使用git初始化这个目录，然后再里面新建一个文本文件用于测试，最后关联到git服务器仓库</p>
+<p>中的相关项目，最后上传本地版本到服务器。</p>
+<pre><code>$ mkdir testgit
+$ cd testgit
+$ git init
+$ echo &quot;this is a test text file,will push to server&quot; &gt; hello.txt
+$ git add .
+$ git commit -am &quot;init a base version,add a first file for push to server&quot;
+$ git remote add origin git@serverip:mytestproject.git
+$ git push origin master</code></pre><p>这样服务端就创建好了一个mytestproject.git的仓库的基础版本了，现在其他组员只要从服务端进行clone就可以了。</p>
+<p>window下面进入到需要克隆的本地目录下面右键选择git bash选项，输入</p>
+<pre><code>$ git clone git@serverip:mytestproject.git</code></pre><p>就可以把项目clone到本地仓库了。</p>
+<p>下面进行简单的修改和提交操作</p>
+<pre><code>$ cd mytestproject
+$ echo &quot;this is another text file created by other&quot; &gt;another.txt
+$ git add .
+$ git commit -am &quot;add a another file by other&quot;
+$ git push origin master</code></pre><p>最后推送到服务器成功会显示如下信息<br><img src= "/img/loading.gif" data-src="/images/g3.jpg"></p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Alexis (KangJ)</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://programmer996.club/2020/07/20/%E5%AE%8C%E7%BE%8E%E6%90%AD%E5%BB%BAGit%E6%9C%8D%E5%8A%A1%E5%99%A8/">https://programmer996.club/2020/07/20/%E5%AE%8C%E7%BE%8E%E6%90%AD%E5%BB%BAGit%E6%9C%8D%E5%8A%A1%E5%99%A8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"/><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><button class="reward-button" type="button"><i class="fas fa-qrcode"></i> Donate<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="post-qr-code__img" src="/images/pay.jpg" alt="wechat" onclick="window.open('/images/pay.jpg')"/><div class="post-qr-code__desc">wechat</div></li></ul></div></button></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2020/07/11/PyTorch%E4%B8%93%E6%A0%8F%EF%BC%88%E4%BA%94%EF%BC%89/"><img class="next-cover" data-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">PyTorch专栏（五）</div></div></a></div></nav></article></main><footer id="footer" style="background-image: url(https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg)" data-type="photo"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2020 By Alexis (KangJ)</div><div class="framework-info"><span>Driven </span><a href="https://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div><div class="icp"><a href="http://www.beian.miit.gov.cn/state/outPortal/loginPortal.action" target="_blank" rel="noopener"><img class="icp-icon" src="/img/icp.png"/><span>晋ICP备19013202号</span></a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="font_plus" type="button" title="Increase Font Size"><i class="fas fa-plus"></i></button><button id="font_minus" type="button" title="Decrease Font Size"><i class="fas fa-minus"></i></button><button id="translateLink" type="button" title="Switch Between Traditional Chinese And Simplified Chinese">繁</button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="rightside.chat_btn"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><script>var endLoading = function () {
+  document.body.style.overflow = 'auto';
+  document.getElementById('loading-box').classList.add("loaded")
+}
+window.addEventListener('load',endLoading)</script><script>(function(d, w, c) {
+    w.ChatraID = 'KNGoAf4sGNJs6n5zG';
+    var s = d.createElement('script');
+    w[c] = w[c] || function() {
+        (w[c].q = w[c].q || []).push(arguments);
+    };
+    s.async = true;
+    s.src = 'https://call.chatra.io/chatra.js';
+    if (d.head) d.head.appendChild(s);
+})(document, window, 'Chatra');
+
+if (true) {
+  var chatBtn = document.getElementById("chat_btn")
+    chatBtn.addEventListener("click", function(){
+      Chatra('openChat')
+    });
+} else {
+  if (true) {
+    function chatBtnHide () {
+      Chatra('hide')
+    }
+    function chatBtnShow () {
+      Chatra('show')
+    }
+  }
+}</script></body></html>

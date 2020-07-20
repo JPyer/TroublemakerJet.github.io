@@ -6163,45 +6163,61 @@ criterion = nn.CrossEntropyLoss()
 optimizer_ft = optim.SGD(model_ft.parameters(), lr=0.001, momentum=0.9)
 
 # 每7个epochs衰减LR通过设置gamma=0.1
-exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)</code></pre><h1 id="训练和评估模型"><a href="#训练和评估模型" class="headerlink" title="训练和评估模型"></a>训练和评估模型</h1><p>（1）训练模型<br>该过程在CPU上需要大约15-25分钟，但是在GPU上，它只需不到一分钟。</p>
+exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)</code></pre><h1 id="训练和评估模型"><a href="#训练和评估模型" class="headerlink" title="训练和评估模型"></a>训练和评估模型</h1><h2 id="（1）训练模型"><a href="#（1）训练模型" class="headerlink" title="（1）训练模型"></a>（1）训练模型</h2><p>该过程在CPU上需要大约15-25分钟，但是在GPU上，它只需不到一分钟。</p>
 <pre><code>model_ft = train_model(model_ft, criterion, optimizer_ft, exp_lr_scheduler,
-                       num_epochs=25)</code></pre><ul>
-<li>输出<pre><code>Epoch 0/24</code></pre></li>
-</ul>
-<hr>
-<p>train Loss: 0.7032 Acc: 0.6025<br>val Loss: 0.1698 Acc: 0.9412</p>
-<h2 id="Epoch-1-24"><a href="#Epoch-1-24" class="headerlink" title="Epoch 1/24"></a>Epoch 1/24</h2><p>train Loss: 0.6411 Acc: 0.7787<br>val Loss: 0.1981 Acc: 0.9281<br>·<br>·<br>·<br>Epoch 24/24</p>
-<hr>
-<p>train Loss: 0.2812 Acc: 0.8730<br>val Loss: 0.2647 Acc: 0.9150</p>
-<p>Training complete in 1m 7s<br>Best val Acc: 0.941176</p>
-<pre><code>（2）模型评估效果可视化</code></pre><p>visualize_model(model_ft)</p>
-<pre><code>* 输出
-&lt;img src=&quot;/images/p21.jpg&quot;&gt;
+                       num_epochs=25)</code></pre><h3 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h3><pre><code>train Loss: 0.7032 Acc: 0.6025
+val Loss: 0.1698 Acc: 0.9412
 
-# 场景2：ConvNet作为固定特征提取器
-在这里需要冻结除最后一层之外的所有网络。通过设置`requires_grad == Falsebackward()`来冻结参数，这样在反向传播backward()的时候他们的梯度就不会被计算。</code></pre><p>model_conv = torchvision.models.resnet18(pretrained=True)<br>for param in model_conv.parameters():<br>    param.requires_grad = False</p>
-<h1 id="Parameters-of-newly-constructed-modules-have-requires-grad-True-by-default"><a href="#Parameters-of-newly-constructed-modules-have-requires-grad-True-by-default" class="headerlink" title="Parameters of newly constructed modules have requires_grad=True by default"></a>Parameters of newly constructed modules have requires_grad=True by default</h1><p>num_ftrs = model_conv.fc.in_features<br>model_conv.fc = nn.Linear(num_ftrs, 2)</p>
-<p>model_conv = model_conv.to(device)</p>
-<p>criterion = nn.CrossEntropyLoss()</p>
-<h1 id="Observe-that-only-parameters-of-final-layer-are-being-optimized-as"><a href="#Observe-that-only-parameters-of-final-layer-are-being-optimized-as" class="headerlink" title="Observe that only parameters of final layer are being optimized as"></a>Observe that only parameters of final layer are being optimized as</h1><h1 id="opposed-to-before"><a href="#opposed-to-before" class="headerlink" title="opposed to before."></a>opposed to before.</h1><p>optimizer_conv = optim.SGD(model_conv.fc.parameters(), lr=0.001, momentum=0.9)</p>
-<h1 id="Decay-LR-by-a-factor-of-0-1-every-7-epochs"><a href="#Decay-LR-by-a-factor-of-0-1-every-7-epochs" class="headerlink" title="Decay LR by a factor of 0.1 every 7 epochs"></a>Decay LR by a factor of 0.1 every 7 epochs</h1><p>exp_lr_scheduler = lr_scheduler.StepLR(optimizer_conv, step_size=7, gamma=0.1)</p>
-<pre><code>## 训练和评估
-（1）训练模型
-在CPU上，与前一个场景相比，这将花费大约一半的时间，因为不需要为大多数网络计算梯度。但需要计算转发。</code></pre><p>model_conv = train_model(model_conv, criterion, optimizer_conv,<br>                         exp_lr_scheduler, num_epochs=25)</p>
-<pre><code>* 输出</code></pre><h2 id="Epoch-0-24"><a href="#Epoch-0-24" class="headerlink" title="Epoch 0/24"></a>Epoch 0/24</h2><p>train Loss: 0.6400 Acc: 0.6434<br>val Loss: 0.2539 Acc: 0.9085<br>·<br>·<br>·<br>Epoch 23/24</p>
-<hr>
-<p>train Loss: 0.2988 Acc: 0.8607<br>val Loss: 0.2151 Acc: 0.9412</p>
-<h2 id="Epoch-24-24"><a href="#Epoch-24-24" class="headerlink" title="Epoch 24/24"></a>Epoch 24/24</h2><p>train Loss: 0.3519 Acc: 0.8484<br>val Loss: 0.2045 Acc: 0.9412</p>
+train Loss: 0.6411 Acc: 0.7787
+val Loss: 0.1981 Acc: 0.9281
+·
+·
+
+train Loss: 0.2812 Acc: 0.8730
+val Loss: 0.2647 Acc: 0.9150
+
+Training complete in 1m 7s
+Best val Acc: 0.941176</code></pre><p>（2）模型评估效果可视化</p>
+<pre><code>visualize_model(model_ft)</code></pre><h3 id="输出-1"><a href="#输出-1" class="headerlink" title="输出"></a>输出</h3><img src= "/img/loading.gif" data-src="/images/p21.jpg">
+
+<h1 id="场景2：ConvNet作为固定特征提取器"><a href="#场景2：ConvNet作为固定特征提取器" class="headerlink" title="场景2：ConvNet作为固定特征提取器"></a>场景2：ConvNet作为固定特征提取器</h1><p>在这里需要冻结除最后一层之外的所有网络。通过设置<code>requires_grad == Falsebackward()</code>来冻结参数，这样在反向传播backward()的时候他们的梯度就不会被计算。</p>
+<pre><code>model_conv = torchvision.models.resnet18(pretrained=True)
+for param in model_conv.parameters():
+    param.requires_grad = False
+
+# Parameters of newly constructed modules have requires_grad=True by default
+num_ftrs = model_conv.fc.in_features
+model_conv.fc = nn.Linear(num_ftrs, 2)
+
+model_conv = model_conv.to(device)
+
+criterion = nn.CrossEntropyLoss()
+
+# Observe that only parameters of final layer are being optimized as
+# opposed to before.
+optimizer_conv = optim.SGD(model_conv.fc.parameters(), lr=0.001, momentum=0.9)
+
+# Decay LR by a factor of 0.1 every 7 epochs
+exp_lr_scheduler = lr_scheduler.StepLR(optimizer_conv, step_size=7, gamma=0.1)</code></pre><h2 id="训练和评估"><a href="#训练和评估" class="headerlink" title="训练和评估"></a>训练和评估</h2><h3 id="（1）训练模型-1"><a href="#（1）训练模型-1" class="headerlink" title="（1）训练模型"></a>（1）训练模型</h3><p>在CPU上，与前一个场景相比，这将花费大约一半的时间，因为不需要为大多数网络计算梯度。但需要计算转发。</p>
+<pre><code>model_conv = train_model(model_conv, criterion, optimizer_conv,
+                         exp_lr_scheduler, num_epochs=25)</code></pre><ul>
+<li>输出<pre><code>train Loss: 0.6400 Acc: 0.6434
+val Loss: 0.2539 Acc: 0.9085
+·
+·
+·
+train Loss: 0.2988 Acc: 0.8607
+val Loss: 0.2151 Acc: 0.9412
+</code></pre></li>
+</ul>
+<p>train Loss: 0.3519 Acc: 0.8484<br>val Loss: 0.2045 Acc: 0.9412</p>
 <p>Training complete in 0m 35s<br>Best val Acc: 0.954248</p>
-<pre><code>（2）模型评估效果可视化</code></pre><p>visualize_model(model_conv)</p>
+<pre><code>### （2）模型评估效果可视化</code></pre><p>visualize_model(model_conv)</p>
 <p>plt.ioff()<br>plt.show()</p>
 <p>```</p>
-<ul>
-<li>输出<img src= "/img/loading.gif" data-src="/images/p22.jpg">
+<h2 id="输出-2"><a href="#输出-2" class="headerlink" title="输出"></a>输出</h2><img src= "/img/loading.gif" data-src="/images/p22.jpg">
 
 
-</li>
-</ul>
 <h1 id="学习交流"><a href="#学习交流" class="headerlink" title="学习交流"></a>学习交流</h1><p>为了方便大家更好地与作者进行沟通交流，为此针对这个专栏成立了QQ读者交流群，大家想近距离与我沟通，都可以来加入。<br>扫描二维码进群可获得 自动微分 章节的Python 源代码和Jupyter 源代码链接<br>扫描二维码进群可获得 神经网络 章节的Python 源代码和Jupyter 源代码链接<br>加入方式：扫描下方QQ群二维码，即可加入交流群&lt;群满可在右下方在线与我沟通&gt;。</p>
 <p align="left">
     <img src= "/img/loading.gif" data-src="/images/qun.jpg" alt="Sample" width="300" height="350">
@@ -6213,5 +6229,71 @@ exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)</co
       <tags>
         <tag>Python深度学习</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>完美搭建Git服务器</title>
+    <url>/2020/07/20/%E5%AE%8C%E7%BE%8E%E6%90%AD%E5%BB%BAGit%E6%9C%8D%E5%8A%A1%E5%99%A8/</url>
+    <content><![CDATA[<p>最近公司项目需要用到Git来管理项目，正好逢周末花了点时间在虚拟机的Ubuntu系统中搭建了下git的服务器，由于搭建过程中多多少少遇到了一些小问题，再因为个人记性不太好，所以在这里记录下来，以备不时之需。开始我已经在虚拟机的Ubuntu 12.04系统下已经装过一次，忘了记录，这次重新再在虚拟机的Ubuntu 13.10系统下一步一步的来搭建，后面介绍包括了在客户端机器（宿主机器Win7）安装git客户端，及客户端git bash的简单使用。</p>
+<h1 id="安装git服务器所需软件"><a href="#安装git服务器所需软件" class="headerlink" title="安装git服务器所需软件"></a>安装git服务器所需软件</h1><p>打开终端输入以下命令：</p>
+<pre><code>ubuntu:~$ sudo apt-get install git-core openssh-server openssh-client</code></pre><p>git-core是git版本控制核心软件</p>
+<p>安装openssh-server和openssh-client是由于git需要通过ssh协议来在服务器与客户端之间传输文件然后中间有个确认操作，输入Y后等待系统自动从镜像服务器中下载软件安装，安装完后会回到用户当前目录。如果安装提示失败，可能是因为系统软件库的索引文件太旧了，先更新一下就可以了，更新命令如下：</p>
+<pre><code>ubuntu:~$ sudo apt-get update </code></pre><p>更新完软件库索引后继续执行上面的安装命令即可。<br>安装Python的setuptools和gitosis，由于gitosis的安装需要依赖于python的一些工具，所以我们需要先安装python的setuptools。<br>执行下面的命令：</p>
+<pre><code>ubuntu:~$ sudo apt-get install python-setuptools</code></pre><p>这个工具比较小，安装也比较快，接下来准备安装gitosis，安装gitosis之前需要初始化一下服务器的git用户信息,这个随便填。</p>
+<pre><code>ubuntu:~$ git config --global user.name &quot;myname&quot;
+ubuntu:~$ git config --global user.email &quot;******@gmail.com&quot;</code></pre><p>初始化服务器用户信息后，就可以安装gitosis了，gitosis主要是用于给用户授权，设置权限也算是很方便的。</p>
+<p>可以通过以下命令获取gitosis版本文件</p>
+<pre><code>ubuntu:~$ git clone https://github.com/res0nat0r/gitosis.git</code></pre><p>注意：中间有两个是数字零</p>
+<p>获取gitosis文件后，进入到文件目录下面</p>
+<pre><code>ubuntu:/tmp$ cd gitosis/</code></pre><p>接着使用python命令安装目录下的setup.py的python脚本进行安装</p>
+<pre><code>ubuntu:/tmp/gitosis$ sudo python setup.py install</code></pre><p>到这里，整个安装步骤就完成了，下面就开始对git进行一些基本的配置。</p>
+<h1 id="创建git管理员账户、配置git"><a href="#创建git管理员账户、配置git" class="headerlink" title="创建git管理员账户、配置git"></a>创建git管理员账户、配置git</h1><p>创建一个账户（git）作为git服务器的管理员，可以管理其他用户的项目权限。</p>
+<pre><code>ubuntu:/tmp/gitosis$ sudo useradd -m git
+ubuntu:/tmp/gitosis$ sudo passwd git</code></pre><p>然后再/home目录下创建一个项目仓库存储点，并设置只有git用户拥有所有权限，其他用户没有任何权限。</p>
+<pre><code>ubuntu:/tmp/gitosis$ sudo mkdir /home/gitrepository
+ubuntu:/tmp/gitosis$ sudo chown git:git /home/gitrepository/
+ubuntu:/tmp/gitosis$ sudo chmod 700 /home/gitrepository/</code></pre><p>由于gitosis默认状态下会将仓库放在用户的repositories目录下，例如git用户的仓库地址默认在/home/git/repositories/目录下，这里我们需要创建一个链接映射。让他指向我们前面创建的专门用于存放项目的仓库目录/home/gitrepository。</p>
+<pre><code>ubuntu:/tmp/gitosis$ sudo ln -s /home/gitrepository /home/git/repositories</code></pre><p>这里我将在服务器端生成ssh公钥，如果想在其他机器上管理也可以在其他机器上生成一个ssh的公钥。</p>
+<pre><code>ubuntu:/home/git$ ssh-keygen -t rsa</code></pre><p>这里会提示输入密码，我们不输入直接回车即可。<br>然后用刚生成公钥id_rsa.pub来对gitosis进行初始化。<br>gitosis主要是通过gitosis-admin.git仓库来管理一些配置文件的，如用户权限的管理。这里我们需要对其中的一个post-update文件添加可执行的权限。</p>
+<pre><code>ubuntu:/home/git$ sudo chmod 755 /home/gitrepository/gitosis-admin.git/hooks/post-update</code></pre><h1 id="服务器上创建项目仓库"><a href="#服务器上创建项目仓库" class="headerlink" title="服务器上创建项目仓库"></a>服务器上创建项目仓库</h1><p>使用git账户在服务器上创建一个目录（mytestproject.git）并初始化成git项目仓库。</p>
+<pre><code>ubuntu:/home/git$ su git
+$ cd /home/gitrepository
+$ mkdir mytestproject.git
+$ git init --bare
+$ exit</code></pre><p>如果出现以下信息就说明已经成功创建了一个名为mytestproject.git的项目仓库了，新建的这个仓库暂时还是空的，不能被客户端clone，还需要对gitosis进行一些配置操作。</p>
+<h1 id="使用gitosis管理用户操作项目的权限"><a href="#使用gitosis管理用户操作项目的权限" class="headerlink" title="使用gitosis管理用户操作项目的权限"></a>使用gitosis管理用户操作项目的权限</h1><p>首先需要在前面生成ssh公钥（用来初始化gitosis）的机器上将gitosis-admin.git的仓库clone下来。</p>
+<p>在客户端机器上新建一个目录用于存放gitosis-admin.git仓库</p>
+<pre><code>ubuntu:~$ mkdir gitadmin
+ubuntu:~$ cd gitadmin/
+ubuntu:~/gitadmin$ git clone git@192.168.1.106:gitosis-admin.git</code></pre><p>clone正确会显示如下信息<br><img src= "/img/loading.gif" data-src="/images/g1.jpg"></p>
+<p>clone下来会有一个gitosis.conf的配置文件和一个keydir的目录。gitosis.conf用于配置用户的权限信息，keydir主要用户存放ssh公钥文件（一般以“用户名.pub”命名，gitosis.conf配置文件中需使用相同用户名），用于认证请求的客户端机器。</p>
+<p>现在让需要授权的用户使用前面的方式各自在其自己的机器上生成相应的ssh公钥文件，管理员把他们分别按用户名命名好，复制到keydir目录下。<br>···<br>ubuntu:~$ cp /home/aaaaa/Desktop/zhangsan.pub /home/aaaaa/gitadmin/gitosis-admin/keydir/</p>
+<p>ubuntu:~$ cp /home/aaaaa/Desktop/lisi.pub /home/aaaaa/gitadmin/gitosis-admin/keydir/<br>···<br>继续编辑gitosis.conf文件<br>···<br>[gitosis]</p>
+<p>[group gitosis-admin]<br>####管理员组<br>members = charn@ubuntu<br>####管理员用户名，需要在keydir目录下找到相应的.pub文件，多个可用空格隔开（下同）<br>writable = gitosis-admin####可写的项目仓库名，多个可用空格隔开（下同）</p>
+<p>[group testwrite]<br>####可写权限组<br>members = zhangsan####组用户<br>writable = mytestproject####可写的项目仓库名</p>
+<p>[group<br> testread] ####只读权限组<br>members =lisi####组用户<br>readonly= mytestproject####只读项目仓库名<br>···<br>因为这些配置的修改只是在本地修改的，还需要推送到服务器中才能生效。<br>···<br>ubuntu:<del>/gitadmin/gitosis-admin$ git add .<br>ubuntu:</del>/gitadmin/gitosis-admin$ git commit -am “add a user permission”<br>ubuntu:~/gitadmin/gitosis-admin$ git push origin master<br>···<br>推送成功会显示下面提示信息<br><img src= "/img/loading.gif" data-src="/images/g2.jpg"></p>
+<p>又是后新增的用户不能立即生效，这时候需要重新启动一下sshd服务</p>
+<pre><code>ubuntu:~/gitadmin/gitosis-admin$ sudo /etc/init.d/ssh restart</code></pre><p>现在，服务端的git就已经安装和配置完成了，接下来就需要有权限的组成员在各自的机器上clone服务器上的相应</p>
+<p>项目仓库进行相应的工作了。</p>
+<h1 id="客户端（windows）使用git"><a href="#客户端（windows）使用git" class="headerlink" title="客户端（windows）使用git"></a>客户端（windows）使用git</h1><p>下载安装windows版本的git客户端软件，下载地址：<a href="http://msysgit.github.io/" target="_blank" rel="noopener">http://msysgit.github.io/</a></p>
+<p>安装完成后右键菜单会出现几个git相关的菜单选项，我们主要使用其中的git<br> bash通过命令行来进行操作。</p>
+<p>在本地新建一个目录，使用git初始化这个目录，然后再里面新建一个文本文件用于测试，最后关联到git服务器仓库</p>
+<p>中的相关项目，最后上传本地版本到服务器。</p>
+<pre><code>$ mkdir testgit
+$ cd testgit
+$ git init
+$ echo &quot;this is a test text file,will push to server&quot; &gt; hello.txt
+$ git add .
+$ git commit -am &quot;init a base version,add a first file for push to server&quot;
+$ git remote add origin git@serverip:mytestproject.git
+$ git push origin master</code></pre><p>这样服务端就创建好了一个mytestproject.git的仓库的基础版本了，现在其他组员只要从服务端进行clone就可以了。</p>
+<p>window下面进入到需要克隆的本地目录下面右键选择git bash选项，输入</p>
+<pre><code>$ git clone git@serverip:mytestproject.git</code></pre><p>就可以把项目clone到本地仓库了。</p>
+<p>下面进行简单的修改和提交操作</p>
+<pre><code>$ cd mytestproject
+$ echo &quot;this is another text file created by other&quot; &gt;another.txt
+$ git add .
+$ git commit -am &quot;add a another file by other&quot;
+$ git push origin master</code></pre><p>最后推送到服务器成功会显示如下信息<br><img src= "/img/loading.gif" data-src="/images/g3.jpg"></p>
+]]></content>
   </entry>
 </search>
